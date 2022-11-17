@@ -115,7 +115,7 @@ class Game():
             while Game.run == "items":
                 self.run_items()
 
-    # creates a path to sprites
+    # creates a path to files
     def path(newPath: str = None, newPath2: str = None):
         absolutePath = os.path.abspath(__file__)
         fileDirectory = os.path.dirname(absolutePath)
