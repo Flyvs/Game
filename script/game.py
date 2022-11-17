@@ -1,6 +1,6 @@
 # imports
 import pygame
-#import sys
+import sys
 import json
 import os
 import random
