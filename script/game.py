@@ -645,6 +645,9 @@ class Music():
             # can be deleted if found out how to make the json inaccessable
             self.data["volume"] = 20
             volume = self.data["volume"]
+        elif self.data["volume"] < 0:
+            self.data["volume"] = 0
+            volume = self.data["volume"]
 
         # read json data
         self.file = open(Game.jsonPath, "w")
