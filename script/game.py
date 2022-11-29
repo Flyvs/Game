@@ -7,6 +7,7 @@ import random
 from numba import cuda, jit
 # @jit(target_backend='cuda') <-- this before calling a function makes use of the GPU
 
+
 # class Game
 class Game():
     # initializing
