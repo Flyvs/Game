@@ -4,6 +4,7 @@ import sys
 import json
 import os
 import random
+from numba import cuda, jit
 
 
 # class Game
