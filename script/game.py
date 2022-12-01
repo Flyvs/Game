@@ -398,7 +398,7 @@ class Attack(pygame.sprite.Sprite):
 # class Player
 class Player(pygame.sprite.Sprite):
     # initializing
-    def __init__(self, pos, group):
+    def __init__(self, pos, group, LVL: int, HP: int, PHYATK: int, MAGATK: int, PHYDEF: int, MAGDEF: int, SPEED: int):
         super().__init__(group)
 
         Player.path = Game.path("sprites", "player")
@@ -486,7 +486,7 @@ class Player(pygame.sprite.Sprite):
         Attack.input(self)
 
         if Game.enemySpawned == False:
-            Enemy(Enemy._spawn(), Game.camera)
+            Enemy(Enemy._spawn(), Game.camera, 1, 32, 10, 9, 12, 7, 15)
             Game.enemySpawned = True
 
         Enemy.attackPlayer(self)
@@ -749,7 +749,7 @@ class Pause():
 
         if Game.playerLoaded == False:
             Game.player = Player(
-                (self.data["playerx"], self.data["playery"]), Game.camera)
+                (self.data["playerx"], self.data["playery"]), Game.camera, 1, 40, 8, 8, 4, 4, 9)
             Game.playerLoaded = True
 
         self.file = open(Game.jsonPath, "w")
@@ -1016,8 +1016,15 @@ class Pause():
 # class Enemy
 class Enemy(pygame.sprite.Sprite):
     # initializing
-    def __init__(self, pos, group):
+    def __init__(self, pos, group, LVL: int, HP: int, PHYATK: int, MAGATK: int, PHYDEF: int, MAGDEF: int, SPEED: int):
         super().__init__(group)
+
+        Enemy.HP = HP
+        Enemy.PHYATK = PHYATK
+        Enemy.MAGATK = MAGATK
+        Enemy.PHYDEF = PHYDEF
+        Enemy.MAGDEF = MAGDEF
+        Enemy.speed = SPEED
 
         for file in os.listdir(Game.enemyPath):
             Enemy.image = pygame.image.load(
