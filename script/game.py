@@ -351,8 +351,11 @@ class NPC(pygame.sprite.Sprite):
 # class Attack
 class Attack(pygame.sprite.Sprite):
     # initializing
-    def __init__(self, group):
+    def __init__(self, group, CLASS: str, DMG: int):
         super().__init__(group)
+
+        Attack.CLASS = CLASS
+        Attack.DMG = DMG
 
         Attack.spritePath = Game.path("sprites", "attack")
         Attack.right = "attackRight.png"
@@ -422,7 +425,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.speed = 5
 
-        Player.attack = Attack(Game.camera)
+        Player.attack = Attack(Game.camera, "PHY", 55)
 
     # set the keys for movement
     def input(self):
