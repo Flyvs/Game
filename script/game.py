@@ -401,6 +401,14 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group, LVL: int, HP: int, PHYATK: int, MAGATK: int, PHYDEF: int, MAGDEF: int, SPEED: int):
         super().__init__(group)
 
+        Player.LVL = LVL
+        Player.HP = HP
+        Player.PHYATK = PHYATK
+        Player.MAGATK = MAGATK
+        Player.PHYDEF = PHYDEF
+        Player.MAGATK = MAGATK
+        Player.SPEED = SPEED
+
         Player.path = Game.path("sprites", "player")
         Player.right = "playerR.png"
         Player.left = "playerL.png"
