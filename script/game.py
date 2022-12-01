@@ -409,7 +409,7 @@ class Player(pygame.sprite.Sprite):
         Player.PHYATK = PHYATK
         Player.MAGATK = MAGATK
         Player.PHYDEF = PHYDEF
-        Player.MAGATK = MAGATK
+        Player.MAGDEF = MAGATK
         Player.SPEED = SPEED
 
         Player.path = Game.path("sprites", "player")
