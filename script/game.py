@@ -23,15 +23,15 @@ class Game():
         Game.enemyPath = Game.path("sprites", "enemies")
 
         # loading the json
-        self.file = open(Game.jsonPath, "r")
-        self.data = json.load(self.file)
-        self.file.close()
+        Game.fileR = open(Game.jsonPath, "r")
+        Game.data = json.load(Game.fileR)
+        Game.fileR.close()
 
         # getting the values from the json
-        self.screenx = self.data["resolutionx"]
-        self.screeny = self.data["resolutiony"]
-        Game.fullscreen = self.data["fullscreen"]
-        volume = self.data["volume"]
+        self.screenx = Game.data["resolutionx"]
+        self.screeny = Game.data["resolutiony"]
+        Game.fullscreen = Game.data["fullscreen"]
+        volume = Game.data["volume"]
 
         # setting screen mode
         if Game.fullscreen == False:
@@ -401,16 +401,17 @@ class Attack(pygame.sprite.Sprite):
 # class Player
 class Player(pygame.sprite.Sprite):
     # initializing
-    def __init__(self, pos, group, LVL: int, HP: int, PHYATK: int, MAGATK: int, PHYDEF: int, MAGDEF: int, SPEED: int):
+    def __init__(self, pos, group):
         super().__init__(group)
 
-        Player.LVL = LVL
-        Player.HP = HP
-        Player.PHYATK = PHYATK
-        Player.MAGATK = MAGATK
-        Player.PHYDEF = PHYDEF
-        Player.MAGDEF = MAGATK
-        Player.SPEED = SPEED
+        Player.LVL = Game.data["LVL"]
+        Player.XP = Game.data["XP"]
+        Player.HP = Game.data["HP"]
+        Player.PHYATK = Game.data["PHYATK"]
+        Player.MAGATK = Game.data["MAGATK"]
+        Player.PHYDEF = Game.data["PHYDEF"]
+        Player.MAGDEF = Game.data["MAGDEF"]
+        Player.SPEED = Game.data["SPEED"]
 
         Player.path = Game.path("sprites", "player")
         Player.right = "playerR.png"
@@ -649,23 +650,19 @@ class Music():
         pygame.mixer.music.load(Music.path + self.songs[song])
         pygame.mixer.music.play(-1, 0, 0)
 
-        self.file = open(Game.jsonPath, "r")
-        self.data = json.load(self.file)
-        self.file.close()
-
         # can be deleted if found out how to make the json inaccessable
-        if self.data["volume"] > 20:
+        if Game.data["volume"] > 20:
             # can be deleted if found out how to make the json inaccessable
-            self.data["volume"] = 20
-            volume = self.data["volume"]
-        elif self.data["volume"] < 0:
-            self.data["volume"] = 0
-            volume = self.data["volume"]
+            Game.data["volume"] = 20
+            volume = Game.data["volume"]
+        elif Game.data["volume"] < 0:
+            Game.data["volume"] = 0
+            volume = Game.data["volume"]
 
         # read json data
-        self.file = open(Game.jsonPath, "w")
-        json.dump(self.data, self.file)
-        self.file.close()
+        Game.fileW = open(Game.jsonPath, "w")
+        json.dump(Game.data, Game.fileW)
+        Game.fileW.close()
 
         self.volume(volume)
 
@@ -710,76 +707,55 @@ class Pause():
             volume = pygame.image.load(Pause.sprites + "volumeslider\\" + file)
             self.volume_options.append(volume)
 
-        # reading json data
-        self.file = open(Game.jsonPath, "r")
-        self.data = json.load(self.file)
-        self.file.close()
-
         self.options_mainmenu = 1
         self.options_pause_menu = 1
         self.options_option_menu = 1
         self.options_resolution = 1
-        self.options_slider = self.data["volume"]
+        self.options_slider = Game.data["volume"]
         self.options_accessed = ""
 
-        self.resx = self.data["resolutionx"]
-        self.resy = self.data["resolutiony"]
+        self.resx = Game.data["resolutionx"]
+        self.resy = Game.data["resolutiony"]
 
     # save options
     def save_options(self, newResX: int, newResY: int, fullscreen: bool):
-        self.file = open(Game.jsonPath, "r")
-        self.data = json.load(self.file)
-        self.file.close()
+        Game.data["resolutionx"] = newResX
+        Game.data["resolutiony"] = newResY
+        Game.data["fullscreen"] = fullscreen
 
-        self.data["resolutionx"] = newResX
-        self.data["resolutiony"] = newResY
-        self.data["fullscreen"] = fullscreen
-
-        self.file = open(Game.jsonPath, "w")
-        json.dump(self.data, self.file)
-        self.file.close()
+        Game.fileW = open(Game.jsonPath, "w")
+        json.dump(Game.data, Game.fileW)
+        Game.fileW.close()
 
     # save position
     def save_pos(self):
-        self.file = open(Game.jsonPath, "r")
-        self.data = json.load(self.file)
-        self.file.close()
+        Game.data["playerx"] = Player.rect.center[0]
+        Game.data["playery"] = Player.rect.center[1]
 
-        self.data["playerx"] = Player.rect.center[0]
-        self.data["playery"] = Player.rect.center[1]
-
-        self.file = open(Game.jsonPath, "w")
-        json.dump(self.data, self.file)
-        self.file.close()
+        Game.fileW = open(Game.jsonPath, "w")
+        json.dump(Game.data, Game.fileW)
+        Game.fileW.close()
 
     # load position
     def load_pos(self):
-        self.file = open(Game.jsonPath, "r")
-        self.data = json.load(self.file)
-        self.file.close()
-
         if Game.playerLoaded == False:
             Game.player = Player(
-                (self.data["playerx"], self.data["playery"]), Game.camera, 1, 40, 8, 8, 4, 4, 9)
+                (Game.data["playerx"], Game.data["playery"]), Game.camera)
             Game.playerLoaded = True
 
-        self.file = open(Game.jsonPath, "w")
-        json.dump(self.data, self.file)
-        self.file.close()
+        Game.fileW = open(Game.jsonPath, "w")
+        json.dump(Game.data, Game.fileW)
+        Game.fileW.close()
 
     # save volume
     def save_volume(self):
-        self.file = open(Game.jsonPath, "r")
-        self.data = json.load(self.file)
-        self.file.close()
-
-        self.data["volume"] = self.options_slider
-        volume = self.data["volume"]
+        Game.data["volume"] = self.options_slider
+        volume = Game.data["volume"]
         Music.volume(self, volume)
 
-        self.file = open(Game.jsonPath, "w")
-        json.dump(self.data, self.file)
-        self.file.close()
+        Game.fileW = open(Game.jsonPath, "w")
+        json.dump(Game.data, Game.fileW)
+        Game.fileW.close()
 
     # volume screen
     def volume_screen(self):
