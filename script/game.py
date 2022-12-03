@@ -416,6 +416,8 @@ class Player(pygame.sprite.Sprite):
         Player.path = Game.path("sprites", "player")
         Player.right = "playerR.png"
         Player.left = "playerL.png"
+        Player.rightB = "playerRblack.png"
+        Player.rightL = "playerLblack.png"
         Player.facingLeft = False
         Player.facingRight = True
         Player.hit = True
