@@ -72,8 +72,6 @@ class Game():
         Game.NPC1 = NPC((500, 10), Game.camera)
         Game.playerLoaded = False
 
-        Game.enemySpawned = False
-
         self.music = Music()
         self.music.play(2, volume)
 
@@ -428,6 +426,10 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.speed = 5
 
+        Game.enemyList = []
+        Game.enemy1 = Enemy(Game.camera, 1, 32, 10, 9, 12, 7, 15, False)
+        Game.enemy2 = Enemy(Game.camera, 1, 32, 10, 9, 12, 7, 15, False)
+
         Player.attack = Attack(Game.camera, "PHY", 55)
 
     # set the keys for movement
@@ -498,10 +500,6 @@ class Player(pygame.sprite.Sprite):
         self.input()
         Player.rect.center += self.direction * self.speed
         Attack.input(self)
-
-        if Game.enemySpawned == False:
-            Enemy(Enemy._spawn(), Game.camera, 1, 32, 10, 9, 12, 7, 15)
-            Game.enemySpawned = True
 
         Enemy.attackPlayer(self)
         Game.teleport(self, 1948, 900, 52, 200)
@@ -609,6 +607,7 @@ class Camera(pygame.sprite.Group):
             if str(type(Camera.spriteList[0])).partition(".")[2].split("'")[0] == "Attack":
                 del Camera.spriteList[0]
             i += 1
+        #print(Camera.spriteList)
 
         # ==================================================
         # Camera.spriteList = self.sprites()#[:3]
@@ -632,6 +631,11 @@ class Camera(pygame.sprite.Group):
             center=(Camera.half_w, Camera.half_h))
         Camera.displaySurface.blit(scaled_surf, scaled_rect)
 
+        try:
+            print(Game.enemy1.POS)
+            print(Game.enemy2.POS)
+        except:
+            pass
 
 # class Music
 class Music():
@@ -1005,7 +1009,7 @@ class Pause():
 # class Enemy
 class Enemy(pygame.sprite.Sprite):
     # initializing
-    def __init__(self, pos, group, LVL: int, HP: int, PHYATK: int, MAGATK: int, PHYDEF: int, MAGDEF: int, SPEED: int):
+    def __init__(self, group, LVL: int, HP: int, PHYATK: int, MAGATK: int, PHYDEF: int, MAGDEF: int, SPEED: int, SPAWNED: bool):
         super().__init__(group)
 
         Enemy.HP = HP
@@ -1013,17 +1017,21 @@ class Enemy(pygame.sprite.Sprite):
         Enemy.MAGATK = MAGATK
         Enemy.PHYDEF = PHYDEF
         Enemy.MAGDEF = MAGDEF
-        Enemy.speed = SPEED
+        Enemy.SPEED = SPEED
+        Enemy.SPAWNED = SPAWNED
+
+        Game.enemyList.append(Enemy)
+        Enemy.POS = Enemy._spawn()
 
         for file in os.listdir(Game.enemyPath):
             Enemy.image = pygame.image.load(
                 Game.enemyPath + file).convert_alpha()
-            Enemy.rect = Enemy.image.get_rect(topleft=pos)
+            Enemy.rect = Enemy.image.get_rect(topleft=Enemy.POS)
 
     # track position of player
     def findPlayer():
         direction = pygame.math.Vector2()
-        speed = 1
+        speed = 0
 
         if Player.rect.center[0] > Enemy.rect.center[0]:
             direction.x = speed
@@ -1045,18 +1053,38 @@ class Enemy(pygame.sprite.Sprite):
 
     # spawn enemy
     def _spawn():
-        distance = 500
-        Y = Player.rect.center[1]
+        if len(Game.enemyList) > 1:
+            i = 0
+            while len(Game.enemyList) - 1 > i:
+                while Game.enemyList[i].POS == pos:
+                    pos = Enemy.calcPos()
+                i += 1
+        return pos
 
-        if Player.rect.center[0] + distance < 2000:
-            X = Player.rect.center[0] + distance
-        else:
-            X = Player.rect.center[0] - distance
+
+    # calculate position
+    def calcPos():
+        distance = random.randint(200, 600)
 
         if Player.rect.center[0] - distance < 0:
             X = Player.rect.center[0] + distance
         else:
             X = Player.rect.center[0] - distance
+        
+        if Player.rect.center[0] + distance < 2000:
+            X = Player.rect.center[0] + distance
+        else:
+            X = Player.rect.center[0] - distance
+        
+        if Player.rect.center[1] + distance > 2000:
+            Y = Player.rect.center[1] - distance
+        else:
+            Y = Player.rect.center[1] + distance
+        
+        if Player.rect.center[1] - distance < 0:
+            Y = Player.rect.center[1] + distance
+        else:
+            Y = Player.rect.center[1] - distance
 
         return (X, Y)
 
@@ -1082,6 +1110,11 @@ class Battle():
     # magical attack
     def magical():
         pass
+
+    # item screen
+    def itemScreen():
+        pass
+        keys = pygame.key.get_pressed()
 
     # run away
     def runaway():
@@ -1119,9 +1152,11 @@ class Battle():
         elif Battle.options == 4:
             Camera.displaySurface.blit(Battle.sprites[3], (0, 0))
 
-    # item screen
-    def itemScreen():
-        keys = pygame.key.get_pressed()
+        height = 300
+        screenSize = Game.screen.get_size()
+        Camera.displaySurface.blit(pygame.image.load(
+            Player.path + Player.right).convert_alpha(), (300, screenSize[1] - height))
+        Camera.displaySurface.blit(Enemy.image, (900, screenSize[1] - height))
 
 
 # starting the game
