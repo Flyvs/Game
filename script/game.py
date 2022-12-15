@@ -56,6 +56,9 @@ class Game():
         Game.whichItem = 0
         Game.i = 0
 
+        Game.ticksToIgnoreTAB = 0
+        Game.ticksToIgnoreSPACE = 0
+
         Game.ticks = 0
         Game.seconds = 0
         Game.minutes = 0
@@ -415,10 +418,12 @@ class Player(pygame.sprite.Sprite):
         Player.right = "playerR.png"
         Player.left = "playerL.png"
         Player.rightB = "playerRblack.png"
-        Player.rightL = "playerLblack.png"
+        Player.leftB = "playerLblack.png"
         Player.facingLeft = False
         Player.facingRight = True
         Player.hit = True
+
+        Player.color = "w" # w: white; b: black
 
         Player.image = pygame.image.load(
             Player.path + Player.right).convert_alpha()
@@ -467,11 +472,29 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 0
 
         if Player.facingLeft == True:
-            Player.image = pygame.image.load(
-                Player.path + Player.left).convert_alpha()
+            if Player.color == "w":
+                Player.image = pygame.image.load(
+                    Player.path + Player.left).convert_alpha()
+            elif Player.color == "b":
+                Player.image = pygame.image.load(
+                    Player.path + Player.leftB).convert_alpha()
         elif Player.facingRight == True:
-            Player.image = pygame.image.load(
-                Player.path + Player.right).convert_alpha()
+            if Player.color == "w":
+                Player.image = pygame.image.load(
+                    Player.path + Player.right).convert_alpha()
+            elif Player.color == "b":
+                Player.image = pygame.image.load(
+                    Player.path + Player.rightB).convert_alpha()
+
+        if self.keys[pygame.K_TAB] and Game.ticksToIgnoreTAB == 0:
+            Game.ticksToIgnoreTAB = 10
+            if Player.color == "w":
+                Player.color = "b"
+            elif Player.color == "b":
+                Player.color = "w"
+
+        if Game.ticksToIgnoreTAB > 0:
+            Game.ticksToIgnoreTAB -= 1
 
     # updating details
     def update(self):
@@ -631,11 +654,11 @@ class Camera(pygame.sprite.Group):
             center=(Camera.half_w, Camera.half_h))
         Camera.displaySurface.blit(scaled_surf, scaled_rect)
 
-        try:
-            print(Game.enemy1.POS)
-            print(Game.enemy2.POS)
-        except:
-            pass
+        #try:
+        #    print(Game.enemy1.POS)
+        #    print(Game.enemy2.POS)
+        #except:
+        #    pass
 
 # class Music
 class Music():
@@ -776,8 +799,12 @@ class Pause():
         elif keys[pygame.K_d]:
             if self.options_slider != 20:
                 self.options_slider += 1
-        elif keys[pygame.K_SPACE]:
+        elif keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0:
+            Game.ticksToIgnoreSPACE = 5
             Game.run = "options"
+        
+        if Game.ticksToIgnoreSPACE > 0:
+            Game.ticksToIgnoreSPACE -= 1
 
         if self.options_slider == 0:
             Camera.displaySurface.blit(self.volume_options[0], (0, 0))
@@ -838,7 +865,8 @@ class Pause():
         elif keys[pygame.K_s]:
             if self.options_mainmenu != 4:
                 self.options_mainmenu += 1
-        elif keys[pygame.K_SPACE]:
+        elif keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0:
+            Game.ticksToIgnoreSPACE = 5
             if self.options_mainmenu == 1:
                 if Game.playerLoaded == False:
                     Game.player = Player((640, 360), Game.camera)
@@ -861,6 +889,9 @@ class Pause():
                 pygame.time.wait(1000)
                 pygame.quit()
                 sys.exit()
+        
+        if Game.ticksToIgnoreSPACE > 0:
+            Game.ticksToIgnoreSPACE -= 1
 
         if self.options_mainmenu == 1:
             Camera.displaySurface.blit(self.mainmenu_options[3], (0, 0))
@@ -882,7 +913,8 @@ class Pause():
         elif keys[pygame.K_s]:
             if self.options_pause_menu != 5:
                 self.options_pause_menu += 1
-        elif keys[pygame.K_SPACE]:
+        elif keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0:
+            Game.ticksToIgnoreSPACE = 5
             if self.options_pause_menu == 1:
                 Game.run = "options"
             elif self.options_pause_menu == 2:
@@ -900,6 +932,9 @@ class Pause():
                 pygame.time.wait(1000)
                 pygame.quit()
                 sys.exit()
+        
+        if Game.ticksToIgnoreSPACE > 0:
+            Game.ticksToIgnoreSPACE -= 1
 
         if self.options_pause_menu == 1:
             Camera.displaySurface.blit(Game.pause_options[2], (0, 0))
@@ -922,7 +957,8 @@ class Pause():
         elif keys[pygame.K_s]:
             if self.options_option_menu != 3:
                 self.options_option_menu += 1
-        elif keys[pygame.K_SPACE]:
+        elif keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0:
+            Game.ticksToIgnoreSPACE = 5
             if self.options_option_menu == 1:
                 Game.run = "resolution"
                 pygame.time.wait(100)
@@ -936,6 +972,9 @@ class Pause():
                 elif self.options_accessed == "pause":
                     Game.run = "pause"
                 pygame.time.wait(100)
+        
+        if Game.ticksToIgnoreSPACE > 0:
+            Game.ticksToIgnoreSPACE -= 1
 
         if self.options_option_menu == 1:
             Camera.displaySurface.blit(self.option_options[1], (0, 0))
@@ -954,7 +993,8 @@ class Pause():
         elif keys[pygame.K_s]:
             if self.options_resolution != 6:
                 self.options_resolution += 1
-        elif keys[pygame.K_SPACE]:
+        elif keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0:
+            Game.ticksToIgnoreSPACE = 5
             if self.options_resolution == 1:
                 self.resx = 1280
                 self.resy = 720
@@ -986,6 +1026,9 @@ class Pause():
                 Game.run = "options"
                 self.save_options(self.resx, self.resy, Game.fullscreen)
                 pygame.time.wait(100)
+
+        if Game.ticksToIgnoreSPACE > 0:
+            Game.ticksToIgnoreSPACE -= 1
 
         if self.options_resolution == 1:
             Camera.displaySurface.blit(self.resolution_options[0], (0, 0))
@@ -1053,6 +1096,7 @@ class Enemy(pygame.sprite.Sprite):
 
     # spawn enemy
     def _spawn():
+        pos = (0, 0)
         if len(Game.enemyList) > 1:
             i = 0
             while len(Game.enemyList) - 1 > i:
@@ -1130,7 +1174,8 @@ class Battle():
         elif keys[pygame.K_s]:
             if Battle.options != 4:
                 Battle.options += 1
-        elif keys[pygame.K_SPACE]:
+        elif keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0:
+            Game.ticksToIgnoreSPACE = 5
             if Battle.options == 1:
                 Battle.physical()
             elif Battle.options == 2:
@@ -1142,6 +1187,12 @@ class Battle():
                 Game.playerHitTicks = 0
                 Game.playerHitSeconds = 0
                 Game.run = "game"
+        
+        if Game.ticksToIgnoreSPACE > 0:
+            Game.ticksToIgnoreSPACE -= 1
+        
+        if Game.ticksToIgnoreSPACE > 0:
+            Game.ticksToIgnoreSPACE -= 1
 
         if Battle.options == 1:
             Camera.displaySurface.blit(Battle.sprites[2], (0, 0))
@@ -1154,8 +1205,12 @@ class Battle():
 
         height = 300
         screenSize = Game.screen.get_size()
-        Camera.displaySurface.blit(pygame.image.load(
-            Player.path + Player.right).convert_alpha(), (300, screenSize[1] - height))
+        if Player.color == "w":
+            Camera.displaySurface.blit(pygame.image.load(
+                Player.path + Player.right).convert_alpha(), (300, screenSize[1] - height))
+        elif Player.color == "b":
+            Camera.displaySurface.blit(pygame.image.load(
+                Player.path + Player.rightB).convert_alpha(), (300, screenSize[1] - height))
         Camera.displaySurface.blit(Enemy.image, (900, screenSize[1] - height))
 
 
