@@ -6,7 +6,7 @@ import os
 
 from camera import Camera
 from pause import Pause
-#from npc import NPC
+from npc import NPC
 from music import Music
 from battle import Battle
 from player import Player
@@ -76,7 +76,7 @@ class Game():
         Game.pause = Pause()
         Game.battle = Battle()
 
-        Game.NPC1 = NPC((500, 10), Game.camera)
+        #Game.NPC1 = NPC((500, 10), Game.camera)
         Game.playerLoaded = False
 
         self.music = Music()
