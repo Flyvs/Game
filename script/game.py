@@ -617,7 +617,7 @@ class Pause():
         Pause.sprites = Game.path("sprites")
 
         self.mainmenu_options = []
-        Game.pause_options = []
+        self.pause_options = []
         self.option_options = []
         self.resolution_options = []
         self.volume_options = []
@@ -629,7 +629,7 @@ class Pause():
 
         for file in os.listdir(Pause.sprites + "pause"):
             pause = pygame.image.load(Pause.sprites + "pause\\" + file)
-            Game.pause_options.append(pause)
+            self.pause_options.append(pause)
 
         for file in os.listdir(Pause.sprites + "options"):
             options = pygame.image.load(Pause.sprites + "options\\" + file)
