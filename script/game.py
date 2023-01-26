@@ -5,6 +5,7 @@ import json
 import os
 import random
 from numba import cuda, jit
+from ExpandList import expand
 # @jit(target_backend='cuda') <-- this before calling a function makes use of the GPU
 
 
@@ -35,16 +36,13 @@ class Game():
 
         # setting screen mode
         if Game.fullscreen == False:
-            Game.screen = pygame.display.set_mode(
-                (self.screenx, self.screeny))
+            Game.screen = pygame.display.set_mode((self.screenx, self.screeny))
         elif Game.fullscreen == True:
-            Game.screen = pygame.display.set_mode(
-                (self.screenx, self.screeny), pygame.FULLSCREEN)
+            Game.screen = pygame.display.set_mode((self.screenx, self.screeny), pygame.FULLSCREEN)
 
         # setting the game caption and icon
         pygame.display.set_caption("test")
-        icon = pygame.image.load(
-            Game.path("sprites", "player") + "playerR.png")
+        icon = pygame.image.load(Game.path("sprites", "player") + "playerR.png")
         pygame.display.set_icon(icon)
 
         # initializing variables
@@ -85,8 +83,7 @@ class Game():
 
             while Game.run == "game":
                 # always gives the player 3 seconds invincibility after running away from an enemy
-                timer = Game.tracktime(
-                    Game.playerHitTicks, Game.playerHitSeconds, Game.playerHitMinutes, Game.playerHitHours)
+                timer = Game.tracktime(Game.playerHitTicks, Game.playerHitSeconds, Game.playerHitMinutes, Game.playerHitHours)
                 Game.playerHitTicks = timer["ticks"]
                 Game.playerHitSeconds = timer["seconds"]
                 if timer["seconds"] % 3 == 0 and Player.hit == False:
@@ -268,8 +265,7 @@ class MsgBox(pygame.sprite.Sprite):
         super().__init__(group)
 
         for file in os.listdir(Game.msgboxPath):
-            MsgBox.image = pygame.image.load(
-                Game.msgboxPath + file).convert_alpha()
+            MsgBox.image = pygame.image.load(Game.msgboxPath + file).convert_alpha()
             MsgBox.rect = MsgBox.image.get_rect(topleft=pos)
 
     def init():
@@ -287,8 +283,7 @@ class Item(pygame.sprite.Sprite):
 
         Item.allItems = []
         if Game.itemSpawned == False:
-            Item.image = pygame.image.load(
-                Item.path + Item.randomSpawn()).convert_alpha()
+            Item.image = pygame.image.load(Item.path + Item.randomSpawn()).convert_alpha()
             Item.rect = Item.image.get_rect(topleft=pos)
             Game.itemSpawned = True
 
@@ -311,10 +306,8 @@ class Item(pygame.sprite.Sprite):
 
     # check if item is hit
     def hit():
-        collision_x = Player.rect[0] + \
-            64 >= Item.rect[0] and Item.rect[0] + 64 >= Player.rect[0]
-        collision_y = Player.rect[1] + \
-            64 >= Item.rect[1] and Item.rect[1] + 64 >= Player.rect[1]
+        collision_x = Player.rect[0] + 64 >= Item.rect[0] and Item.rect[0] + 64 >= Player.rect[0]
+        collision_y = Player.rect[1] + 64 >= Item.rect[1] and Item.rect[1] + 64 >= Player.rect[1]
         return collision_y and collision_x
 
 
@@ -328,8 +321,7 @@ class NPC(pygame.sprite.Sprite):
         NPC.path = Game.path("sprites", "NPCs")
 
         NPC.allItems = []
-        NPC.image = pygame.image.load(
-            NPC.path + NPC.spawn("testNPC")).convert_alpha()
+        NPC.image = pygame.image.load(NPC.path + NPC.spawn("testNPC")).convert_alpha()
         NPC.rect = NPC.image.get_rect(topleft=pos)
 
     # spawn the npc
@@ -342,10 +334,8 @@ class NPC(pygame.sprite.Sprite):
 
     # check if npc is hit
     def hit():
-        collision_x = Player.rect[0] + \
-            64 >= NPC.rect[0] and NPC.rect[0] + 64 >= Player.rect[0]
-        collision_y = Player.rect[1] + \
-            64 >= NPC.rect[1] and NPC.rect[1] + 64 >= Player.rect[1]
+        collision_x = Player.rect[0] + 64 >= NPC.rect[0] and NPC.rect[0] + 64 >= Player.rect[0]
+        collision_y = Player.rect[1] + 64 >= NPC.rect[1] and NPC.rect[1] + 64 >= Player.rect[1]
         return collision_y and collision_x
 
 
@@ -371,8 +361,7 @@ class Attack(pygame.sprite.Sprite):
         Attack.posRight = (Attack.xRight, Attack.yRight)
         Attack.posLeft = (Attack.xLeft, Attack.yLeft)
 
-        Attack.image = pygame.image.load(
-            Attack.spritePath + Attack.right).convert_alpha()
+        Attack.image = pygame.image.load(Attack.spritePath + Attack.right).convert_alpha()
         Attack.rect = Attack.image.get_rect(center=Attack.posRight)
 
     # positioning the attack and set the attack key
@@ -388,12 +377,10 @@ class Attack(pygame.sprite.Sprite):
         if self.keys[pygame.K_SPACE]:
             Attack.space = True
             if Player.facingLeft == True:
-                Attack.image = pygame.image.load(
-                    Attack.spritePath + Attack.left).convert_alpha()
+                Attack.image = pygame.image.load(Attack.spritePath + Attack.left).convert_alpha()
                 Attack.rect = Attack.image.get_rect(center=Attack.posLeft)
             elif Player.facingRight == True:
-                Attack.image = pygame.image.load(
-                    Attack.spritePath + Attack.right).convert_alpha()
+                Attack.image = pygame.image.load(Attack.spritePath + Attack.right).convert_alpha()
                 Attack.rect = Attack.image.get_rect(center=Attack.posRight)
         else:
             Attack.space = False
@@ -425,15 +412,16 @@ class Player(pygame.sprite.Sprite):
 
         Player.color = "w" # w: white; b: black
 
-        Player.image = pygame.image.load(
-            Player.path + Player.right).convert_alpha()
+        Player.image = pygame.image.load(Player.path + Player.right).convert_alpha()
         Player.rect = Player.image.get_rect(center=pos)
         self.direction = pygame.math.Vector2()
         self.speed = 5
 
-        Game.enemyList = []
-        Game.enemy1 = Enemy(Game.camera, 1, 32, 10, 9, 12, 7, 15, False)
-        Game.enemy2 = Enemy(Game.camera, 1, 32, 10, 9, 12, 7, 15, False)
+        Enemy.list = []
+        enemy1 = Enemy(Game.camera, (100, 100), 1, 32, 10, 9, 12, 7, 15, False, "testenemy.png")
+        enemy2 = Enemy(Game.camera, (200, 200), 1, 32, 10, 9, 12, 7, 15, False, "testenemy2.png")
+        enemy3 = Enemy(Game.camera, (300, 300), 1, 32, 10, 9, 12, 7, 15, False, "testenemy3.png")
+        
 
         Player.attack = Attack(Game.camera, "PHY", 55)
 
@@ -473,21 +461,17 @@ class Player(pygame.sprite.Sprite):
 
         if Player.facingLeft == True:
             if Player.color == "w":
-                Player.image = pygame.image.load(
-                    Player.path + Player.left).convert_alpha()
+                Player.image = pygame.image.load(Player.path + Player.left).convert_alpha()
             elif Player.color == "b":
-                Player.image = pygame.image.load(
-                    Player.path + Player.leftB).convert_alpha()
+                Player.image = pygame.image.load(Player.path + Player.leftB).convert_alpha()
         elif Player.facingRight == True:
             if Player.color == "w":
-                Player.image = pygame.image.load(
-                    Player.path + Player.right).convert_alpha()
+                Player.image = pygame.image.load(Player.path + Player.right).convert_alpha()
             elif Player.color == "b":
-                Player.image = pygame.image.load(
-                    Player.path + Player.rightB).convert_alpha()
+                Player.image = pygame.image.load(Player.path + Player.rightB).convert_alpha()
 
         if self.keys[pygame.K_TAB] and Game.ticksToIgnoreTAB == 0:
-            Game.ticksToIgnoreTAB = 10
+            Game.ticksToIgnoreTAB = 30
             if Player.color == "w":
                 Player.color = "b"
             elif Player.color == "b":
@@ -551,7 +535,9 @@ class Player(pygame.sprite.Sprite):
 
     # player enemy collision
     def player_enemy_collision(self):
-        return self.aabb_collision(Player.rect.center[0], Player.rect.center[1], 64, 64, Enemy.rect.center[0], Enemy.rect.center[1], 64, 64)
+        enemyToCheck = Enemy.list.pop(0)
+        Enemy.list.append(enemyToCheck)
+        return self.aabb_collision(Player.rect.center[0], Player.rect.center[1], 64, 64, enemyToCheck.rect.center[0], enemyToCheck.rect.center[1], 64, 64)
 
     # player teleport collision
     def player_teleport_collision(self, hitboxX: int, hitboxY: int, hitboxWidth: int, hitboxHeigth: int):
@@ -582,12 +568,9 @@ class Camera(pygame.sprite.Group):
 
         # zoom
         Camera.internal_surf_size = (2500, 2500)
-        Camera.internal_surf = pygame.Surface(
-            Camera.internal_surf_size, pygame.SRCALPHA)
-        Camera.internal_rect = Camera.internal_surf.get_rect(
-            center=(Camera.half_w, Camera.half_h))
-        Camera.internal_surface_size_vector = pygame.math.Vector2(
-            Camera.internal_surf_size)
+        Camera.internal_surf = pygame.Surface(Camera.internal_surf_size, pygame.SRCALPHA)
+        Camera.internal_rect = Camera.internal_surf.get_rect(center=(Camera.half_w, Camera.half_h))
+        Camera.internal_surface_size_vector = pygame.math.Vector2(Camera.internal_surf_size)
         Camera.internal_offset = pygame.math.Vector2()
         Camera.internal_offset.x = Camera.internal_surf_size[0] // 2 - Camera.half_w
         Camera.internal_offset.y = Camera.internal_surf_size[1] // 2 - Camera.half_h
@@ -610,19 +593,16 @@ class Camera(pygame.sprite.Group):
         Camera.internal_surf.fill('#71ddee')
 
         # ground
-        ground_offset = Camera.ground_rect.topleft - \
-            self.offset + Camera.internal_offset
+        ground_offset = Camera.ground_rect.topleft - self.offset + Camera.internal_offset
         Camera.internal_surf.blit(Camera.ground_surf, ground_offset)
 
         i = 0
         # Sorted List for drawing objects in order
-        Camera.spriteList = sorted(
-            self.sprites(), key=lambda sprite: sprite.rect.centery)
+        Camera.spriteList = sorted(self.sprites(), key=lambda sprite: sprite.rect.centery)
         spriteListLen = len(Camera.spriteList)
         while spriteListLen > i:
             spriteListLen = len(Camera.spriteList)
-            obj = str(type(Camera.spriteList[i - 1])
-                      ).partition(".")[2].split("'")[0]
+            obj = str(type(Camera.spriteList[i - 1])).partition(".")[2].split("'")[0]
             if Attack.space == False and obj == "Attack":
                 del Camera.spriteList[i - 1]
             if NPC.hit() == False and obj == "MsgBox":
@@ -632,33 +612,14 @@ class Camera(pygame.sprite.Group):
             i += 1
         #print(Camera.spriteList)
 
-        # ==================================================
-        # Camera.spriteList = self.sprites()#[:3]
-        # if Attack.space == False:
-        #	del Camera.spriteList[2]
-        # if Item.hit() == False and Item.hitted == True:
-        # if Attack.space == False:
-        #		del Camera.spriteList[3]
-        # else:
-        #		del Camera.spriteList[4]
-        # print(Camera.spriteList)
-        # ==================================================
-
         for sprite in Camera.spriteList:
             offset_pos = sprite.rect.topleft - self.offset + Camera.internal_offset
             Camera.internal_surf.blit(sprite.image, offset_pos)
 
-        scaled_surf = pygame.transform.scale(
-            Camera.internal_surf, Camera.internal_surface_size_vector)
-        scaled_rect = scaled_surf.get_rect(
-            center=(Camera.half_w, Camera.half_h))
+        scaled_surf = pygame.transform.scale(Camera.internal_surf, Camera.internal_surface_size_vector)
+        scaled_rect = scaled_surf.get_rect(center=(Camera.half_w, Camera.half_h))
         Camera.displaySurface.blit(scaled_surf, scaled_rect)
 
-        #try:
-        #    print(Game.enemy1.POS)
-        #    print(Game.enemy2.POS)
-        #except:
-        #    pass
 
 # class Music
 class Music():
@@ -728,8 +689,7 @@ class Pause():
             self.option_options.append(options)
 
         for file in os.listdir(Pause.sprites + "resolution"):
-            resolution = pygame.image.load(
-                Pause.sprites + "resolution\\" + file)
+            resolution = pygame.image.load(Pause.sprites + "resolution\\" + file)
             self.resolution_options.append(resolution)
 
         for file in os.listdir(Pause.sprites + "volumeslider"):
@@ -768,8 +728,7 @@ class Pause():
     # load position
     def load_pos(self):
         if Game.playerLoaded == False:
-            Game.player = Player(
-                (Game.data["playerx"], Game.data["playery"]), Game.camera)
+            Game.player = Player((Game.data["playerx"], Game.data["playery"]), Game.camera)
             Game.playerLoaded = True
 
         Game.fileW = open(Game.jsonPath, "w")
@@ -790,8 +749,7 @@ class Pause():
     def volume_screen(self):
         keys = pygame.key.get_pressed()
         display_volume = pygame.font.SysFont("Aerial", 100)
-        volume_surface = display_volume.render(
-            str(self.options_slider), False, (0, 0, 0))
+        volume_surface = display_volume.render(str(self.options_slider), False, (0, 0, 0))
 
         if keys[pygame.K_a]:
             if self.options_slider != 0:
@@ -849,8 +807,7 @@ class Pause():
         elif self.options_slider == 20:
             Camera.displaySurface.blit(self.volume_options[13], (0, 0))
 
-        Camera.displaySurface.blit(pygame.image.load(
-            Pause.sprites + "sliderBackYES.png"), (0, 0))
+        Camera.displaySurface.blit(pygame.image.load(Pause.sprites + "sliderBackYES.png"), (0, 0))
         Camera.displaySurface.blit(volume_surface, (600, 265))
         self.save_volume()
 
@@ -1020,8 +977,7 @@ class Pause():
                 self.resx = 3440
                 self.resy = 1440
                 Game.fullscreen = True
-                self.screen = pygame.display.set_mode(
-                    (self.resx, self.resy), pygame.FULLSCREEN)
+                self.screen = pygame.display.set_mode((self.resx, self.resy), pygame.FULLSCREEN)
             elif self.options_resolution == 6:
                 Game.run = "options"
                 self.save_options(self.resx, self.resy, Game.fullscreen)
@@ -1052,85 +1008,45 @@ class Pause():
 # class Enemy
 class Enemy(pygame.sprite.Sprite):
     # initializing
-    def __init__(self, group, LVL: int, HP: int, PHYATK: int, MAGATK: int, PHYDEF: int, MAGDEF: int, SPEED: int, SPAWNED: bool):
+    def __init__(self, group, POS: tuple, LVL: int, HP: int, PHYATK: int, MAGATK: int, PHYDEF: int, MAGDEF: int, SPEED: int, SPAWNED: bool, SPRITE: str):
         super().__init__(group)
 
-        Enemy.HP = HP
-        Enemy.PHYATK = PHYATK
-        Enemy.MAGATK = MAGATK
-        Enemy.PHYDEF = PHYDEF
-        Enemy.MAGDEF = MAGDEF
-        Enemy.SPEED = SPEED
-        Enemy.SPAWNED = SPAWNED
+        self.POS = POS
+        self.LVL = LVL
+        self.HP = HP
+        self.PHYATK = PHYATK
+        self.MAGATK = MAGATK
+        self.PHYDEF = PHYDEF
+        self.MAGDEF = MAGDEF
+        self.SPEED = SPEED
+        self.SPAWNED = SPAWNED
+        self.SPRITE = SPRITE
 
-        Game.enemyList.append(Enemy)
-        Enemy.POS = Enemy._spawn()
-
-        for file in os.listdir(Game.enemyPath):
-            Enemy.image = pygame.image.load(
-                Game.enemyPath + file).convert_alpha()
-            Enemy.rect = Enemy.image.get_rect(topleft=Enemy.POS)
+        self.image = pygame.image.load(Game.enemyPath + self.SPRITE).convert_alpha()
+        self.rect = self.image.get_rect(topleft=self.POS)
 
     # track position of player
-    def findPlayer():
+    def findPlayer(self):
         direction = pygame.math.Vector2()
         speed = 0
 
-        if Player.rect.center[0] > Enemy.rect.center[0]:
+        if Player.rect.center[0] > self.rect.center[0]:
             direction.x = speed
-        elif Player.rect.center[0] < Enemy.rect.center[0]:
+        elif Player.rect.center[0] < self.rect.center[0]:
             direction.x = -speed
 
-        if Player.rect.center[1] > Enemy.rect.center[1]:
+        if Player.rect.center[1] > self.rect.center[1]:
             direction.y = speed
-        elif Player.rect.center[1] < Enemy.rect.center[1]:
+        elif Player.rect.center[1] < self.rect.center[1]:
             direction.y = -speed
 
-        Enemy.rect.center += direction
+        self.rect.center += direction
 
     # start battle
     def attackPlayer(self):
         if (self.player_enemy_collision()) and (Player.hit):
             Player.hit = False
             Game.run = "battle"
-
-    # spawn enemy
-    def _spawn():
-        pos = (0, 0)
-        if len(Game.enemyList) > 1:
-            i = 0
-            while len(Game.enemyList) - 1 > i:
-                while Game.enemyList[i].POS == pos:
-                    pos = Enemy.calcPos()
-                i += 1
-        return pos
-
-
-    # calculate position
-    def calcPos():
-        distance = random.randint(200, 600)
-
-        if Player.rect.center[0] - distance < 0:
-            X = Player.rect.center[0] + distance
-        else:
-            X = Player.rect.center[0] - distance
-        
-        if Player.rect.center[0] + distance < 2000:
-            X = Player.rect.center[0] + distance
-        else:
-            X = Player.rect.center[0] - distance
-        
-        if Player.rect.center[1] + distance > 2000:
-            Y = Player.rect.center[1] - distance
-        else:
-            Y = Player.rect.center[1] + distance
-        
-        if Player.rect.center[1] - distance < 0:
-            Y = Player.rect.center[1] + distance
-        else:
-            Y = Player.rect.center[1] - distance
-
-        return (X, Y)
 
 
 # class Battle
@@ -1206,12 +1122,11 @@ class Battle():
         height = 300
         screenSize = Game.screen.get_size()
         if Player.color == "w":
-            Camera.displaySurface.blit(pygame.image.load(
-                Player.path + Player.right).convert_alpha(), (300, screenSize[1] - height))
+            Camera.displaySurface.blit(pygame.image.load(Player.path + Player.right).convert_alpha(), (300, screenSize[1] - height))
         elif Player.color == "b":
-            Camera.displaySurface.blit(pygame.image.load(
-                Player.path + Player.rightB).convert_alpha(), (300, screenSize[1] - height))
-        Camera.displaySurface.blit(Enemy.image, (900, screenSize[1] - height))
+            Camera.displaySurface.blit(pygame.image.load(Player.path + Player.rightB).convert_alpha(), (300, screenSize[1] - height))
+        for enemy in Enemy.list:
+            Camera.displaySurface.blit(enemy.image, (900, screenSize[1] - height))
 
 
 # starting the game
