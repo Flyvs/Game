@@ -1,7 +1,7 @@
 import pygame
 import os
 
-from npc import NPC
+from player import NPC
 from attack import Attack
 from main import Game
 

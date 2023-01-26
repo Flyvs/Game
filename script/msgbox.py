@@ -1,7 +1,7 @@
 import pygame
 import os
 
-from npc import NPC
+from player import NPC
 from main import Game
 
 class MsgBox(pygame.sprite.Sprite):
