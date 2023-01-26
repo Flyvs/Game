@@ -2,7 +2,7 @@ import pygame
 import os
 
 from npc import NPC
-from game import Game
+from main import Game
 
 class MsgBox(pygame.sprite.Sprite):
     # initializing

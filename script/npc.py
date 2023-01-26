@@ -2,7 +2,7 @@ import pygame
 import os
 
 from player import Player
-from game import Game
+from main import Game
 
 class NPC(pygame.sprite.Sprite):
     # initializing

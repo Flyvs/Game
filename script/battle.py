@@ -4,7 +4,7 @@ import os
 from player import Player
 from camera import Camera
 from enemy import Enemy
-from game import Game
+from main import Game
 
 class Battle():
     # initializing

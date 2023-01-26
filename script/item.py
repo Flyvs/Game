@@ -3,7 +3,7 @@ import random
 import os
 
 from player import Player
-from game import Game
+from main import Game
 
 class Item(pygame.sprite.Sprite):
     # initializing

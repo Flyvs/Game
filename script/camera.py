@@ -3,7 +3,7 @@ import os
 
 from npc import NPC
 from attack import Attack
-from game import Game
+from main import Game
 
 class Camera(pygame.sprite.Group):
     # initializing

@@ -2,7 +2,7 @@ import pygame
 import os
 import json
 
-from game import Game
+from main import Game
 
 class Music():
     # initializing

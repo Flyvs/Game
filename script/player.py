@@ -7,7 +7,7 @@ from npc import NPC
 from camera import Camera
 from attack import Attack
 from enemy import Enemy
-from game import Game
+from main import Game
 
 class Player(pygame.sprite.Sprite):
     # initializing

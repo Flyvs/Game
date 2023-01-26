@@ -1,7 +1,7 @@
 import pygame
 
 from player import Player
-from game import Game
+from main import Game
 
 class Attack(pygame.sprite.Sprite):
     # initializing

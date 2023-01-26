@@ -6,7 +6,7 @@ import sys
 from music import Music
 from camera import Camera
 from player import Player
-from game import Game
+from main import Game
 
 class Pause():
     # initializing
