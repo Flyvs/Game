@@ -1020,7 +1020,7 @@ class Enemy(pygame.sprite.Sprite):
     # track position of player
     def findPlayer(self):
         direction = pygame.math.Vector2()
-        speed = 0
+        speed = 1
 
         if Player.rect.center[0] > self.rect.center[0]:
             direction.x = speed
