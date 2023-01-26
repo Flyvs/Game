@@ -5,11 +5,11 @@ import json
 import os
 import random
 from numba import cuda, jit
-from ExpandList import expand
+from msgbox import MsgBox
+from expandList import ExpandList
 # @jit(target_backend='cuda') <-- this before calling a function makes use of the GPU
 
 
-# class Game
 class Game():
     # initializing
     def __init__(self):
@@ -258,88 +258,6 @@ class Game():
         self.clock.tick(20)
 
 
-# class MsgBox
-class MsgBox(pygame.sprite.Sprite):
-    # initializing
-    def __init__(self, pos, group):
-        super().__init__(group)
-
-        for file in os.listdir(Game.msgboxPath):
-            MsgBox.image = pygame.image.load(Game.msgboxPath + file).convert_alpha()
-            MsgBox.rect = MsgBox.image.get_rect(topleft=pos)
-
-    def init():
-        MsgBox((NPC.rect[0] - 224, NPC.rect[1] - 192), Game.camera)
-
-
-# class Item
-class Item(pygame.sprite.Sprite):
-    # initializing
-    def __init__(self, pos, group):
-        super().__init__(group)
-
-        Item.hitted = False
-        Item.path = Game.path("sprites", "items")
-
-        Item.allItems = []
-        if Game.itemSpawned == False:
-            Item.image = pygame.image.load(Item.path + Item.randomSpawn()).convert_alpha()
-            Item.rect = Item.image.get_rect(topleft=pos)
-            Game.itemSpawned = True
-
-    # spawning a specific item
-    def spawn(item: str):
-        for file in os.listdir(Item.path):
-            casefoldFile = file[:-4].casefold()
-            item = item.casefold()
-            if casefoldFile == item:
-                return file
-
-    # spawning a random item
-    def randomSpawn():
-        for file in os.listdir(Item.path):
-            Item.allItems.append(file)
-        if Game.itemSpawned == False:
-            Game.whichItem = random.randint(0, len(Item.allItems) - 1)
-            Game.itemSpawned = True
-        return str(Item.allItems[Game.whichItem])
-
-    # check if item is hit
-    def hit():
-        collision_x = Player.rect[0] + 64 >= Item.rect[0] and Item.rect[0] + 64 >= Player.rect[0]
-        collision_y = Player.rect[1] + 64 >= Item.rect[1] and Item.rect[1] + 64 >= Player.rect[1]
-        return collision_y and collision_x
-
-
-# class NPC
-class NPC(pygame.sprite.Sprite):
-    # initializing
-    def __init__(self, pos, group):
-        super().__init__(group)
-
-        NPC.hitted = False
-        NPC.path = Game.path("sprites", "NPCs")
-
-        NPC.allItems = []
-        NPC.image = pygame.image.load(NPC.path + NPC.spawn("testNPC")).convert_alpha()
-        NPC.rect = NPC.image.get_rect(topleft=pos)
-
-    # spawn the npc
-    def spawn(item: str):
-        for file in os.listdir(NPC.path):
-            casefoldFile = file[:-4].casefold()
-            item = item.casefold()
-            if casefoldFile == item:
-                return file
-
-    # check if npc is hit
-    def hit():
-        collision_x = Player.rect[0] + 64 >= NPC.rect[0] and NPC.rect[0] + 64 >= Player.rect[0]
-        collision_y = Player.rect[1] + 64 >= NPC.rect[1] and NPC.rect[1] + 64 >= Player.rect[1]
-        return collision_y and collision_x
-
-
-# class Attack
 class Attack(pygame.sprite.Sprite):
     # initializing
     def __init__(self, group, CLASS: str, DMG: int):
@@ -386,7 +304,6 @@ class Attack(pygame.sprite.Sprite):
             Attack.space = False
 
 
-# class Player
 class Player(pygame.sprite.Sprite):
     # initializing
     def __init__(self, pos, group):
@@ -421,6 +338,7 @@ class Player(pygame.sprite.Sprite):
         enemy1 = Enemy(Game.camera, (100, 100), 1, 32, 10, 9, 12, 7, 15, False, "testenemy.png")
         enemy2 = Enemy(Game.camera, (200, 200), 1, 32, 10, 9, 12, 7, 15, False, "testenemy2.png")
         enemy3 = Enemy(Game.camera, (300, 300), 1, 32, 10, 9, 12, 7, 15, False, "testenemy3.png")
+        ExpandList.expand(Enemy.list, enemy1, enemy2, enemy3)
         
 
         Player.attack = Attack(Game.camera, "PHY", 55)
@@ -544,7 +462,6 @@ class Player(pygame.sprite.Sprite):
         return self.aabb_collision(Player.rect.center[0], Player.rect.center[1], 64, 64, hitboxX, hitboxY, hitboxWidth, hitboxHeigth)
 
 
-# class Camera
 class Camera(pygame.sprite.Group):
     # initializing
     def __init__(self):
@@ -621,7 +538,6 @@ class Camera(pygame.sprite.Group):
         Camera.displaySurface.blit(scaled_surf, scaled_rect)
 
 
-# class Music
 class Music():
     # initializing
     def __init__(self):
@@ -662,7 +578,6 @@ class Music():
         pygame.mixer.music.set_volume(volume)
 
 
-# class Pause
 class Pause():
     # initializing
     def __init__(self):
@@ -1005,7 +920,6 @@ class Pause():
         Camera.internal_offset.y = Camera.internal_surf_size[1] // 2 - Camera.half_h
 
 
-# class Enemy
 class Enemy(pygame.sprite.Sprite):
     # initializing
     def __init__(self, group, POS: tuple, LVL: int, HP: int, PHYATK: int, MAGATK: int, PHYDEF: int, MAGDEF: int, SPEED: int, SPAWNED: bool, SPRITE: str):
@@ -1049,7 +963,6 @@ class Enemy(pygame.sprite.Sprite):
             Game.run = "battle"
 
 
-# class Battle
 class Battle():
     # initializing
     def __init__(self):
