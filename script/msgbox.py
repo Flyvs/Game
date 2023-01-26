@@ -1,5 +1,6 @@
 import pygame
 import os
+
 from npc import NPC
 from game import Game
 

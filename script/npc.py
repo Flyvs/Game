@@ -1,4 +1,6 @@
 import pygame
+import os
+
 from player import Player
 from game import Game
 
