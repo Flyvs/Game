@@ -262,3 +262,8 @@ class Game():
 
         pygame.display.update()
         self.clock.tick(20)
+
+
+# starting the game
+if __name__ == "__main__":
+    Game()
