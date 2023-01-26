@@ -6,7 +6,6 @@ import os
 
 from camera import Camera
 from pause import Pause
-from npc import NPC
 from music import Music
 from battle import Battle
 from player import Player
