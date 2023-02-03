@@ -23,6 +23,7 @@ class Game():
         Game.jsonPath = Game.path("script") + "data.json"
         Game.msgboxPath = Game.path("sprites", "msgboxes")
         Game.enemyPath = Game.path("sprites", "enemies")
+        Game.mergePath = Game.path("temp")
 
         # loading the json
         Game.fileR = open(Game.jsonPath, "r")
@@ -294,7 +295,7 @@ class MsgBox(pygame.sprite.Sprite):
         font_ = pygame.font.SysFont(font, fontSize)
         box = pygame.image.load(Game.msgboxPath + "test.png")
         text_ = font_.render(text, True, rgb)
-        self.image = Merge.surfaces(box, text_, "F:\programming\PYprojects\idkGame4\\temp\\")
+        self.image = Merge.surfaces(box, text_, Game.mergePath)
         self.rect = self.image.get_rect(topleft=pos)
 
     # NPC Msgbox
