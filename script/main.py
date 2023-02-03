@@ -6,6 +6,8 @@ import os
 import random
 
 from expandList import ExpandList
+from pygame_merge import Merge
+from PIL import Image
 from numba import cuda, jit
 # @jit(target_backend='cuda') <-- this before calling a function makes use of the GPU
 
@@ -41,7 +43,7 @@ class Game():
             Game.screen = pygame.display.set_mode((self.screenx, self.screeny), pygame.FULLSCREEN)
 
         # setting the game caption and icon
-        pygame.display.set_caption("test")
+        pygame.display.set_caption("Game")
         icon = pygame.image.load(Game.path("sprites", "player") + "playerR.png")
         pygame.display.set_icon(icon)
 
@@ -120,7 +122,7 @@ class Game():
         absolutePath = os.path.abspath(__file__)
         fileDirectory = os.path.dirname(absolutePath)
         parentDirectory = os.path.dirname(fileDirectory)
-        # parentDirectory = os.path.join(parentDirectory, "game") remove comment when converted to an exe and comment when run in editor------------------------------------------------------------------
+        # parentDirectory = os.path.join(parentDirectory, "game") # remove comment when converted to an exe and comment when run in editor------------------------------------------------------------------
         if newPath != None:
             parentDirectory = os.path.join(parentDirectory, newPath)
         if newPath2 != None:
@@ -287,15 +289,22 @@ class NPC(pygame.sprite.Sprite):
 
 class MsgBox(pygame.sprite.Sprite):
     # initializing
-    def __init__(self, pos, group):
+    def __init__(self, pos, text: str, font: str, fontSize: int, rgb: tuple, group):
         super().__init__(group)
 
-        for file in os.listdir(Game.msgboxPath):
-            MsgBox.image = pygame.image.load(Game.msgboxPath + file).convert_alpha()
-            MsgBox.rect = MsgBox.image.get_rect(topleft=pos)
+        font_ = pygame.font.SysFont(font, fontSize)
+        box = pygame.image.load(Game.msgboxPath + "test.png")
+        text_ = font_.render(text, True, rgb)
+        self.image = Merge.surfaces(box, text_, "F:\programming\PYprojects\idkGame4\\temp\\")
+        self.rect = self.image.get_rect(topleft=pos)
 
-    def init():
-        MsgBox((NPC.rect[0] - 224, NPC.rect[1] - 192), Game.camera)
+    # NPC Msgbox
+    def NPC(text: str, font: str, fontSize: int, rgb: tuple):
+        MsgBox((NPC.rect[0] - 224, NPC.rect[1] - 192), text, font, fontSize, rgb, Game.camera)
+
+    # Cutszene Msgbox
+    def Cutszene():
+        pass
 
 
 class Player(pygame.sprite.Sprite):
@@ -334,7 +343,6 @@ class Player(pygame.sprite.Sprite):
         enemy3 = Enemy(Game.camera, (300, 300), 1, 32, 10, 9, 12, 7, 15, False, "testenemy3.png")
         ExpandList.expand(Enemy.list, enemy1, enemy2, enemy3)
         
-
         Player.attack = Attack(Game.camera, "PHY", 55)
 
     # set the keys for movement
@@ -413,8 +421,7 @@ class Player(pygame.sprite.Sprite):
 
         if NPC.hit() and NPC.hitted == False:
             NPC.hitted = True
-            for _ in os.listdir(Game.msgboxPath):
-                MsgBox.init()
+            MsgBox.NPC("This is some test text", None, 60, (66, 135, 245))
 
         self.input()
         Player.rect.center += self.direction * self.speed
@@ -521,7 +528,7 @@ class Camera(pygame.sprite.Group):
             if str(type(Camera.spriteList[0])).partition(".")[2].split("'")[0] == "Attack":
                 del Camera.spriteList[0]
             i += 1
-        #print(Camera.spriteList)
+        # print(Camera.spriteList)
 
         for sprite in Camera.spriteList:
             offset_pos = sprite.rect.topleft - self.offset + Camera.internal_offset
