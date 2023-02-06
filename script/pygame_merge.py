@@ -4,21 +4,23 @@ import os
 
 
 class Merge():
-    # method to merge two surfaces in pygame
-    def surfaces(surface1: pygame.Surface, surface2: pygame.Surface, path: str):
-        surface1.convert_alpha()
-        surface2.convert_alpha()
-        pygame.image.save(surface1, path + "temp1.png")
-        pygame.image.save(surface2, path + "temp2.png")
-        img1 = Image.open(path + "temp1.png")
-        img2 = Image.open(path + "temp2.png")
-        img1.paste(img2, (10, 50))
-        img1.save(path + "temp1x2.png")
-        surface = pygame.image.load(path + "temp1x2.png")
-        os.remove(path + "temp1.png")
-        os.remove(path + "temp2.png")
-        os.remove(path + "temp1x2.png")
+    def surfaces(path: str, *surfaces: pygame.Surface):
+        index = 0
+        for surface in surfaces:
+            surface.convert_alpha()
+            pygame.image.save(surface, path + f"temp{index}.png")
+            index += 1
+        index = 0
+        for file in os.listdir(path):
+            if index > 0:
+                background = foreground
+                foreground = Image.open(path + file).convert("RGBA")
+                background.paste(foreground, ((background.width - foreground.width) // 2, (background.height - foreground.height) // 2), foreground)
+            else:
+                foreground = Image.open(path + file).convert("RGBA")
+            index += 1
+        background.save(path + "tempfinal.png")
+        surface = pygame.image.load(path + "tempfinal.png")
+        for file in os.listdir(path):
+            os.remove(path + file)
         return surface
-
-
-        

@@ -295,7 +295,7 @@ class MsgBox(pygame.sprite.Sprite):
         font_ = pygame.font.SysFont(font, fontSize)
         box = pygame.image.load(Game.msgboxPath + "test.png")
         text_ = font_.render(text, True, rgb)
-        self.image = Merge.surfaces(box, text_, Game.mergePath)
+        self.image = Merge.surfaces(Game.mergePath, box, text_)
         self.rect = self.image.get_rect(topleft=pos)
 
     # NPC Msgbox
