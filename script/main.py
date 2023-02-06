@@ -289,18 +289,18 @@ class NPC(pygame.sprite.Sprite):
 
 class MsgBox(pygame.sprite.Sprite):
     # initializing
-    def __init__(self, pos, text: str, font: str, fontSize: int, rgb: tuple, group):
+    def __init__(self, pos, text: str, font: str, fontSize: int, rgb: tuple, msgbox: str, group):
         super().__init__(group)
 
         font_ = pygame.font.SysFont(font, fontSize)
-        box = pygame.image.load(Game.msgboxPath + "test.png")
+        box = pygame.image.load(Game.msgboxPath + msgbox)
         text_ = font_.render(text, True, rgb)
         self.image = Merge.surfaces(Game.mergePath, box, text_)
         self.rect = self.image.get_rect(topleft=pos)
 
     # NPC Msgbox
     def NPC(text: str, font: str, fontSize: int, rgb: tuple):
-        MsgBox((NPC.rect[0] - 224, NPC.rect[1] - 192), text, font, fontSize, rgb, Game.camera)
+        MsgBox((NPC.rect[0] - 224, NPC.rect[1] - 192), text, font, fontSize, rgb, "test.png", Game.camera)
 
     # Cutszene Msgbox
     def Cutszene():
