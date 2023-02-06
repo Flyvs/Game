@@ -4,5 +4,8 @@
 26th jan 2023:
 - multiple enemies can now spawn
 
+6th feb 2023:
+- Msgboxes are now completely customizable (text & background)
+
 issues:
 - the enemies wont chase the player yet
