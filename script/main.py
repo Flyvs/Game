@@ -93,7 +93,7 @@ class Game():
                     Game.playerHitSeconds = 0
                     Player.hit = True
                 else:
-                    Enemy.findPlayer(self=Enemy)  # ========================================================================
+                    Enemy.findPlayer()  # ========================================================================
                 self.run_game()
 
             while Game.run == "pause":
@@ -336,8 +336,8 @@ class Player(pygame.sprite.Sprite):
 
         Enemy.list = []
         enemy1 = Enemy(Game.camera, (100, 100), 1, 32, 10, 9, 12, 7, 15, False, "testenemy.png")
-        enemy2 = Enemy(Game.camera, (200, 200), 1, 32, 10, 9, 12, 7, 15, False, "testenemy2.png")
-        enemy3 = Enemy(Game.camera, (300, 300), 1, 32, 10, 9, 12, 7, 15, False, "testenemy3.png")
+        enemy2 = Enemy(Game.camera, (700, 700), 1, 32, 10, 9, 12, 7, 15, False, "testenemy2.png")
+        enemy3 = Enemy(Game.camera, (1000, 500), 1, 32, 10, 9, 12, 7, 15, False, "testenemy3.png")
         ExpandList.expand(Enemy.list, enemy1, enemy2, enemy3)
         
         Player.attack = Attack(Game.camera, "PHY", 55)
@@ -1022,21 +1022,22 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=self.POS)
 
     # track position of player
-    def findPlayer(self):
-        direction = pygame.math.Vector2()
-        speed = 1
+    def findPlayer():
+        for enemy in Enemy.list:
+            direction = pygame.math.Vector2()
+            speed = 1
 
-        if Player.rect.center[0] > self.rect.center[0]:
-            direction.x = speed
-        elif Player.rect.center[0] < self.rect.center[0]:
-            direction.x = -speed
+            if Player.rect.center[0] > enemy.rect.center[0]:
+                direction.x = speed
+            elif Player.rect.center[0] < enemy.rect.center[0]:
+                direction.x = -speed
 
-        if Player.rect.center[1] > self.rect.center[1]:
-            direction.y = speed
-        elif Player.rect.center[1] < self.rect.center[1]:
-            direction.y = -speed
+            if Player.rect.center[1] > enemy.rect.center[1]:
+                direction.y = speed
+            elif Player.rect.center[1] < enemy.rect.center[1]:
+                direction.y = -speed
 
-        self.rect.center += direction
+            enemy.rect.center += direction
 
     # start battle
     def attackPlayer(self):
