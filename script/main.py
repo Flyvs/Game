@@ -93,10 +93,7 @@ class Game():
                     Game.playerHitSeconds = 0
                     Player.hit = True
                 else:
-                    try:
-                        Enemy.findPlayer()  # ========================================================================================================================================================
-                    except:
-                        pass
+                    Enemy.findPlayer(self=Enemy)  # ========================================================================
                 self.run_game()
 
             while Game.run == "pause":
