@@ -1,17 +1,21 @@
 # DATES
 
-## 15th dec 2022
+## 15th Dec 2022
 
 added an input buffer for the menus --> when pressing space theres a short period where the input from space is not taken
 
-## 26th jan 2023
+## 26th Jan 2023
 
 multiple enemies can now spawn
 
-## 6th feb 2023
+## 6th Feb 2023
 
 Msgboxes are now completely customizable (text & background)
 
+## 8th Feb 2023
+
+Enemies now chase the player
+
 ## issues
 
-the enemies wont chase the player yet
+the enemies can merge to the same coordinates when chasing the player
