@@ -7,6 +7,7 @@ import random
 
 from expandList import ExpandList
 from pygame_merge import Merge
+from crypting import Crypting
 
 
 class Game():
@@ -22,6 +23,10 @@ class Game():
         Game.msgboxPath = Game.path("sprites", "msgboxes")
         Game.enemyPath = Game.path("sprites", "enemies")
         Game.mergePath = Game.path("temp")
+
+        # encrypting the json
+        Game.cryptingPath = Game.path("script")
+        Crypting.decrypt(Game.cryptingPath, "data.json")
 
         # loading the json
         Game.fileR = open(Game.jsonPath, "r")
@@ -112,6 +117,12 @@ class Game():
             while Game.run == "items":
                 self.run_items()
 
+    def exit():
+        # encrypting the json and exiting afterwards
+        Crypting.encrypt(Game.cryptingPath, "data.json")
+        pygame.quit()
+        sys.exit()
+
     # creates a path to files
     def path(newPath: str = None, newPath2: str = None):
         absolutePath = os.path.abspath(__file__)
@@ -154,8 +165,7 @@ class Game():
     def run_game(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                Game.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     Game.run = "pause"
@@ -170,8 +180,7 @@ class Game():
     def run_battle(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                Game.exit()
 
         self.screen.fill('#91ddee')
         Battle.battleScreen()
@@ -182,8 +191,7 @@ class Game():
     def run_items(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                Game.exit()
 
         self.screen.fill('#91ddee')
         Game.battle.itemScreen()
@@ -194,8 +202,7 @@ class Game():
     def run_pause(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                Game.exit()
 
         self.screen.fill('#71ddee')
         Game.pause.pauseScreen()
@@ -206,8 +213,7 @@ class Game():
     def run_options(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                Game.exit()
 
         self.screen.fill('#71ddee')
         Game.pause.option_screen()
@@ -219,8 +225,7 @@ class Game():
     def run_resolution(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                Game.exit()
 
         self.screen.fill('#71ddee')
         Game.pause.resolution_screen()
@@ -232,8 +237,7 @@ class Game():
     def run_mainmenu(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                Game.exit()
 
         self.screen.fill('#71ddee')
         Game.pause.mainmenu_screen()
@@ -245,8 +249,7 @@ class Game():
     def run_volume(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                Game.exit()
 
         self.screen.fill('#71ddee')
         Game.pause.volume_screen()
@@ -788,13 +791,9 @@ class Pause():
                 pygame.time.wait(100)
             elif self.options_mainmenu == 4:
                 self.save_options(self.resx, self.resy, Game.fullscreen)
-                try:
-                    self.save_pos()
-                except:
-                    sys.exit()
+                self.save_pos()
                 pygame.time.wait(1000)
-                pygame.quit()
-                sys.exit()
+                Game.exit()
         
         if Game.ticksToIgnoreSPACE > 0:
             Game.ticksToIgnoreSPACE -= 1
@@ -836,22 +835,21 @@ class Pause():
                 self.save_options(self.resx, self.resy, Game.fullscreen)
                 self.save_pos()
                 pygame.time.wait(1000)
-                pygame.quit()
-                sys.exit()
+                Game.exit()
         
         if Game.ticksToIgnoreSPACE > 0:
             Game.ticksToIgnoreSPACE -= 1
 
         if self.options_pause_menu == 1:
-            Camera.displaySurface.blit(Game.pause_options[2], (0, 0))
+            Camera.displaySurface.blit(self.pause_options[2], (0, 0))
         elif self.options_pause_menu == 2:
-            Camera.displaySurface.blit(Game.pause_options[4], (0, 0))
+            Camera.displaySurface.blit(self.pause_options[4], (0, 0))
         elif self.options_pause_menu == 3:
-            Camera.displaySurface.blit(Game.pause_options[3], (0, 0))
+            Camera.displaySurface.blit(self.pause_options[3], (0, 0))
         elif self.options_pause_menu == 4:
-            Camera.displaySurface.blit(Game.pause_options[1], (0, 0))
+            Camera.displaySurface.blit(self.pause_options[1], (0, 0))
         elif self.options_pause_menu == 5:
-            Camera.displaySurface.blit(Game.pause_options[0], (0, 0))
+            Camera.displaySurface.blit(self.pause_options[0], (0, 0))
 
     # option screen
     def option_screen(self):
