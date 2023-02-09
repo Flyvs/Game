@@ -45,5 +45,3 @@ class Crypting():
 
         with open(path + fileToDecrypt, "wb") as dec_file:
             dec_file.write(decrypted)
-
-#Crypting.encrypt("F:\\programming\\PYprojects\\idkGame4\\script", "data.json")
