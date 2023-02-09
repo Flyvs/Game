@@ -1,4 +1,4 @@
-# imports nnn
+# imports
 import pygame
 import sys
 import json
