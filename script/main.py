@@ -82,7 +82,7 @@ class Game():
         Game.playerLoaded = False
 
         self.music = Music()
-        self.music.play(0, volume)
+        self.music.play(1, volume)
 
         # main process of the game
         while True:
@@ -695,12 +695,15 @@ class Pause():
 
     # save position
     def save_pos(self):
-        Game.data["playerx"] = Player.rect.center[0]
-        Game.data["playery"] = Player.rect.center[1]
+        try:
+            Game.data["playerx"] = Player.rect.center[0]
+            Game.data["playery"] = Player.rect.center[1]
 
-        Game.fileW = open(Game.jsonPath, "w")
-        json.dump(Game.data, Game.fileW)
-        Game.fileW.close()
+            Game.fileW = open(Game.jsonPath, "w")
+            json.dump(Game.data, Game.fileW)
+            Game.fileW.close()
+        except:
+            pass
 
     # load position
     def load_pos(self):
