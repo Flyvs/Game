@@ -7,6 +7,8 @@ class Merge():
     # method to merge multiple surfaces
     # the last surface will be on top
     def surfaces(path: str, *surfaces: pygame.Surface):
+        if not os.path.exists(path):
+            os.makedirs(path)
         index = 0
         for surface in surfaces:
             surface.convert_alpha()
