@@ -126,15 +126,15 @@ class Game():
         return parentDirectory
 
     # teleports the player and sets the ground
-    def teleport(self, hitboxX: int, hitboxY: int, hitboxWidth: int, hitboxHeigth: int):
+    def teleport(self, groundA: str, groundB: str, hitboxX: int, hitboxY: int, hitboxWidth: int, hitboxHeigth: int):
         if (Player.player_teleport_collision(self, hitboxX, hitboxY, hitboxWidth, hitboxHeigth)) and (Game.ground != "ground:1"):
             Camera.ground(Camera.grounds[1])
             Player.rect.center = (640, 360)
-            Game.ground = "ground:1"
+            Game.ground = groundA
         elif (Player.player_teleport_collision(self, hitboxX, hitboxY, hitboxWidth, hitboxHeigth)) and (Game.ground != "ground:0"):
             Camera.ground(Camera.grounds[0])
             Player.rect.center = (640, 360)
-            Game.ground = "ground:0"
+            Game.ground = groundB
 
     # tracks the time
     def tracktime(ticks, seconds, minutes, hours):
@@ -423,7 +423,7 @@ class Player(pygame.sprite.Sprite):
         Attack.input(self)
 
         Enemy.attackPlayer(self)
-        Game.teleport(self, 1948, 900, 52, 200)
+        Game.teleport(self, "ground:0", "ground:1", 1948, 900, 52, 200)
 
     # collision with 2 objects
     def aabb_collision(self, a_x, a_y, a_width, a_height, b_x, b_y, b_width, b_height):
