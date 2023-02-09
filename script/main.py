@@ -26,7 +26,10 @@ class Game():
 
         # encrypting the json
         Game.cryptingPath = Game.path("script")
-        Crypting.decrypt(Game.cryptingPath, "data.json")
+        try:
+            Crypting.decrypt(Game.cryptingPath, "data.json")
+        except:
+            pass
 
         # loading the json
         Game.fileR = open(Game.jsonPath, "r")
@@ -157,14 +160,14 @@ class Game():
 
     # teleports the player and sets the ground
     def teleport(self, groundA: str, groundB: str, hitboxX: int, hitboxY: int, hitboxWidth: int, hitboxHeigth: int):
-        if (Player.player_teleport_collision(self, hitboxX, hitboxY, hitboxWidth, hitboxHeigth)) and (Game.ground != "ground:1"):
+        if (Player.player_teleport_collision(self, hitboxX, hitboxY, hitboxWidth, hitboxHeigth)) and (Game.ground == groundA):
             Camera.ground(Camera.grounds[1])
             Player.rect.center = (640, 360)
-            Game.ground = groundA
-        elif (Player.player_teleport_collision(self, hitboxX, hitboxY, hitboxWidth, hitboxHeigth)) and (Game.ground != "ground:0"):
+            Game.ground = groundB
+        elif (Player.player_teleport_collision(self, hitboxX, hitboxY, hitboxWidth, hitboxHeigth)) and (Game.ground == groundB):
             Camera.ground(Camera.grounds[0])
             Player.rect.center = (640, 360)
-            Game.ground = groundB
+            Game.ground = groundA
 
     # tracks the time
     def tracktime(ticks, seconds, minutes, hours):
