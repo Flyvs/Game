@@ -147,7 +147,7 @@ class Game():
         absolutePath = os.path.abspath(__file__)
         fileDirectory = os.path.dirname(absolutePath)
         parentDirectory = os.path.dirname(fileDirectory)
-        parentDirectory = os.path.join(parentDirectory, Game.getFileName()) # remove comment when converted to an exe and comment when run in editor------------------------------------------------------------------
+        # parentDirectory = os.path.join(parentDirectory, Game.getFileName()) # remove comment when converted to an exe and comment when run in editor------------------------------------------------------------------
         if newPath != None:
             parentDirectory = os.path.join(parentDirectory, newPath)
         if newPath2 != None:
