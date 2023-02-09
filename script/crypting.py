@@ -2,7 +2,7 @@ from cryptography.fernet import Fernet
 
 class Crypting():
     # encrypting file
-    def encrypt(path: str):
+    def encrypt(path: str, fileToEncrypt: str):
         if not path.endswith("\\"):
             path = path + "\\"
 
@@ -18,18 +18,18 @@ class Crypting():
 
         fernet = Fernet(key)
 
-        with open(path + "data.json", "rb") as file:
+        with open(path + fileToEncrypt, "rb") as file:
             original = file.read()
         file.close()
 
         encrypted = fernet.encrypt(original)
 
-        with open(path + "data.json", "wb") as encrypted_file:
+        with open(path + fileToEncrypt, "wb") as encrypted_file:
             encrypted_file.write(encrypted)
         encrypted_file.close()
     
     # decypting file
-    def decrypt(path: str):
+    def decrypt(path: str, fileToDecrypt: str):
         if not path.endswith("\\"):
             path = path + "\\"
 
@@ -38,10 +38,10 @@ class Crypting():
 
         fernet = Fernet(key)
 
-        with open(path + "data.json", "rb") as enc_file:
+        with open(path + fileToDecrypt, "rb") as enc_file:
             encrypted = enc_file.read()
 
         decrypted = fernet.decrypt(encrypted)
 
-        with open(path + "data.json", "wb") as dec_file:
+        with open(path + fileToDecrypt, "wb") as dec_file:
             dec_file.write(decrypted)
