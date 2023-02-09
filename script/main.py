@@ -123,12 +123,33 @@ class Game():
         pygame.quit()
         sys.exit()
 
+    def getFileName():
+        file = __file__[:-3]
+        length = len(file)
+        chars = []
+
+        for char in file:
+            chars.append(char)
+
+        chars.reverse()
+        fileChars = []
+
+        for char in chars:
+            if not char == "\\":
+                fileChars.append(char)
+            else:
+                fileChars.reverse()
+                break
+
+        file = "".join(fileChars)
+        return file
+
     # creates a path to files
     def path(newPath: str = None, newPath2: str = None):
         absolutePath = os.path.abspath(__file__)
         fileDirectory = os.path.dirname(absolutePath)
         parentDirectory = os.path.dirname(fileDirectory)
-        # parentDirectory = os.path.join(parentDirectory, "game") # remove comment when converted to an exe and comment when run in editor------------------------------------------------------------------
+        parentDirectory = os.path.join(parentDirectory, Game.getFileName) # remove comment when converted to an exe and comment when run in editor------------------------------------------------------------------
         if newPath != None:
             parentDirectory = os.path.join(parentDirectory, newPath)
         if newPath2 != None:
