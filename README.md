@@ -1,5 +1,11 @@
 # README
 
+## GENERAL INFORMATION
+
+- 100% Python code
+
+- The music is made with [beathoven](https://www.beatoven.ai)
+
 ## PLAYING
 
 ## EDITING CODE
