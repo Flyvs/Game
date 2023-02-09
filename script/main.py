@@ -82,7 +82,7 @@ class Game():
         Game.playerLoaded = False
 
         self.music = Music()
-        self.music.play(2, volume)
+        self.music.play(0, volume)
 
         # main process of the game
         while True:
