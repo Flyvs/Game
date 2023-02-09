@@ -7,8 +7,6 @@ import random
 
 from expandList import ExpandList
 from pygame_merge import Merge
-from numba import cuda, jit
-# @jit(target_backend='cuda') <-- this before calling a function makes use of the GPU
 
 
 class Game():
