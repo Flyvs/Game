@@ -358,10 +358,10 @@ class Player(pygame.sprite.Sprite):
         self.speed = 5
 
         Enemy.list = []
-        enemy1 = Enemy(Game.camera, (100, 100), 1, 32, 10, 9, 12, 7, 15, False, "testenemy.png")
-        enemy2 = Enemy(Game.camera, (700, 700), 1, 32, 10, 9, 12, 7, 15, False, "testenemy2.png")
-        enemy3 = Enemy(Game.camera, (1000, 500), 1, 32, 10, 9, 12, 7, 15, False, "testenemy3.png")
-        ExpandList.expand(Enemy.list, enemy1, enemy2, enemy3)
+        #enemy1 = Enemy(Game.camera, (100, 100), 1, 32, 10, 9, 12, 7, 15, False, "testenemy.png")
+        #enemy2 = Enemy(Game.camera, (700, 700), 1, 32, 10, 9, 12, 7, 15, False, "testenemy2.png")
+        #enemy3 = Enemy(Game.camera, (1000, 500), 1, 32, 10, 9, 12, 7, 15, False, "testenemy3.png")
+        ExpandList.expand(Enemy.list)
         
         Player.attack = Attack(Game.camera, "PHY", 55)
 
