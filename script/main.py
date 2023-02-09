@@ -474,9 +474,12 @@ class Player(pygame.sprite.Sprite):
 
     # player enemy collision
     def player_enemy_collision(self):
-        enemyToCheck = Enemy.list.pop(0)
-        Enemy.list.append(enemyToCheck)
-        return self.aabb_collision(Player.rect.center[0], Player.rect.center[1], 64, 64, enemyToCheck.rect.center[0], enemyToCheck.rect.center[1], 64, 64)
+        try:
+            enemyToCheck = Enemy.list.pop(0)
+            Enemy.list.append(enemyToCheck)
+            return self.aabb_collision(Player.rect.center[0], Player.rect.center[1], 64, 64, enemyToCheck.rect.center[0], enemyToCheck.rect.center[1], 64, 64)
+        except:
+            pass
 
     # player teleport collision
     def player_teleport_collision(self, hitboxX: int, hitboxY: int, hitboxWidth: int, hitboxHeigth: int):
