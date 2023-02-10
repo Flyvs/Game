@@ -616,12 +616,13 @@ class Music():
         for file in os.listdir(Music.path):
             self.songs.append(file)
 
-        pygame.mixer.music.load(Music.path + self.songs[song])
-        pygame.mixer.music.play(-1, 0, 0)
+        try:
+            pygame.mixer.music.load(Music.path + self.songs[song])
+            pygame.mixer.music.play(-1, 0, 0)
+        except:
+            pass
 
-        # can be deleted if found out how to make the json inaccessable
         if Game.data["volume"] > 20:
-            # can be deleted if found out how to make the json inaccessable
             Game.data["volume"] = 20
             volume = Game.data["volume"]
         elif Game.data["volume"] < 0:
@@ -637,6 +638,7 @@ class Music():
 
     # set volume
     def volume(self, volume: float):
+        volume *= 1.5
         volume /= 50
         pygame.mixer.music.set_volume(volume)
 
