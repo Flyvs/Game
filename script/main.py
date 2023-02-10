@@ -823,7 +823,6 @@ class Pause():
             elif self.options_mainmenu == 4:
                 self.save_options(self.resx, self.resy, Game.fullscreen)
                 self.save_pos()
-                pygame.time.wait(1000)
                 Game.exit()
         
         if Game.ticksToIgnoreSPACE > 0:
@@ -865,7 +864,6 @@ class Pause():
             elif self.options_pause_menu == 5:
                 self.save_options(self.resx, self.resy, Game.fullscreen)
                 self.save_pos()
-                pygame.time.wait(1000)
                 Game.exit()
         
         if Game.ticksToIgnoreSPACE > 0:
