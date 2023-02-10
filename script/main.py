@@ -82,7 +82,7 @@ class Game():
         Game.playerLoaded = False
 
         self.music = Music()
-        self.music.play(1, volume)
+        self.music.play(2, volume)
 
         # main process of the game
         while True:
@@ -609,6 +609,7 @@ class Music():
 
     # play
     def play(self, song: int, volume: float):
+        song = song - 1
         pygame.mixer.init()
         self.songs = []
 
