@@ -25,7 +25,7 @@ parentDirectory = os.path.join(parentDirectory, "game")
 - PS5 controller configs:
 
 ```Controller
-|BUTTON                 |Index        |Function
+|BUTTON                 |INDEX        |FUNCTION
 |                       |             |
 Action-buttons----------------------------------------------------------------------
 |X                      |10           |pressed = 1    released = 0
