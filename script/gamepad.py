@@ -30,7 +30,7 @@ class Inputs():
                 
                 for i in range(axes):
                     axis = joystick.get_axis(i)
-                    data.append(axis)
+                    data.append(round(axis, 1))
                     dataString.append("Axis {} value: {:>6.3f}".format(i, axis))
         
                 buttons = joystick.get_numbuttons()

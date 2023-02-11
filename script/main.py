@@ -383,25 +383,25 @@ class Player(pygame.sprite.Sprite):
 
     # set controls for gamepad movement
     def gamepad(self):
-        if round(Game.gamepadInputs[4], 1) > 0:
+        if Game.gamepadInputs[4] > 0:
             if self.col_bottom == False:
                 self.direction.y = Game.gamepadInputs[4]
             else:
                 self.direction.y = 0
-        elif round(Game.gamepadInputs[4], 1) < 0:
+        elif Game.gamepadInputs[4] < 0:
             if self.col_top == False:
                 self.direction.y = Game.gamepadInputs[4]
             else:
                 self.direction.y = 0
 
-        if round(Game.gamepadInputs[3], 1) > 0:
+        if Game.gamepadInputs[3] > 0:
             if self.col_right == False:
                 Player.facingRight = True
                 Player.facingLeft = False
                 self.direction.x = Game.gamepadInputs[3]
             else:
                 self.direction.x = 0
-        elif round(Game.gamepadInputs[3], 1) < 0:
+        elif Game.gamepadInputs[3] < 0:
             if self.col_left == False:
                 Player.facingRight = False
                 Player.facingLeft = True
