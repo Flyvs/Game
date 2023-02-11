@@ -20,7 +20,9 @@ parentDirectory = os.path.join(parentDirectory, "game")
 
 - remember to install a package to convert the script into an exe (for example [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/))
 
-```
+- controller configs
+
+```Controller
     |PS5:
     ------------------------------------------------------------------------------
     |BUTTON                 |Index        |Function
