@@ -8,6 +8,7 @@ import random
 from expandList import ExpandList
 from pygame_merge import Merge
 from crypting import Crypting
+from gamepad import Inputs
 
 
 class Game():
@@ -84,12 +85,17 @@ class Game():
         self.music = Music()
         self.music.play(2, volume)
 
+        self.main()
+
+    def main(self):
         # main process of the game
         while True:
             while Game.run == "mainmenu":
+                Game.gamepadInputs = Inputs.scan()[0]
                 self.run_mainmenu()
 
             while Game.run == "game":
+                Game.gamepadInputs = Inputs.scan()[0]
                 # always gives the player 3 seconds invincibility after running away from an enemy
                 timer = Game.tracktime(Game.playerHitTicks, Game.playerHitSeconds, Game.playerHitMinutes, Game.playerHitHours)
                 Game.playerHitTicks = timer["ticks"]
@@ -103,21 +109,27 @@ class Game():
                 self.run_game()
 
             while Game.run == "pause":
+                Game.gamepadInputs = Inputs.scan()[0]
                 self.run_pause()
 
             while Game.run == "options":
+                Game.gamepadInputs = Inputs.scan()[0]
                 self.run_options()
 
             while Game.run == "resolution":
+                Game.gamepadInputs = Inputs.scan()[0]
                 self.run_resolution()
 
             while Game.run == "volume":
+                Game.gamepadInputs = Inputs.scan()[0]
                 self.run_volume()
 
             while Game.run == "battle":
+                Game.gamepadInputs = Inputs.scan()[0]
                 self.run_battle()
 
             while Game.run == "items":
+                Game.gamepadInputs = Inputs.scan()[0]
                 self.run_items()
 
     def exit():
@@ -125,6 +137,7 @@ class Game():
         Crypting.encrypt(Game.cryptingPath, "data.json")
         pygame.quit()
         sys.exit()
+
 
     def getFileName():
         file = __file__[:-3]
@@ -191,6 +204,9 @@ class Game():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     Game.run = "pause"
+        
+        if Game.gamepadInputs[16] == 1:
+            Game.run = "pause"
 
         self.screen.fill('#71ddee')
         Game.camera.update()
@@ -365,8 +381,36 @@ class Player(pygame.sprite.Sprite):
         
         Player.attack = Attack(Game.camera, "PHY", 55)
 
+    # set controls for gamepad movement
+    def gamepad(self):
+        if round(Game.gamepadInputs[4], 1) > 0:
+            if self.col_bottom == False:
+                self.direction.y = Game.gamepadInputs[4]
+            else:
+                self.direction.y = 0
+        elif round(Game.gamepadInputs[4], 1) < 0:
+            if self.col_top == False:
+                self.direction.y = Game.gamepadInputs[4]
+            else:
+                self.direction.y = 0
+
+        if round(Game.gamepadInputs[3], 1) > 0:
+            if self.col_right == False:
+                Player.facingRight = True
+                Player.facingLeft = False
+                self.direction.x = Game.gamepadInputs[3]
+            else:
+                self.direction.x = 0
+        elif round(Game.gamepadInputs[3], 1) < 0:
+            if self.col_left == False:
+                Player.facingRight = False
+                Player.facingLeft = True
+                self.direction.x = Game.gamepadInputs[3]
+            else:
+                self.direction.x = 0
+
     # set the keys for movement
-    def input(self):
+    def keyboard(self):
         self.keys = pygame.key.get_pressed()
 
         if self.keys[pygame.K_w]:
@@ -399,6 +443,8 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
+    
+    def playerImage(self):
         if Player.facingLeft == True:
             if Player.color == "w":
                 Player.image = pygame.image.load(Player.path + Player.left).convert_alpha()
@@ -410,7 +456,7 @@ class Player(pygame.sprite.Sprite):
             elif Player.color == "b":
                 Player.image = pygame.image.load(Player.path + Player.rightB).convert_alpha()
 
-        if self.keys[pygame.K_TAB] and Game.ticksToIgnoreTAB == 0:
+        if (self.keys[pygame.K_TAB] and Game.ticksToIgnoreTAB == 0) or (Game.gamepadInputs[13] == 1 and Game.ticksToIgnoreTAB == 0):
             Game.ticksToIgnoreTAB = 30
             if Player.color == "w":
                 Player.color = "b"
@@ -443,7 +489,9 @@ class Player(pygame.sprite.Sprite):
             NPC.hitted = True
             MsgBox.NPC("This is some test text", None, 60, (66, 135, 245))
 
-        self.input()
+        self.keyboard()
+        self.gamepad()
+        self.playerImage()
         Player.rect.center += self.direction * self.speed
         Attack.input(self)
 
@@ -734,13 +782,13 @@ class Pause():
         display_volume = pygame.font.SysFont("Aerial", 100)
         volume_surface = display_volume.render(str(self.options_slider), False, (0, 0, 0))
 
-        if keys[pygame.K_a]:
+        if keys[pygame.K_a] or Game.gamepadInputs[23] == 1:
             if self.options_slider != 0:
                 self.options_slider -= 1
-        elif keys[pygame.K_d]:
+        elif keys[pygame.K_d] or Game.gamepadInputs[24] == 1:
             if self.options_slider != 20:
                 self.options_slider += 1
-        elif keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0:
+        elif (keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0) or (Game.gamepadInputs[10] == 1 and Game.ticksToIgnoreSPACE == 0):
             Game.ticksToIgnoreSPACE = 5
             Game.run = "options"
         
@@ -799,13 +847,13 @@ class Pause():
         keys = pygame.key.get_pressed()
         self.options_accessed = "mainmenu"
 
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] or Game.gamepadInputs[21] == 1:
             if self.options_mainmenu != 1:
                 self.options_mainmenu -= 1
-        elif keys[pygame.K_s]:
+        elif keys[pygame.K_s] or Game.gamepadInputs[22] == 1:
             if self.options_mainmenu != 4:
                 self.options_mainmenu += 1
-        elif keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0:
+        elif (keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0) or (Game.gamepadInputs[10] == 1 and Game.ticksToIgnoreSPACE == 0):
             Game.ticksToIgnoreSPACE = 5
             if self.options_mainmenu == 1:
                 if Game.playerLoaded == False:
@@ -842,13 +890,13 @@ class Pause():
         keys = pygame.key.get_pressed()
         self.options_accessed = "pause"
 
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] or Game.gamepadInputs[21] == 1:
             if self.options_pause_menu != 1:
                 self.options_pause_menu -= 1
-        elif keys[pygame.K_s]:
+        elif keys[pygame.K_s] or Game.gamepadInputs[22] == 1:
             if self.options_pause_menu != 5:
                 self.options_pause_menu += 1
-        elif keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0:
+        elif (keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0) or (Game.gamepadInputs[10] == 1 and Game.ticksToIgnoreSPACE == 0):
             Game.ticksToIgnoreSPACE = 5
             if self.options_pause_menu == 1:
                 Game.run = "options"
@@ -884,13 +932,13 @@ class Pause():
     def option_screen(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] or Game.gamepadInputs[21] == 1:
             if self.options_option_menu != 1:
                 self.options_option_menu -= 1
-        elif keys[pygame.K_s]:
+        elif keys[pygame.K_s] or Game.gamepadInputs[22] == 1:
             if self.options_option_menu != 3:
                 self.options_option_menu += 1
-        elif keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0:
+        elif (keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0) or (Game.gamepadInputs[10] == 1 and Game.ticksToIgnoreSPACE == 0):
             Game.ticksToIgnoreSPACE = 5
             if self.options_option_menu == 1:
                 Game.run = "resolution"
@@ -920,13 +968,13 @@ class Pause():
     def resolution_screen(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] or Game.gamepadInputs[21] == 1:
             if self.options_resolution != 1:
                 self.options_resolution -= 1
-        elif keys[pygame.K_s]:
+        elif keys[pygame.K_s] or Game.gamepadInputs[22] == 1:
             if self.options_resolution != 6:
                 self.options_resolution += 1
-        elif keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0:
+        elif (keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0) or (Game.gamepadInputs[10] == 1 and Game.ticksToIgnoreSPACE == 0):
             Game.ticksToIgnoreSPACE = 5
             if self.options_resolution == 1:
                 self.resx = 1280
@@ -1015,7 +1063,7 @@ class Attack(pygame.sprite.Sprite):
         Attack.posRight = (Attack.xRight, Attack.yRight)
         Attack.posLeft = (Attack.xLeft, Attack.yLeft)
 
-        if self.keys[pygame.K_SPACE]:
+        if self.keys[pygame.K_SPACE] or Game.gamepadInputs[11] == 1:
             Attack.space = True
             if Player.facingLeft == True:
                 Attack.image = pygame.image.load(Attack.spritePath + Attack.left).convert_alpha()
