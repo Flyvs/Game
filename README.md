@@ -27,17 +27,17 @@ parentDirectory = os.path.join(parentDirectory, "game")
 ------------------------------------------------------------------------------------
 |BUTTON                 |Index        |Function
 |                       |             |
-Action-Buttons----------------------------------------------------------------------
+Action-buttons----------------------------------------------------------------------
 |X:                     |10           |pressed = 1,   released = 0
 |O:                     |11           |pressed = 1,   released = 0
 |□:                     |12           |pressed = 1,   released = 0
 |▲:                     |13           |pressed = 1,   released = 0
-Back-Buttons------------------------------------------------------------------------
+Back-buttons------------------------------------------------------------------------
 |L1:                    |19           |pressed = 1,   released = 0
 |R1:                    |20           |pressed = 1,   released = 0
 |L2:                    | 7           |pressed = 1,   released = -1, range -1 to 1
 |R2:                    | 8           |pressed = 1,   released = -1, range -1 to 1
-Directional-Buttons------------------------------------------------------------------
+Directional-buttons------------------------------------------------------------------
 |DIRECTIONAL-UP:        |21           |pressed = 1,   released = 0
 |DIRECTIONAL-DOWN:      |22           |pressed = 1,   released = 0
 |DIRECTIONAL-LEFT:      |23           |pressed = 1,   released = 0
@@ -49,7 +49,7 @@ Sticks--------------------------------------------------------------------------
 |RIGHT-STICK-UP/DOWN:   | 6           |down = 1,      up = -1,       range -1 to 1
 |RIGHT-STICK-LEFT/RIGHT:| 5           |right = 1,     left = -1,     range -1 to 1
 |R3:                    |18           |pressed = 1,   released = 0
-Bonus-Buttons------------------------------------------------------------------------
+Bonus-buttons------------------------------------------------------------------------
 |CREATE:                |14           |pressed = 1,   released = 0
 |PS-BUTTON:             |15           |pressed = 1,   released = 0
 |OPTIONS:               |16           |pressed = 1,   released = 0
