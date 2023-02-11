@@ -8,7 +8,7 @@
 
 ## PLAYING
 
-- supports the PS5 Controller and the Nintendo Switch Pro Controller
+- supports most controllers but the PS5 Controller or the Nintendo Switch Pro Controller works best
 
 ## EDITING CODE
 
@@ -21,6 +21,8 @@ parentDirectory = os.path.join(parentDirectory, "game")
 - remember to install a package to convert the script into an exe (for example [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/))
 
 ### CONTROLLER CONFIGS
+
+- technically works with every controller; index changes depending on which controller you plug in and use
 
 - PS5 Controller configs:
 

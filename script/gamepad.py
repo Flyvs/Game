@@ -4,9 +4,6 @@ import pygame
 class Inputs():
 
     def scan():
-        """
-        Supports PS5 and Nintendo Switch Pro Controller
-        """
         pygame.joystick.init()
         a = 0
         while a < 2:
@@ -24,9 +21,6 @@ class Inputs():
                 #dataString.append("Joystick {}".format(i))
         
                 name = joystick.get_name()
-                if name == "Nintendo Switch Pro Controller":
-                    pass
-
                 data.append(name)
                 dataString.append("Joystick name: {}".format(name))
         
