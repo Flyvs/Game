@@ -16,6 +16,10 @@ Msgboxes are now completely customizable (text & background)
 
 Enemies now chase the player
 
+## 11th Feb 2023
+
+Controller support for PS5 added - Nintendo Switch Pro Controller is coming next
+
 ## issues
 
 the enemies can merge to the same coordinates when chasing the player
