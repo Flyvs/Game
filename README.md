@@ -24,7 +24,7 @@ parentDirectory = os.path.join(parentDirectory, "game")
 
 - technically works with every controller; index changes depending on which controller you plug in and use
 
-- PS5 Controller configs:
+#### PS5 CONTROLLER CONFIGS
 
 ```PS5 Controller
 BUTTON                  INDEX         FUNCTION
@@ -58,7 +58,7 @@ Bonus-buttons-------------------------------------------------------------------
 |MUTE-BUTTON            |26           |pressed = 1    released = 0
 ```
 
-- Nintendo Switch Pro Controller configs:
+#### NINTENDO SWITCH PRO CONTROLLER CONFIGS
 
 ```Nintendo Switch Pro Controller
 coming soon
