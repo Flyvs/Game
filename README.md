@@ -22,9 +22,9 @@ parentDirectory = os.path.join(parentDirectory, "game")
 
 ### CONTROLLER CONFIGS
 
-- PS5 controller configs:
+- PS5 Controller configs:
 
-```Controller
+```PS5 Controller
 BUTTON                  INDEX         FUNCTION
 Action-buttons----------------------------------------------------------------------
 |X                      |10           |pressed = 1    released = 0
@@ -54,4 +54,10 @@ Bonus-buttons-------------------------------------------------------------------
 |OPTIONS                |16           |pressed = 1    released = 0
 |TOUCHPAD               |25           |pressed = 1    released = 0
 |MUTE-BUTTON            |26           |pressed = 1    released = 0
+```
+
+- Nintendo Switch Pro Controller configs:
+
+```Nintendo Switch Pro Controller
+coming soon
 ```
