@@ -8,7 +8,7 @@
 
 ## PLAYING
 
-- supports most controllers but the PS5 Controller and the Nintendo Switch Pro Controller works best
+- supports keyboard and most controllers but the PS5 Controller and the Nintendo Switch Pro Controller works best
 
 ## EDITING CODE
 
