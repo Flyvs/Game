@@ -38,19 +38,19 @@ Back-buttons--------------------------------------------------------------------
 |R1                     |20           |pressed = 1    released = 0
 |L2                     | 7           |pressed = 1    released = -1  range -1 to 1
 |R2                     | 8           |pressed = 1    released = -1  range -1 to 1
-Directional-buttons------------------------------------------------------------------
-|DIRECTIONAL-UP         |21           |pressed = 1    released = 0
-|DIRECTIONAL-DOWN       |22           |pressed = 1    released = 0
-|DIRECTIONAL-LEFT       |23           |pressed = 1    released = 0
-|DIRECTIONAL-RIGHT      |24           |pressed = 1    released = 0
-Sticks-------------------------------------------------------------------------------
+Directional-buttons-----------------------------------------------------------------
+|UP                     |21           |pressed = 1    released = 0
+|DOWN                   |22           |pressed = 1    released = 0
+|LEFT                   |23           |pressed = 1    released = 0
+|RIGHT                  |24           |pressed = 1    released = 0
+Sticks------------------------------------------------------------------------------
 |LEFT-STICK-UP/DOWN     | 4           |down = 1       up = -1        range -1 to 1
 |LEFT-STICK-LEFT/RIGHT  | 3           |right 1        left = -1      range -1 to 1
 |L3                     |17           |pressed = 1    released = 0
 |RIGHT-STICK-UP/DOWN    | 6           |down = 1       up = -1        range -1 to 1
 |RIGHT-STICK-LEFT/RIGHT | 5           |right = 1      left = -1      range -1 to 1
 |R3                     |18           |pressed = 1    released = 0
-Bonus-buttons------------------------------------------------------------------------
+Bonus-buttons-----------------------------------------------------------------------
 |CREATE                 |14           |pressed = 1    released = 0
 |PS-BUTTON              |15           |pressed = 1    released = 0
 |OPTIONS                |16           |pressed = 1    released = 0
@@ -61,5 +61,32 @@ Bonus-buttons-------------------------------------------------------------------
 #### NINTENDO SWITCH PRO CONTROLLER
 
 ```Nintendo Switch Pro Controller
-coming soon
+BUTTON                  INDEX         FUNCTION
+Action-buttons----------------------------------------------------------------------
+|A                      |10           |pressed = 1    released = 0
+|B                      |11           |pressed = 1    released = 0
+|X                      |12           |pressed = 1    released = 0
+|Y                      |13           |pressed = 1    released = 0
+Back-buttons------------------------------------------------------------------------
+|L1                     |19           |pressed = 1    released = 0
+|R1                     |20           |pressed = 1    released = 0
+|L2                     | 7           |pressed = 1    released = -1  range -1 to 1
+|R2                     | 8           |pressed = 1    released = -1  range -1 to 1
+Control-Pad-------------------------------------------------------------------------
+|UP                     |21           |pressed = 1    released = 0
+|DOWN                   |22           |pressed = 1    released = 0
+|LEFT                   |23           |pressed = 1    released = 0
+|RIGHT                  |24           |pressed = 1    released = 0
+Sticks------------------------------------------------------------------------------
+|LEFT-STICK-UP/DOWN     | 4           |down = 1       up = -1        range -1 to 1
+|LEFT-STICK-LEFT/RIGHT  | 3           |right 1        left = -1      range -1 to 1
+|L3                     |17           |pressed = 1    released = 0
+|RIGHT-STICK-UP/DOWN    | 6           |down = 1       up = -1        range -1 to 1
+|RIGHT-STICK-LEFT/RIGHT | 5           |right = 1      left = -1      range -1 to 1
+|R3                     |18           |pressed = 1    released = 0
+Bonus-buttons-----------------------------------------------------------------------
+|MINUS                  |14           |pressed = 1    released = 0
+|HOME                   |15           |pressed = 1    released = 0
+|PLUS                   |16           |pressed = 1    released = 0
+|CAPTURE                |25           |pressed = 1    released = 0
 ```

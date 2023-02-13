@@ -4,7 +4,7 @@ import pygame
 class Inputs():
 
     def scan():
-        pygame.joystick.init()
+        pygame.joystick.init()            
         a = 0
         while a < 2:
             data = []
@@ -52,4 +52,7 @@ class Inputs():
                     dataString.append("Hat {} value: {}".format(i, str(hat)))
 
             a += 1
+        if data[0] == 0:
+            data = None
+        print(data)
         return data, dataString
