@@ -609,7 +609,7 @@ class Camera(pygame.sprite.Group):
         scaled_rect = scaled_surf.get_rect(center=(Camera.half_w, Camera.half_h))
         Camera.displaySurface.blit(scaled_surf, scaled_rect)
 
-
+"""
 class Item(pygame.sprite.Sprite):
     # initializing
     def __init__(self, pos, group):
@@ -646,7 +646,7 @@ class Item(pygame.sprite.Sprite):
         collision_x = Player.rect[0] + 64 >= Item.rect[0] and Item.rect[0] + 64 >= Player.rect[0]
         collision_y = Player.rect[1] + 64 >= Item.rect[1] and Item.rect[1] + 64 >= Player.rect[1]
         return collision_y and collision_x
-
+"""
 
 class Music():
     # initializing

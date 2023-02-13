@@ -52,5 +52,4 @@ class Inputs():
                     dataString.append("Hat {} value: {}".format(i, str(hat)))
 
             a += 1
-            print(data)
         return data, dataString
