@@ -20,6 +20,10 @@ Enemies now chase the player
 
 Controller support for PS5 added - Nintendo Switch Pro Controller is coming next
 
+## 13th Feb 2023
+
+Game won't crash anymore if the controller is unplugged while the game is running
+
 ## issues
 
 the enemies can merge to the same coordinates when chasing the player
