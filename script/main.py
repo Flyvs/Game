@@ -82,6 +82,12 @@ class Game():
         Game.NPC1 = NPC((500, 10), Game.camera)
         Game.playerLoaded = False
 
+        Enemy.list = []
+        #enemy1 = Enemy(Game.camera, (100, 100), 1, 32, 10, 9, 12, 7, 15, False, "testenemy.png")
+        #enemy2 = Enemy(Game.camera, (700, 700), 1, 32, 10, 9, 12, 7, 15, False, "testenemy2.png")
+        #enemy3 = Enemy(Game.camera, (1000, 500), 1, 32, 10, 9, 12, 7, 15, False, "testenemy3.png")
+        #ExpandList.expand(Enemy.list, enemy1, enemy2, enemy3)
+
         self.music = Music()
         self.music.play(2, volume)
 
@@ -345,6 +351,27 @@ class MsgBox(pygame.sprite.Sprite):
         pass
 
 
+class HUD(pygame.sprite.Sprite):
+    # initializing
+    def __init__(self, group, pos, text: str, font: str, fontSize: int, rgb: tuple):
+        super().__init__(group)
+
+        font_ = pygame.font.SysFont(font, fontSize)
+        HUD.image = font_.render(text, True, rgb)
+        HUD.rect = HUD.image.get_rect(center=pos)
+
+
+    def updateHUD(text: str, font: str, fontSize: int, rgb: tuple):
+        Player.HUD_w = Player.rect.center[0] + 480
+        Player.HUD_h = Player.rect.center[1] - 330
+        pos = (Player.HUD_w, Player.HUD_h)
+
+        font_ = pygame.font.SysFont(font, fontSize)
+        HUD.image = font_.render(text, True, rgb)
+        HUD.rect = HUD.image.get_rect(center=pos)
+
+
+
 class Player(pygame.sprite.Sprite):
     # initializing
     def __init__(self, pos, group):
@@ -375,16 +402,14 @@ class Player(pygame.sprite.Sprite):
         Player.rect = Player.image.get_rect(center=pos)
         self.direction = pygame.math.Vector2()
         self.speed = 5
-
-        Enemy.list = []
-        #enemy1 = Enemy(Game.camera, (100, 100), 1, 32, 10, 9, 12, 7, 15, False, "testenemy.png")
-        #enemy2 = Enemy(Game.camera, (700, 700), 1, 32, 10, 9, 12, 7, 15, False, "testenemy2.png")
-        #enemy3 = Enemy(Game.camera, (1000, 500), 1, 32, 10, 9, 12, 7, 15, False, "testenemy3.png")
-        ExpandList.expand(Enemy.list)
         
         Player.attack = Attack(Game.camera, "PHY", 55)
 
-    # drains the players stamina
+        Player.HUD_w = Player.rect.center[0] + 480
+        Player.HUD_h = Player.rect.center[1] - 330
+        Player.HUD = HUD(Game.camera, (Player.HUD_w, Player.HUD_h), f"Stamina: {Player.STAMINA}", None, 60, (255, 0, 0))
+        
+   # drains the players stamina
     def drain(self):
         timer = Game.tracktime(Game.playerHitTicks, Game.playerHitSeconds, Game.playerHitMinutes, Game.playerHitHours)
         if Player.color == "b" and Player.STAMINA > 0:
@@ -522,9 +547,10 @@ class Player(pygame.sprite.Sprite):
         self.gamepad()
         self.playerImage()
         self.drain()
+
         Player.rect.center += self.direction * self.speed
         Attack.input(self)
-
+        HUD.updateHUD(f"Stamina: {Player.STAMINA - 1}", None, 60, (255, 0, 0))
         Enemy.attackPlayer(self)
         Game.teleport(self, "ground:0", "ground:1", 1948, 900, 52, 200)
 
@@ -624,12 +650,14 @@ class Camera(pygame.sprite.Group):
             obj = str(type(Camera.spriteList[i - 1])).partition(".")[2].split("'")[0]
             if Attack.space == False and obj == "Attack":
                 del Camera.spriteList[i - 1]
+            if str(type(Camera.spriteList[1])).partition(".")[2].split("'")[0] == "Attack":
+                del Camera.spriteList[1]
             if NPC.hit() == False and obj == "MsgBox":
-                del Camera.spriteList[0]
-            if str(type(Camera.spriteList[0])).partition(".")[2].split("'")[0] == "Attack":
+                del Camera.spriteList[1]
+            if str(type(Camera.spriteList[0])).partition(".")[2].split("'")[0] == "MsgBox":
                 del Camera.spriteList[0]
             i += 1
-        # print(Camera.spriteList)
+        #print(Camera.spriteList)
 
         for sprite in Camera.spriteList:
             offset_pos = sprite.rect.topleft - self.offset + Camera.internal_offset
