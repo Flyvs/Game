@@ -183,7 +183,7 @@ class Game():
             Game.ground = groundA
 
     # tracks the time
-    def tracktime(ticks, seconds, minutes, hours):
+    def tracktime(ticks: int, seconds: int, minutes: int, hours: int):
         if ticks % 60 == 0:
             seconds += 1
             ticks = 0
@@ -358,6 +358,7 @@ class Player(pygame.sprite.Sprite):
         Player.PHYDEF = Game.data["PHYDEF"]
         Player.MAGDEF = Game.data["MAGDEF"]
         Player.SPEED = Game.data["SPEED"]
+        Player.STAMINA = Game.data["STAMINA"]
 
         Player.path = Game.path("sprites", "player")
         Player.right = "playerR.png"
@@ -382,6 +383,27 @@ class Player(pygame.sprite.Sprite):
         ExpandList.expand(Enemy.list)
         
         Player.attack = Attack(Game.camera, "PHY", 55)
+
+    # drains the players stamina
+    def drain(self):
+        timer = Game.tracktime(Game.playerHitTicks, Game.playerHitSeconds, Game.playerHitMinutes, Game.playerHitHours)
+        if Player.color == "b" and Player.STAMINA > 0:
+            Game.playerHitTicks = timer["ticks"]
+            Game.playerHitSeconds = timer["seconds"]
+
+            if timer["seconds"] == 2:
+                Player.STAMINA -= 1
+                Game.playerHitTicks = 0
+                Game.playerHitSeconds = 0
+            if Player.STAMINA == 0:
+                Player.color = "w"
+                self.playerImage()
+        if Player.color == "w" and Player.STAMINA < Game.data["STAMINA"]:
+            if timer["seconds"] == 2:
+                Player.STAMINA += 1
+                Game.playerHitTicks = 0
+                Game.playerHitSeconds = 0
+        
 
     # set controls for gamepad movement
     def gamepad(self):
@@ -453,12 +475,12 @@ class Player(pygame.sprite.Sprite):
         if Player.facingLeft == True:
             if Player.color == "w":
                 Player.image = pygame.image.load(Player.path + Player.left).convert_alpha()
-            elif Player.color == "b":
+            elif Player.color == "b" and Player.STAMINA > 0:
                 Player.image = pygame.image.load(Player.path + Player.leftB).convert_alpha()
         elif Player.facingRight == True:
             if Player.color == "w":
                 Player.image = pygame.image.load(Player.path + Player.right).convert_alpha()
-            elif Player.color == "b":
+            elif Player.color == "b" and Player.STAMINA > 0:
                 Player.image = pygame.image.load(Player.path + Player.rightB).convert_alpha()
         try:
             if (self.keys[pygame.K_TAB] and Game.ticksToIgnoreTAB == 0) or (Game.gamepadInputs[13] == 1 and Game.ticksToIgnoreTAB == 0):
@@ -499,6 +521,7 @@ class Player(pygame.sprite.Sprite):
         self.keyboard()
         self.gamepad()
         self.playerImage()
+        self.drain()
         Player.rect.center += self.direction * self.speed
         Attack.input(self)
 

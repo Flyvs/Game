@@ -24,6 +24,10 @@ Controller support for PS5 added - Nintendo Switch Pro Controller is coming next
 
 Game won't crash anymore if the controller is unplugged while the game is running
 
+## 14th Feb 2023
+
+draining stamina when using "dark-mode"
+
 ## issues
 
 the enemies can merge to the same coordinates when chasing the player
