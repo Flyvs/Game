@@ -29,6 +29,11 @@ Game won't crash anymore if the controller is unplugged while the game is runnin
 draining stamina when using "dark-mode" (refills slowly) and stamina displayed
 Keyboard inputs not taken when no controller connected
 
+## 15 Feb 2023
+
+Keyboard inputs not taken when no controller connected - fixed
+when in "black-mode" player moves faster
+
 ## issues
 
 the enemies can merge to the same coordinates when chasing the player
