@@ -428,6 +428,10 @@ class Player(pygame.sprite.Sprite):
                 Player.STAMINA += 1
                 Game.playerHitTicks = 0
                 Game.playerHitSeconds = 0
+        if Player.color == "b":
+            self.speed = 10
+        else:
+            self.speed = 5
         
 
     # set controls for gamepad movement
