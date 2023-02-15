@@ -27,6 +27,7 @@ Game won't crash anymore if the controller is unplugged while the game is runnin
 ## 14th Feb 2023
 
 draining stamina when using "dark-mode" (refills slowly) and stamina displayed
+Keyboard inputs not taken when no controller connected
 
 ## issues
 
