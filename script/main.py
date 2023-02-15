@@ -507,18 +507,16 @@ class Player(pygame.sprite.Sprite):
                 Player.image = pygame.image.load(Player.path + Player.right).convert_alpha()
             elif Player.color == "b" and Player.STAMINA > 0:
                 Player.image = pygame.image.load(Player.path + Player.rightB).convert_alpha()
-        try:
-            if (self.keys[pygame.K_TAB] and Game.ticksToIgnoreTAB == 0) or (Game.gamepadInputs[13] == 1 and Game.ticksToIgnoreTAB == 0):
-                Game.ticksToIgnoreTAB = 30
-                if Player.color == "w":
-                    Player.color = "b"
-                elif Player.color == "b":
-                    Player.color = "w"
 
-            if Game.ticksToIgnoreTAB > 0:
-                Game.ticksToIgnoreTAB -= 1
-        except:
-            pass
+        if (self.keys[pygame.K_TAB] and Game.ticksToIgnoreTAB == 0) or (Game.gamepadInputs != None and Game.gamepadInputs[13] == 1 and Game.ticksToIgnoreTAB == 0):
+            Game.ticksToIgnoreTAB = 30
+            if Player.color == "w":
+                Player.color = "b"
+            elif Player.color == "b":
+                Player.color = "w"
+
+        if Game.ticksToIgnoreTAB > 0:
+            Game.ticksToIgnoreTAB -= 1
 
     # updating details
     def update(self):
@@ -840,18 +838,15 @@ class Pause():
         display_volume = pygame.font.SysFont("Aerial", 100)
         volume_surface = display_volume.render(str(self.options_slider), False, (0, 0, 0))
 
-        try:
-            if keys[pygame.K_a] or Game.gamepadInputs[23] == 1:
-                if self.options_slider != 0:
-                    self.options_slider -= 1
-            elif keys[pygame.K_d] or Game.gamepadInputs[24] == 1:
-                if self.options_slider != 20:
-                    self.options_slider += 1
-            elif (keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0) or (Game.gamepadInputs[10] == 1 and Game.ticksToIgnoreSPACE == 0):
-                Game.ticksToIgnoreSPACE = 5
-                Game.run = "options"
-        except:
-            pass
+        if keys[pygame.K_a] or (Game.gamepadInputs != None and Game.gamepadInputs[23] == 1):
+            if self.options_slider != 0:
+                self.options_slider -= 1
+        elif keys[pygame.K_d] or (Game.gamepadInputs != None and Game.gamepadInputs[24] == 1):
+            if self.options_slider != 20:
+                self.options_slider += 1
+        elif (keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0) or (Game.gamepadInputs != None and Game.gamepadInputs[10] == 1 and Game.ticksToIgnoreSPACE == 0):
+            Game.ticksToIgnoreSPACE = 5
+            Game.run = "options"
         
         if Game.ticksToIgnoreSPACE > 0:
             Game.ticksToIgnoreSPACE -= 1
@@ -908,34 +903,31 @@ class Pause():
         keys = pygame.key.get_pressed()
         self.options_accessed = "mainmenu"
 
-        try:
-            if keys[pygame.K_w] or Game.gamepadInputs[21] == 1:
-                if self.options_mainmenu != 1:
-                    self.options_mainmenu -= 1
-            elif keys[pygame.K_s] or Game.gamepadInputs[22] == 1:
-                if self.options_mainmenu != 4:
-                    self.options_mainmenu += 1
-            elif (keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0) or (Game.gamepadInputs[10] == 1 and Game.ticksToIgnoreSPACE == 0):
-                Game.ticksToIgnoreSPACE = 5
-                if self.options_mainmenu == 1:
-                    if Game.playerLoaded == False:
-                        Game.player = Player((640, 360), Game.camera)
-                        Game.playerLoaded = True
-                    Player.rect.center = (640, 360)
-                    Game.run = "game"
-                    pygame.time.wait(100)
-                elif self.options_mainmenu == 2:
-                    Pause.load_pos(self)
-                    Game.run = "game"
-                elif self.options_mainmenu == 3:
-                    Game.run = "options"
-                    pygame.time.wait(100)
-                elif self.options_mainmenu == 4:
-                    self.save_options(self.resx, self.resy, Game.fullscreen)
-                    self.save_pos()
-                    Game.exit()
-        except:
-            pass
+        if keys[pygame.K_w] or (Game.gamepadInputs != None and Game.gamepadInputs[21] == 1):
+            if self.options_mainmenu != 1:
+                self.options_mainmenu -= 1
+        elif keys[pygame.K_s] or (Game.gamepadInputs != None and Game.gamepadInputs[22] == 1):
+            if self.options_mainmenu != 4:
+                self.options_mainmenu += 1
+        elif (keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0) or (Game.gamepadInputs != None and Game.gamepadInputs[10] == 1 and Game.ticksToIgnoreSPACE == 0):
+            Game.ticksToIgnoreSPACE = 5
+            if self.options_mainmenu == 1:
+                if Game.playerLoaded == False:
+                    Game.player = Player((640, 360), Game.camera)
+                    Game.playerLoaded = True
+                Player.rect.center = (640, 360)
+                Game.run = "game"
+                pygame.time.wait(100)
+            elif self.options_mainmenu == 2:
+                Pause.load_pos(self)
+                Game.run = "game"
+            elif self.options_mainmenu == 3:
+                Game.run = "options"
+                pygame.time.wait(100)
+            elif self.options_mainmenu == 4:
+                self.save_options(self.resx, self.resy, Game.fullscreen)
+                self.save_pos()
+                Game.exit()
         
         if Game.ticksToIgnoreSPACE > 0:
             Game.ticksToIgnoreSPACE -= 1
@@ -954,32 +946,29 @@ class Pause():
         keys = pygame.key.get_pressed()
         self.options_accessed = "pause"
 
-        try:
-            if keys[pygame.K_w] or Game.gamepadInputs[21] == 1:
-                if self.options_pause_menu != 1:
-                    self.options_pause_menu -= 1
-            elif keys[pygame.K_s] or Game.gamepadInputs[22] == 1:
-                if self.options_pause_menu != 5:
-                    self.options_pause_menu += 1
-            elif (keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0) or (Game.gamepadInputs[10] == 1 and Game.ticksToIgnoreSPACE == 0):
-                Game.ticksToIgnoreSPACE = 5
-                if self.options_pause_menu == 1:
-                    Game.run = "options"
-                elif self.options_pause_menu == 2:
-                    self.save_options(self.resx, self.resy, Game.fullscreen)
-                    self.save_pos()
-                elif self.options_pause_menu == 3:
-                    Game.run = "game"
-                elif self.options_pause_menu == 4:
-                    self.save_options(self.resx, self.resy, Game.fullscreen)
-                    self.save_pos()
-                    Game.run = "mainmenu"
-                elif self.options_pause_menu == 5:
-                    self.save_options(self.resx, self.resy, Game.fullscreen)
-                    self.save_pos()
-                    Game.exit()
-        except:
-            pass
+        if keys[pygame.K_w] or (Game.gamepadInputs != None and Game.gamepadInputs[21] == 1):
+            if self.options_pause_menu != 1:
+                self.options_pause_menu -= 1
+        elif keys[pygame.K_s] or (Game.gamepadInputs != None and Game.gamepadInputs[22] == 1):
+            if self.options_pause_menu != 5:
+                self.options_pause_menu += 1
+        elif (keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0) or (Game.gamepadInputs != None and Game.gamepadInputs[10] == 1 and Game.ticksToIgnoreSPACE == 0):
+            Game.ticksToIgnoreSPACE = 5
+            if self.options_pause_menu == 1:
+                Game.run = "options"
+            elif self.options_pause_menu == 2:
+                self.save_options(self.resx, self.resy, Game.fullscreen)
+                self.save_pos()
+            elif self.options_pause_menu == 3:
+                Game.run = "game"
+            elif self.options_pause_menu == 4:
+                self.save_options(self.resx, self.resy, Game.fullscreen)
+                self.save_pos()
+                Game.run = "mainmenu"
+            elif self.options_pause_menu == 5:
+                self.save_options(self.resx, self.resy, Game.fullscreen)
+                self.save_pos()
+                Game.exit()
         
         if Game.ticksToIgnoreSPACE > 0:
             Game.ticksToIgnoreSPACE -= 1
@@ -999,30 +988,27 @@ class Pause():
     def option_screen(self):
         keys = pygame.key.get_pressed()
 
-        try:
-            if keys[pygame.K_w] or Game.gamepadInputs[21] == 1:
-                if self.options_option_menu != 1:
-                    self.options_option_menu -= 1
-            elif keys[pygame.K_s] or Game.gamepadInputs[22] == 1:
-                if self.options_option_menu != 3:
-                    self.options_option_menu += 1
-            elif (keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0) or (Game.gamepadInputs[10] == 1 and Game.ticksToIgnoreSPACE == 0):
-                Game.ticksToIgnoreSPACE = 5
-                if self.options_option_menu == 1:
-                    Game.run = "resolution"
-                    pygame.time.wait(100)
-                    pass
-                elif self.options_option_menu == 2:
-                    Game.run = "volume"
-                    pygame.time.wait(100)
-                elif self.options_option_menu == 3:
-                    if self.options_accessed == "mainmenu":
-                        Game.run = "mainmenu"
-                    elif self.options_accessed == "pause":
-                        Game.run = "pause"
-                    pygame.time.wait(100)
-        except:
-            pass
+        if keys[pygame.K_w] or (Game.gamepadInputs != None and Game.gamepadInputs[21] == 1):
+            if self.options_option_menu != 1:
+                self.options_option_menu -= 1
+        elif keys[pygame.K_s] or (Game.gamepadInputs != None and Game.gamepadInputs[22] == 1):
+            if self.options_option_menu != 3:
+                self.options_option_menu += 1
+        elif (keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0) or (Game.gamepadInputs != None and Game.gamepadInputs[10] == 1 and Game.ticksToIgnoreSPACE == 0):
+            Game.ticksToIgnoreSPACE = 5
+            if self.options_option_menu == 1:
+                Game.run = "resolution"
+                pygame.time.wait(100)
+                pass
+            elif self.options_option_menu == 2:
+                Game.run = "volume"
+                pygame.time.wait(100)
+            elif self.options_option_menu == 3:
+                if self.options_accessed == "mainmenu":
+                    Game.run = "mainmenu"
+                elif self.options_accessed == "pause":
+                    Game.run = "pause"
+                pygame.time.wait(100)
         
         if Game.ticksToIgnoreSPACE > 0:
             Game.ticksToIgnoreSPACE -= 1
@@ -1038,47 +1024,44 @@ class Pause():
     def resolution_screen(self):
         keys = pygame.key.get_pressed()
 
-        try:
-            if keys[pygame.K_w] or Game.gamepadInputs[21] == 1:
-                if self.options_resolution != 1:
-                    self.options_resolution -= 1
-            elif keys[pygame.K_s] or Game.gamepadInputs[22] == 1:
-                if self.options_resolution != 6:
-                    self.options_resolution += 1
-            elif (keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0) or (Game.gamepadInputs[10] == 1 and Game.ticksToIgnoreSPACE == 0):
-                Game.ticksToIgnoreSPACE = 5
-                if self.options_resolution == 1:
-                    self.resx = 1280
-                    self.resy = 720
-                    Game.fullscreen = False
-                    self.screen = pygame.display.set_mode((self.resx, self.resy))
-                elif self.options_resolution == 2:
-                    self.resx = 1920
-                    self.resy = 1080
-                    Game.fullscreen = False
-                    self.screen = pygame.display.set_mode((self.resx, self.resy))
-                elif self.options_resolution == 3:
-                    self.resx = 1920
-                    self.resy = 1080
-                    Game.fullscreen = True
-                    self.screen = pygame.display.set_mode(
-                        (self.resx, self.resy), pygame.FULLSCREEN)
-                elif self.options_resolution == 4:
-                    self.resx = 2560
-                    self.resy = 1080
-                    Game.fullscreen = False
-                    self.screen = pygame.display.set_mode((self.resx, self.resy))
-                elif self.options_resolution == 5:
-                    self.resx = 3440
-                    self.resy = 1440
-                    Game.fullscreen = True
-                    self.screen = pygame.display.set_mode((self.resx, self.resy), pygame.FULLSCREEN)
-                elif self.options_resolution == 6:
-                    Game.run = "options"
-                    self.save_options(self.resx, self.resy, Game.fullscreen)
-                    pygame.time.wait(100)
-        except:
-            pass
+        if keys[pygame.K_w] or (Game.gamepadInputs != None and Game.gamepadInputs[21] == 1):
+            if self.options_resolution != 1:
+                self.options_resolution -= 1
+        elif keys[pygame.K_s] or (Game.gamepadInputs != None and Game.gamepadInputs[22] == 1):
+            if self.options_resolution != 6:
+                self.options_resolution += 1
+        elif (keys[pygame.K_SPACE] and Game.ticksToIgnoreSPACE == 0) or (Game.gamepadInputs != None and Game.gamepadInputs[10] == 1 and Game.ticksToIgnoreSPACE == 0):
+            Game.ticksToIgnoreSPACE = 5
+            if self.options_resolution == 1:
+                self.resx = 1280
+                self.resy = 720
+                Game.fullscreen = False
+                self.screen = pygame.display.set_mode((self.resx, self.resy))
+            elif self.options_resolution == 2:
+                self.resx = 1920
+                self.resy = 1080
+                Game.fullscreen = False
+                self.screen = pygame.display.set_mode((self.resx, self.resy))
+            elif self.options_resolution == 3:
+                self.resx = 1920
+                self.resy = 1080
+                Game.fullscreen = True
+                self.screen = pygame.display.set_mode(
+                    (self.resx, self.resy), pygame.FULLSCREEN)
+            elif self.options_resolution == 4:
+                self.resx = 2560
+                self.resy = 1080
+                Game.fullscreen = False
+                self.screen = pygame.display.set_mode((self.resx, self.resy))
+            elif self.options_resolution == 5:
+                self.resx = 3440
+                self.resy = 1440
+                Game.fullscreen = True
+                self.screen = pygame.display.set_mode((self.resx, self.resy), pygame.FULLSCREEN)
+            elif self.options_resolution == 6:
+                Game.run = "options"
+                self.save_options(self.resx, self.resy, Game.fullscreen)
+                pygame.time.wait(100)
 
         if Game.ticksToIgnoreSPACE > 0:
             Game.ticksToIgnoreSPACE -= 1
@@ -1136,19 +1119,16 @@ class Attack(pygame.sprite.Sprite):
         Attack.posRight = (Attack.xRight, Attack.yRight)
         Attack.posLeft = (Attack.xLeft, Attack.yLeft)
 
-        try:
-            if self.keys[pygame.K_SPACE] or Game.gamepadInputs[11] == 1:
-                Attack.space = True
-                if Player.facingLeft == True:
-                    Attack.image = pygame.image.load(Attack.spritePath + Attack.left).convert_alpha()
-                    Attack.rect = Attack.image.get_rect(center=Attack.posLeft)
-                elif Player.facingRight == True:
-                    Attack.image = pygame.image.load(Attack.spritePath + Attack.right).convert_alpha()
-                    Attack.rect = Attack.image.get_rect(center=Attack.posRight)
-            else:
-                Attack.space = False
-        except:
-            pass
+        if self.keys[pygame.K_SPACE] or (Game.gamepadInputs != None and Game.gamepadInputs[11] == 1):
+            Attack.space = True
+            if Player.facingLeft == True:
+                Attack.image = pygame.image.load(Attack.spritePath + Attack.left).convert_alpha()
+                Attack.rect = Attack.image.get_rect(center=Attack.posLeft)
+            elif Player.facingRight == True:
+                Attack.image = pygame.image.load(Attack.spritePath + Attack.right).convert_alpha()
+                Attack.rect = Attack.image.get_rect(center=Attack.posRight)
+        else:
+            Attack.space = False
 
 
 class Enemy(pygame.sprite.Sprite):

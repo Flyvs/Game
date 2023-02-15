@@ -54,4 +54,5 @@ class Inputs():
             a += 1
         if data[0] == 0:
             data = None
+            dataString = None
         return data, dataString
