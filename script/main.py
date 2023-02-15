@@ -416,15 +416,15 @@ class Player(pygame.sprite.Sprite):
             Game.playerHitTicks = timer["ticks"]
             Game.playerHitSeconds = timer["seconds"]
 
-            if timer["seconds"] == 2:
+            if timer["seconds"] % 2 == 0:
                 Player.STAMINA -= 1
                 Game.playerHitTicks = 0
                 Game.playerHitSeconds = 0
-            if Player.STAMINA == 0:
-                Player.color = "w"
-                self.playerImage()
+        if Player.STAMINA == 0:
+            Player.color = "w"
+            self.playerImage()
         if Player.color == "w" and Player.STAMINA < Game.data["STAMINA"]:
-            if timer["seconds"] == 2:
+            if timer["seconds"] % 2 == 0:
                 Player.STAMINA += 1
                 Game.playerHitTicks = 0
                 Game.playerHitSeconds = 0
