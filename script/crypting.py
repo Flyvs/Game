@@ -2,17 +2,17 @@ from cryptography.fernet import Fernet
 
 class Crypting():
     # encrypting file
-    def encrypt(path: str, fileToEncrypt: str):
+    def encrypt(path: str, fileToEncrypt: str, filekeyName: str):
         if not path.endswith("\\"):
             path = path + "\\"
 
         key = Fernet.generate_key()
 
-        with open(path + "filekey.key", "wb") as filekey:
+        with open(path + filekeyName, "wb") as filekey:
             filekey.write(key)
         filekey.close()
 
-        with open (path + "filekey.key", "rb") as filekey:
+        with open (path + filekeyName, "rb") as filekey:
             key = filekey.read()
         filekey.close()
 
@@ -29,11 +29,11 @@ class Crypting():
         encrypted_file.close()
     
     # decrypting file
-    def decrypt(path: str, fileToDecrypt: str):
+    def decrypt(path: str, fileToDecrypt: str, filekeyName: str):
         if not path.endswith("\\"):
             path = path + "\\"
 
-        with open(path + "filekey.key") as keyfile:
+        with open(path + filekeyName) as keyfile:
             key = keyfile.read()
 
         fernet = Fernet(key)
