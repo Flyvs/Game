@@ -401,7 +401,8 @@ class Player(pygame.sprite.Sprite):
         Player.image = pygame.image.load(Player.path + Player.right).convert_alpha()
         Player.rect = Player.image.get_rect(center=pos)
         self.direction = pygame.math.Vector2()
-        self.speed = 5
+        self.standard = 10
+        self.speed = self.standard
         
         Player.attack = Attack(Game.camera, "PHY", 55)
 
@@ -429,9 +430,9 @@ class Player(pygame.sprite.Sprite):
                 Game.playerHitTicks = 0
                 Game.playerHitSeconds = 0
         if Player.color == "b":
-            self.speed = 10
+            self.speed = self.standard * 1.5
         else:
-            self.speed = 5
+            self.speed = self.standard
         
 
     # set controls for gamepad movement
