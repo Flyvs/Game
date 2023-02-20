@@ -84,7 +84,7 @@ class Game():
         Game.pause = Pause()
         Game.battle = Battle()
 
-        Game.NPC1 = NPC((500, 10), Game.camera)
+        Game.NPC1 = NPC((500, 1768), Game.camera)
         Game.playerLoaded = False
 
         Enemy.list = []
@@ -407,8 +407,17 @@ class Player(pygame.sprite.Sprite):
         Player.image = pygame.image.load(Player.path + Player.right).convert_alpha()
         Player.rect = Player.image.get_rect(center=pos)
         self.direction = pygame.math.Vector2()
+        self.fall = pygame.math.Vector2()
+        self.jumpV = pygame.math.Vector2()
         self.standard = 10
         self.speed = self.standard
+
+        self.fallingspeed = 20
+        self.fall.y = self.fallingspeed
+        self.fall.x = 0
+
+        self.jumpcount = -11
+        self.jumping = False
         
         Player.attack = Attack(Game.camera, "PHY", 55)
 
@@ -439,10 +448,33 @@ class Player(pygame.sprite.Sprite):
             self.speed = self.standard * 1.5
         else:
             self.speed = self.standard
-        
+    
+    # jumping
+    def jump(self):
+        self.keys = pygame.key.get_pressed()
+        if (self.keys[pygame.K_SPACE] or (Game.gamepadInputs != None and Game.gamepadInputs[10] == 1)) and self.jumpcount == 15:
+            self.jumping = True
+            
+        if self.jumping:
+            if self.jumpcount >= 1:
+                neg = 1
+                if self.jumpcount < 0:
+                    neg = -1
+                self.fall.y *= neg
+                Player.rect.center -= self.fall
+                self.jumpcount -= 1
+            else:
+                self.jumping = False
 
+        elif Player.rect.center[1] <= 1800 - self.fall.y:
+            if Player.rect.center[1] == 1800 - self.fall.y:
+                self.jumpcount = 15
+            self.fall.y = self.fallingspeed
+            Player.rect.center += self.fall
+        
     # set controls for gamepad movement
     def gamepad(self):
+        """
         try:
             if Game.gamepadInputs[4] > 0:
                 if self.col_bottom == False:
@@ -454,7 +486,8 @@ class Player(pygame.sprite.Sprite):
                     self.direction.y = Game.gamepadInputs[4]
                 else:
                     self.direction.y = 0
-
+        """
+        try:
             if Game.gamepadInputs[3] > 0:
                 if self.col_right == False:
                     Player.facingRight = True
@@ -476,6 +509,7 @@ class Player(pygame.sprite.Sprite):
     def keyboard(self):
         self.keys = pygame.key.get_pressed()
 
+        """
         if self.keys[pygame.K_w]:
             if self.col_top == False:
                 self.direction.y = -1
@@ -488,6 +522,7 @@ class Player(pygame.sprite.Sprite):
                 self.direction.y = 0
         else:
             self.direction.y = 0
+        """
 
         if self.keys[pygame.K_d]:
             Player.facingRight = True
@@ -550,12 +585,13 @@ class Player(pygame.sprite.Sprite):
 
         if NPC.hit() and NPC.hitted == False:
             NPC.hitted = True
-            MsgBox.NPC("This is some test text", None, 60, (66, 135, 245))
+            MsgBox.NPC("This is a demo text", None, 60, (66, 135, 245))
 
         self.keyboard()
         self.gamepad()
         self.playerImage()
         self.drain()
+        self.jump()
 
         Player.rect.center += self.direction * self.speed
         Attack.input(self)
@@ -652,21 +688,21 @@ class Camera(pygame.sprite.Group):
 
         i = 0
         # Sorted List for drawing objects in order
-        Camera.spriteList = sorted(self.sprites(), key=lambda sprite: sprite.rect.centery)
+        Camera.spriteList = self.sprites()#sorted(self.sprites(), key=lambda sprite: sprite.rect.centery)
         spriteListLen = len(Camera.spriteList)
         while spriteListLen > i:
             spriteListLen = len(Camera.spriteList)
             obj = str(type(Camera.spriteList[i - 1])).partition(".")[2].split("'")[0]
-            if Attack.space == False and obj == "Attack":
+            if Attack.attacking == False and obj == "Attack":
                 del Camera.spriteList[i - 1]
             if str(type(Camera.spriteList[1])).partition(".")[2].split("'")[0] == "Attack":
                 del Camera.spriteList[1]
             if NPC.hit() == False and obj == "MsgBox":
-                del Camera.spriteList[1]
+                del Camera.spriteList[4]
             if str(type(Camera.spriteList[0])).partition(".")[2].split("'")[0] == "MsgBox":
                 del Camera.spriteList[0]
             i += 1
-        #print(Camera.spriteList)
+        # print(Camera.spriteList)
 
         for sprite in Camera.spriteList:
             offset_pos = sprite.rect.topleft - self.offset + Camera.internal_offset
@@ -924,9 +960,9 @@ class Pause():
             Game.ticksToIgnoreSPACE = 5
             if self.options_mainmenu == 1:
                 if Game.playerLoaded == False:
-                    Game.player = Player((640, 360), Game.camera)
+                    Game.player = Player((640, 1780), Game.camera)
                     Game.playerLoaded = True
-                Player.rect.center = (640, 360)
+                Player.rect.center = (640, 1780)
                 Game.run = "game"
                 pygame.time.wait(100)
             elif self.options_mainmenu == 2:
@@ -1109,7 +1145,7 @@ class Attack(pygame.sprite.Sprite):
         Attack.left = "attackLeft.png"
         Attack.firingLeft = False
         Attack.firingRight = False
-        Attack.space = False
+        Attack.attacking = False
         Attack.xRight = Player.rect.center[0] + 48
         Attack.yRight = Player.rect.center[1] + 14
         Attack.xLeft = Player.rect.center[0] - 48
@@ -1130,8 +1166,8 @@ class Attack(pygame.sprite.Sprite):
         Attack.posRight = (Attack.xRight, Attack.yRight)
         Attack.posLeft = (Attack.xLeft, Attack.yLeft)
 
-        if self.keys[pygame.K_SPACE] or (Game.gamepadInputs != None and Game.gamepadInputs[11] == 1):
-            Attack.space = True
+        if self.keys[pygame.K_e] or (Game.gamepadInputs != None and Game.gamepadInputs[11] == 1):
+            Attack.attacking = True
             if Player.facingLeft == True:
                 Attack.image = pygame.image.load(Attack.spritePath + Attack.left).convert_alpha()
                 Attack.rect = Attack.image.get_rect(center=Attack.posLeft)
@@ -1139,7 +1175,7 @@ class Attack(pygame.sprite.Sprite):
                 Attack.image = pygame.image.load(Attack.spritePath + Attack.right).convert_alpha()
                 Attack.rect = Attack.image.get_rect(center=Attack.posRight)
         else:
-            Attack.space = False
+            Attack.attacking = False
 
 
 class Enemy(pygame.sprite.Sprite):
