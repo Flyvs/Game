@@ -687,7 +687,7 @@ class Camera(pygame.sprite.Group):
         Camera.internal_surf.blit(Camera.ground_surf, ground_offset)
 
         i = 0
-        # Sorted List for drawing objects in order
+        # drawing objects
         Camera.spriteList = self.sprites()#sorted(self.sprites(), key=lambda sprite: sprite.rect.centery)
         spriteListLen = len(Camera.spriteList)
         while spriteListLen > i:
