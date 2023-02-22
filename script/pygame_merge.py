@@ -4,9 +4,11 @@ import os
 
 
 class Merge():
-    # method to merge multiple surfaces
-    # the last surface will be on top
     def surfaces(path: str, *surfaces: pygame.Surface):
+        """
+        merges multiple surfaces
+        the last surface given will be on top
+        """
         if not os.path.exists(path):
             os.makedirs(path)
         index = 0

@@ -4,6 +4,10 @@ import pygame
 class Inputs():
 
     def scan():
+        """
+        scans for a connected gamepad
+        returns a list with every button and a list with gamepad details
+        """
         pygame.joystick.init()            
         a = 0
         while a < 2:

@@ -1,8 +1,10 @@
 from cryptography.fernet import Fernet
 
 class Crypting():
-    # encrypting file
     def encrypt(path: str, fileToEncrypt: str, filekeyName: str):
+        """
+        encrypts the given file and creates a key with the given name
+        """
         if not path.endswith("\\"):
             path = path + "\\"
 
@@ -30,6 +32,9 @@ class Crypting():
     
     # decrypting file
     def decrypt(path: str, fileToDecrypt: str, filekeyName: str):
+        """
+        decrypts the given file and uses the given key(file)
+        """
         if not path.endswith("\\"):
             path = path + "\\"
 
