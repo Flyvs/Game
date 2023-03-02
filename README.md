@@ -22,6 +22,10 @@ parentDirectory = os.path.join(parentDirectory, "game")
 
 ### CONTROLLER CONFIGS
 
+- Inputs.scan()[0] returns a list with the buttons a controller has
+
+- Inputs.scan()[1] returns a list with controller details
+
 - technically works with every controller; index changes depending on which controller you plug in and use
 
 #### PS5 CONTROLLER
