@@ -16,20 +16,14 @@
 
 - There is a line in class "Game" --> function "path" you need to comment out/in (remove comment when converted to an exe and comment when run in editor)
 
-```(hier noch die Zeilennummer angeben, wenn fertig)
-parentDirectory = os.path.join(parentDirectory, "game")
-```
+```parentDirectory = os.path.join(parentDirectory, "game")```
 
 ### CONTROLLER CONFIGS
 
-```
-Inputs.scan()[0]
-``` 
+```Inputs.scan()[0]```
 returns a list with the buttons a controller has
 
-```
-Inputs.scan()[1]
-``` 
+```Inputs.scan()[1]```
 returns a list with controller details
 
 - technically works with every controller; index changes depending on which controller you plug in and use
