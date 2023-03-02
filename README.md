@@ -47,8 +47,7 @@ Crypting.decrypt(path: str, fileToDecrypt: str, filekeyName: str)
 
 #### pygame_merge.py
 
-merges multiple surfaces
-the last surface given will be on top
+merges multiple surfaces & the last surface given will be on top
 ```
 Merge.surfaces(path: str, *surfaces: pygame.Surface)
 ```
