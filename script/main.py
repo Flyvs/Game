@@ -94,7 +94,7 @@ class Game():
         #ExpandList.expand(Enemy.list, enemy1, enemy2, enemy3)
 
         self.music = Music()
-        self.music.play(2, volume)
+        self.music.play(3, volume)
 
         self.main()
 
@@ -368,8 +368,8 @@ class HUD(pygame.sprite.Sprite):
 
 
     def updateHUD(text: str, font: str, fontSize: int, rgb: tuple):
-        Player.HUD_w = Player.rect.center[0] + 480
-        Player.HUD_h = Player.rect.center[1] - 330
+        Player.HUD_w = Player.rect.center[0] + (Game.screen.get_size()[0] // 2) - 125
+        Player.HUD_h = Player.rect.center[1] - (Game.screen.get_size()[1] // 2) + 25
         pos = (Player.HUD_w, Player.HUD_h)
 
         font_ = pygame.font.SysFont(font, fontSize)
@@ -383,6 +383,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos, group):
         super().__init__(group)
 
+        Player.i = 0
         Player.LVL = Game.playerdata["LVL"]
         Player.XP = Game.playerdata["XP"]
         Player.HP = Game.playerdata["HP"]
@@ -412,17 +413,17 @@ class Player(pygame.sprite.Sprite):
         self.standard = 10
         self.speed = self.standard
 
-        self.fallingspeed = 20
+        self.fallingspeed = 10
         self.fall.y = self.fallingspeed
         self.fall.x = 0
 
-        self.jumpcount = -11
+        self.jumpcount = 30
         self.jumping = False
         
         Player.attack = Attack(Game.camera, "PHY", 55)
 
-        Player.HUD_w = Player.rect.center[0] + 480
-        Player.HUD_h = Player.rect.center[1] - 330
+        Player.HUD_w = 0
+        Player.HUD_h = 0
         Player.HUD = HUD(Game.camera, (Player.HUD_w, Player.HUD_h), f"Stamina: {Player.STAMINA}", None, 60, (255, 0, 0))
         
    # drains the players stamina
@@ -452,26 +453,22 @@ class Player(pygame.sprite.Sprite):
     # jumping
     def jump(self):
         self.keys = pygame.key.get_pressed()
-        if (self.keys[pygame.K_SPACE] or (Game.gamepadInputs != None and Game.gamepadInputs[10] == 1)) and self.jumpcount == 15:
-            self.jumping = True
-            
-        if self.jumping:
+        if (self.keys[pygame.K_SPACE] or (Game.gamepadInputs != None and Game.gamepadInputs[10] == 1)) and not self.jumping:
             if self.jumpcount >= 1:
-                neg = 1
-                if self.jumpcount < 0:
-                    neg = -1
-                self.fall.y *= neg
                 Player.rect.center -= self.fall
                 self.jumpcount -= 1
-            else:
-                self.jumping = False
+            if self.jumpcount == 0:
+                self.jumping = True          
 
         elif Player.rect.center[1] <= 1800 - self.fall.y:
+            self.jumpcount = 0
             if Player.rect.center[1] == 1800 - self.fall.y:
-                self.jumpcount = 15
+                self.jumping = False
+                self.jumpcount = 30
             self.fall.y = self.fallingspeed
             Player.rect.center += self.fall
-        
+        print(self.jumpcount)
+
     # set controls for gamepad movement
     def gamepad(self):
         """
@@ -1146,6 +1143,8 @@ class Attack(pygame.sprite.Sprite):
         Attack.firingLeft = False
         Attack.firingRight = False
         Attack.attacking = False
+        Attack.exist = False
+        self.left = False
         Attack.xRight = Player.rect.center[0] + 48
         Attack.yRight = Player.rect.center[1] + 14
         Attack.xLeft = Player.rect.center[0] - 48
@@ -1166,16 +1165,29 @@ class Attack(pygame.sprite.Sprite):
         Attack.posRight = (Attack.xRight, Attack.yRight)
         Attack.posLeft = (Attack.xLeft, Attack.yLeft)
 
-        if self.keys[pygame.K_e] or (Game.gamepadInputs != None and Game.gamepadInputs[11] == 1):
-            Attack.attacking = True
-            if Player.facingLeft == True:
-                Attack.image = pygame.image.load(Attack.spritePath + Attack.left).convert_alpha()
-                Attack.rect = Attack.image.get_rect(center=Attack.posLeft)
-            elif Player.facingRight == True:
-                Attack.image = pygame.image.load(Attack.spritePath + Attack.right).convert_alpha()
-                Attack.rect = Attack.image.get_rect(center=Attack.posRight)
+        if Attack.exist == False:
+            if self.keys[pygame.K_e] or (Game.gamepadInputs != None and Game.gamepadInputs[11] == 1):
+                Attack.attacking = True
+                if Player.facingLeft == True:
+                    Attack.image = pygame.image.load(Attack.spritePath + Attack.left).convert_alpha()
+                    Attack.rect = Attack.image.get_rect(center=Attack.posLeft)
+                    self.left = True
+                elif Player.facingRight == True:
+                    Attack.image = pygame.image.load(Attack.spritePath + Attack.right).convert_alpha()
+                    Attack.rect = Attack.image.get_rect(center=Attack.posRight)
+                    self.left = False
+                Attack.exist = True
+            else:
+                Attack.attacking = False
         else:
-            Attack.attacking = False
+            if self.left == True:
+                Attack.rect[0] -= 11
+                if Attack.rect[0] <= Player.rect[0] - (Game.screen.get_size()[0] // 2) - 100:
+                    Attack.exist = False
+            if self.left == False:
+                Attack.rect[0] += 11
+                if Attack.rect[0] >= Player.rect[0] + (Game.screen.get_size()[0] // 2) + 100:
+                    Attack.exist = False
 
 
 class Enemy(pygame.sprite.Sprite):
