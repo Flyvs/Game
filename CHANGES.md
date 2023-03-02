@@ -29,10 +29,15 @@ Game won't crash anymore if the controller is unplugged while the game is runnin
 draining stamina when using "dark-mode" (refills slowly) and stamina displayed
 Keyboard inputs not taken when no controller connected
 
-## 15 Feb 2023
+## 15th Feb 2023
 
 Keyboard inputs not taken when no controller connected - fixed
 when in "black-mode" player moves faster
+
+## 2nd Mar 2023
+
+Player can now jump
+The longer "jump" is hold the higher the player jumps
 
 ## issues
 
