@@ -14,25 +14,26 @@
 
 - remember to install a package to convert the script into an exe (for example [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/))
 
-- There is a line in class "Game" --> function "path" you need to comment out/in (remove comment when converted to an exe and comment when run in editor)
-
+There is a line in class "Game" --> function "path" you need to comment out/in (remove comment when converted to an exe and comment when run in editor)
 ```
 parentDirectory = os.path.join(parentDirectory, "game")
 ```
 
 ### CONTROLLER CONFIGS
 
+- Technically works with every controller. However, the index changes depending on which controller you plug in and use. If you don't want to use a PS5 or Nintendo Switch Pro Controller you have to figure out the index yourself
+
+#### FUNCTIONS
+
+returns a list with the buttons a controller has:
 ```
 Inputs.scan()[0]
 ```
-returns a list with the buttons a controller has
 
+returns a list with controller details
 ```
 Inputs.scan()[1]
 ```
-returns a list with controller details
-
-- technically works with every controller; index changes depending on which controller you plug in and use
 
 #### PS5 CONTROLLER
 
