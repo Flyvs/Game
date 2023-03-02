@@ -21,7 +21,9 @@ parentDirectory = os.path.join(parentDirectory, "game")
 
 ### CONTROLLER CONFIGS
 
-- Technically works with every controller. However, the index changes depending on which controller you plug in and use. If you don't want to use a PS5 or Nintendo Switch Pro Controller you have to figure out the index yourself
+Technically works with every controller.
+However, the index changes depending on which controller you plug in and use.
+If you don't want to use a PS5 or Nintendo Switch Pro Controller you have to figure out the index yourself.
 
 #### FUNCTIONS
 
@@ -38,7 +40,7 @@ Inputs.scan()[1]
 #### PS5 CONTROLLER
 
 ```PS5 Controller
-BUTTON                  INDEX         FUNCTION
+BUTTON                  INDEX         FUNCTIONALITY
 Action-buttons----------------------------------------------------------------------
 |X                      |10           |pressed = 1    released = 0
 |O                      |11           |pressed = 1    released = 0
@@ -72,7 +74,7 @@ Bonus-buttons-------------------------------------------------------------------
 #### NINTENDO SWITCH PRO CONTROLLER
 
 ```Nintendo Switch Pro Controller
-BUTTON                  INDEX         FUNCTION
+BUTTON                  INDEX         FUNCTIONALITY
 Action-buttons----------------------------------------------------------------------
 |A                      |10           |pressed = 1    released = 0
 |B                      |11           |pressed = 1    released = 0
