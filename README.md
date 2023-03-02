@@ -19,13 +19,9 @@ There is a line in class "Game" --> function "path" you need to comment out/in (
 parentDirectory = os.path.join(parentDirectory, "game")
 ```
 
-### CONTROLLER CONFIGS
+### FUNCTIONS
 
-Technically works with every controller.
-However, the index changes depending on which controller you plug in and use.
-If you don't want to use a PS5 or Nintendo Switch Pro Controller you have to figure out the index yourself.
-
-#### FUNCTIONS
+#### gamepad.py
 
 returns a list with the buttons a controller has:
 ```
@@ -37,9 +33,42 @@ returns a list with controller details
 Inputs.scan()[1]
 ```
 
+#### crypting.py
+
+encrypts the given file and creates a key with the given name
+```
+Crypting.encrypt(path: str, fileToEncrypt: str, filekeyName: str)
+```
+
+decrypts the given file and uses the given key(file)
+```
+Crypting.decrypt(path: str, fileToDecrypt: str, filekeyName: str)
+```
+
+#### pygame_merge.py
+
+merges multiple surfaces
+the last surface given will be on top
+```
+Merge.surfaces(path: str, *surfaces: pygame.Surface)
+```
+
+#### expandlist.py
+
+expands a list with multiple values and returns it
+```
+Expandlist.expand(list: list, *values)
+```
+
+### CONTROLLER CONFIGS
+
+Technically works with every controller.
+However, the index changes depending on which controller you plug in and use.
+If you don't want to use a PS5 or Nintendo Switch Pro Controller you have to figure out the index yourself.
+
 #### PS5 CONTROLLER
 
-```PS5 Controller
+```
 BUTTON                  INDEX         FUNCTIONALITY
 Action-buttons----------------------------------------------------------------------
 |X                      |10           |pressed = 1    released = 0
@@ -73,7 +102,7 @@ Bonus-buttons-------------------------------------------------------------------
 
 #### NINTENDO SWITCH PRO CONTROLLER
 
-```Nintendo Switch Pro Controller
+```
 BUTTON                  INDEX         FUNCTIONALITY
 Action-buttons----------------------------------------------------------------------
 |A                      |10           |pressed = 1    released = 0
