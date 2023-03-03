@@ -28,6 +28,8 @@ class Game():
         # encrypting the json
         Game.cryptingPath = Game.path("script")
         try:
+            Crypting.rename(Game.cryptingPath, "gamedata.rofl", "gamedata.json")
+            Crypting.rename(Game.cryptingPath, "playerdata.rofl", "playerdata.json")
             Crypting.decrypt(Game.cryptingPath, "gamedata.json", "gamekey.key")
             Crypting.decrypt(Game.cryptingPath, "playerdata.json", "playerkey.key")
         except:
@@ -147,6 +149,8 @@ class Game():
         # encrypting the json and exiting afterwards
         Crypting.encrypt(Game.cryptingPath, "gamedata.json", "gamekey.key")
         Crypting.encrypt(Game.cryptingPath, "playerdata.json", "playerkey.key")
+        Crypting.rename(Game.cryptingPath, "gamedata.json", "gamedata.rofl")
+        Crypting.rename(Game.cryptingPath, "playerdata.json", "playerdata.rofl")
         pygame.quit()
         sys.exit()
 
@@ -467,7 +471,6 @@ class Player(pygame.sprite.Sprite):
                 self.jumpcount = 30
             self.fall.y = self.fallingspeed
             Player.rect.center += self.fall
-        print(self.jumpcount)
 
     # set controls for gamepad movement
     def gamepad(self):
