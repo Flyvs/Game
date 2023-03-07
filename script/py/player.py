@@ -1,13 +1,16 @@
 import pygame
 import json
 
+from camera import Camera
+from enemy import Enemy
 from npc import NPC
 from hud import HUD
 from msgbox import MsgBox
+from attack import Attack
 
 class Player(pygame.sprite.Sprite):
     # initializing
-    def __init__(self, pos, jsonPath, playerPath, group):
+    def __init__(self, pos, game, jsonPath, playerPath, attackPath, group):
         super().__init__(group)
 
         playerdatafile = open(jsonPath + "playerdata.json", "r")
@@ -23,6 +26,7 @@ class Player(pygame.sprite.Sprite):
         Player.MAGDEF = playerdata["MAGDEF"]
         Player.SPEED = playerdata["SPEED"]
         Player.STAMINA = playerdata["STAMINA"]
+        Player.game = game
 
         Player.path = playerPath
         Player.right = "playerR.png"
@@ -52,7 +56,7 @@ class Player(pygame.sprite.Sprite):
 
         self.camera = group
         
-        Player.attack = Attack(self.camera, "PHY", 55)
+        Player.attack = Attack("PHY", 7, attackPath, Player, Player.game, self.camera)
 
         Player.HUD_w = 0
         Player.HUD_h = 0
@@ -60,23 +64,23 @@ class Player(pygame.sprite.Sprite):
         
    # drains the players stamina
     def drain(self):
-        timer = Game.tracktime(Game.playerHitTicks, Game.playerHitSeconds, Game.playerHitMinutes, Game.playerHitHours)
+        timer = Player.game.tracktime(Player.game.playerHitTicks, Player.game.playerHitSeconds, Player.game.playerHitMinutes, Player.game.playerHitHours)
         if Player.color == "b" and Player.STAMINA > 0:
-            Game.playerHitTicks = timer["ticks"]
-            Game.playerHitSeconds = timer["seconds"]
+            Player.game.playerHitTicks = timer["ticks"]
+            Player.game.playerHitSeconds = timer["seconds"]
 
             if timer["seconds"] % 2 == 0:
                 Player.STAMINA -= 1
-                Game.playerHitTicks = 0
-                Game.playerHitSeconds = 0
+                Player.game.playerHitTicks = 0
+                Player.game.playerHitSeconds = 0
         if Player.STAMINA == 0:
             Player.color = "w"
             self.playerImage()
-        if Player.color == "w" and Player.STAMINA < Game.playerdata["STAMINA"]:
+        if Player.color == "w" and Player.STAMINA < Player.game.playerdata["STAMINA"]:
             if timer["seconds"] % 2 == 0:
                 Player.STAMINA += 1
-                Game.playerHitTicks = 0
-                Game.playerHitSeconds = 0
+                Player.game.playerHitTicks = 0
+                Player.game.playerHitSeconds = 0
         if Player.color == "b":
             self.speed = self.standard * 1.5
         else:
@@ -85,7 +89,7 @@ class Player(pygame.sprite.Sprite):
     # jumping
     def jump(self):
         self.keys = pygame.key.get_pressed()
-        if (self.keys[pygame.K_SPACE] or (Game.gamepadInputs != None and Game.gamepadInputs[10] == 1)) and not self.jumping:
+        if (self.keys[pygame.K_SPACE] or (Player.game.gamepadInputs != None and Player.game.gamepadInputs[10] == 1)) and not self.jumping:
             if self.jumpcount >= 1:
                 Player.rect.center -= self.fall
                 self.jumpcount -= 1
@@ -116,18 +120,18 @@ class Player(pygame.sprite.Sprite):
                     self.direction.y = 0
         """
         try:
-            if Game.gamepadInputs[3] > 0:
+            if Player.game.gamepadInputs[3] > 0:
                 if self.col_right == False:
                     Player.facingRight = True
                     Player.facingLeft = False
-                    self.direction.x = Game.gamepadInputs[3]
+                    self.direction.x = Player.game.gamepadInputs[3]
                 else:
                     self.direction.x = 0
-            elif Game.gamepadInputs[3] < 0:
+            elif Player.game.gamepadInputs[3] < 0:
                 if self.col_left == False:
                     Player.facingRight = False
                     Player.facingLeft = True
-                    self.direction.x = Game.gamepadInputs[3]
+                    self.direction.x = Player.game.gamepadInputs[3]
                 else:
                     self.direction.x = 0
         except:
@@ -182,15 +186,15 @@ class Player(pygame.sprite.Sprite):
             elif Player.color == "b" and Player.STAMINA > 0:
                 Player.image = pygame.image.load(Player.path + Player.rightB).convert_alpha()
 
-        if (self.keys[pygame.K_TAB] and Game.ticksToIgnoreTAB == 0) or (Game.gamepadInputs != None and Game.gamepadInputs[13] == 1 and Game.ticksToIgnoreTAB == 0):
-            Game.ticksToIgnoreTAB = 30
+        if (self.keys[pygame.K_TAB] and Player.game.ticksToIgnoreTAB == 0) or (Player.game.gamepadInputs != None and Player.game.gamepadInputs[13] == 1 and Player.game.ticksToIgnoreTAB == 0):
+            Player.game.ticksToIgnoreTAB = 30
             if Player.color == "w":
                 Player.color = "b"
             elif Player.color == "b":
                 Player.color = "w"
 
-        if Game.ticksToIgnoreTAB > 0:
-            Game.ticksToIgnoreTAB -= 1
+        if Player.game.ticksToIgnoreTAB > 0:
+            Player.game.ticksToIgnoreTAB -= 1
 
     # updating details
     def update(self):
@@ -213,7 +217,7 @@ class Player(pygame.sprite.Sprite):
 
         if NPC.hit(Player) and NPC.hitted == False:
             NPC.hitted = True
-            MsgBox((NPC.rect[0] - 224, NPC.rect[1] - 192), "This is a demo text", None, 60, (66, 135, 245), "test.png", Game.msgboxPath, Game.mergePath, self.camera)
+            MsgBox((NPC.rect[0] - 224, NPC.rect[1] - 192), "This is a demo text", None, 60, (66, 135, 245), "test.png", Player.game.msgboxPath, Player.game.mergePath, self.camera)
 
         self.keyboard()
         self.gamepad()
@@ -223,9 +227,9 @@ class Player(pygame.sprite.Sprite):
 
         Player.rect.center += self.direction * self.speed
         Attack.input(self)
-        HUD.updateHUD(f"Stamina: {Player.STAMINA - 1}", None, 60, (255, 0, 0), Player, Game)
+        HUD.updateHUD(f"Stamina: {Player.STAMINA - 1}", None, 60, (255, 0, 0), Player, Player.game)
         Enemy.attackPlayer(self)
-        Game.teleport(self, "ground:0", "ground:1", 1948, 900, 52, 200)
+        Player.game.teleport(self, "ground:0", "ground:1", 1948, 900, 52, 200)
 
     # collision with 2 objects
     def aabb_collision(self, a_x, a_y, a_width, a_height, b_x, b_y, b_width, b_height):
