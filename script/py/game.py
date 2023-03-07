@@ -15,6 +15,8 @@ from expandList import ExpandList
 from crypting import Crypting
 from gamepad import Inputs
 
+import re
+
 
 class Game():
     # initializing
