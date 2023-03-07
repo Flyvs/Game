@@ -176,7 +176,7 @@ class Game():
 
     # creates a path to files
     def path(newPath: str = None, newPath2: str = None):
-        absolutePath = os.path.abspath(__file__)
+        absolutePath = os.path.abspath(os.path.join(os.path.abspath(__file__), os.pardir))
         fileDirectory = os.path.dirname(absolutePath)
         parentDirectory = os.path.dirname(fileDirectory)
         # parentDirectory = os.path.join(parentDirectory, Game.getFileName()) # remove comment when converted to an exe and comment when run in editor------------------------------------------------------------------
