@@ -39,6 +39,12 @@ when in "black-mode" player moves faster
 Player can now jump
 The longer "jump" is hold the higher the player jumps
 
+## 7th Mar 2023
+
+Code is now cleaner than before
+
 ## issues
 
-the enemies can merge to the same coordinates when chasing the player
+- the enemies can merge to the same coordinates when chasing the player
+
+- when encountering an enemy: choosing item --> crash
