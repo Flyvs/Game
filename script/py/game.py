@@ -97,9 +97,9 @@ class Game():
 
         Enemy.list = []
         enemy1 = Enemy(Game.camera, (100, 1768), 1, 32, 10, 9, 12, 7, 15, False, "testenemy.png", Game, Player)
-        #enemy2 = Enemy(Game.camera, (300, 1768), 1, 32, 10, 9, 12, 7, 15, False, "testenemy2.png", Game, Player)
+        enemy2 = Enemy(Game.camera, (300, 1768), 1, 32, 10, 9, 12, 7, 15, False, "testenemy2.png", Game, Player)
         #enemy3 = Enemy(Game.camera, (1000, 1768), 1, 32, 10, 9, 12, 7, 15, False, "testenemy3.png", Game, Player)
-        ExpandList.expand(Enemy.list, enemy1)#, enemy2)#, enemy3)
+        ExpandList.expand(Enemy.list, enemy1, enemy2)#, enemy3)
 
         NPC((500, 1768), Game.npcPath, Game.camera)
         Game.playerLoaded = False

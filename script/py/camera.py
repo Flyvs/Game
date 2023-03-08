@@ -77,7 +77,7 @@ class Camera(pygame.sprite.Group):
             if str(type(Camera.spriteList[0])).partition(".")[2].split("'")[0] == "MsgBox":
                 del Camera.spriteList[0]
             i += 1
-        # print(Camera.spriteList)
+        print(Camera.spriteList)
 
         for sprite in Camera.spriteList:
             offset_pos = sprite.rect.topleft - self.offset + Camera.internal_offset
