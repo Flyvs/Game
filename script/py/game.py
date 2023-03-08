@@ -95,14 +95,14 @@ class Game():
         Game.pause = Pause(Game, Player)
         Game.battle = Battle(Game, Player)
 
-        NPC((500, 1768), Game.npcPath, Game.camera)
-        Game.playerLoaded = False
-
         Enemy.list = []
         enemy1 = Enemy(Game.camera, (100, 1768), 1, 32, 10, 9, 12, 7, 15, False, "testenemy.png", Game, Player)
-        #enemy2 = Enemy(Game.camera, (700, 700), 1, 32, 10, 9, 12, 7, 15, False, "testenemy2.png")
-        #enemy3 = Enemy(Game.camera, (1000, 500), 1, 32, 10, 9, 12, 7, 15, False, "testenemy3.png")
-        ExpandList.expand(Enemy.list, enemy1)#, enemy2, enemy3)
+        #enemy2 = Enemy(Game.camera, (300, 1768), 1, 32, 10, 9, 12, 7, 15, False, "testenemy2.png", Game, Player)
+        #enemy3 = Enemy(Game.camera, (1000, 1768), 1, 32, 10, 9, 12, 7, 15, False, "testenemy3.png", Game, Player)
+        ExpandList.expand(Enemy.list, enemy1)#, enemy2)#, enemy3)
+
+        NPC((500, 1768), Game.npcPath, Game.camera)
+        Game.playerLoaded = False
 
         self.music = Music(Game.musicPath, Game)
         self.music.play(3, volume)
@@ -237,7 +237,7 @@ class Game():
 
         self.screen.fill('#71ddee')
         Game.camera.update()
-        Game.camera.custom_draw(Game.player)
+        Game.camera.custom_draw(Game.player, Enemy.list)
         pygame.display.update()
         self.clock.tick(60)
 

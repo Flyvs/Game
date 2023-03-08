@@ -52,9 +52,10 @@ class Camera(pygame.sprite.Group):
         self.offset.y = target.rect.centery - Camera.half_h
 
     # drawing
-    def custom_draw(self, player):
+    def custom_draw(self, player, enemyList: list):
         self.center_target_camera(player)
         Camera.internal_surf.fill('#71ddee')
+        numOfEnemies = len(enemyList)
 
         # ground
         ground_offset = Camera.ground_rect.topleft - self.offset + Camera.internal_offset
@@ -72,7 +73,7 @@ class Camera(pygame.sprite.Group):
             if str(type(Camera.spriteList[1])).partition(".")[2].split("'")[0] == "Attack":
                 del Camera.spriteList[1]
             if NPC.hit(Camera.player) == False and obj == "MsgBox":
-                del Camera.spriteList[5]
+                del Camera.spriteList[4 + numOfEnemies]
             if str(type(Camera.spriteList[0])).partition(".")[2].split("'")[0] == "MsgBox":
                 del Camera.spriteList[0]
             i += 1

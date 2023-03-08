@@ -32,36 +32,12 @@ class Enemy(pygame.sprite.Sprite):
         """
         for enemy in Enemy.list:
             direction = pygame.math.Vector2()
-            speed = 1
+            speed = 0
 
             if Enemy.player.rect.center[0] > enemy.rect.center[0]:
                 direction.x = speed
             elif Enemy.player.rect.center[0] < enemy.rect.center[0]:
                 direction.x = -speed
-
-            jumping = False
-            jumpcount = 1
-            fallingspeed = 5
-            fall = pygame.math.Vector2()
-            fall.y = fallingspeed
-
-            keys = pygame.key.get_pressed()
-            if (keys[pygame.K_SPACE] or (player.game.gamepadInputs != None and player.game.gamepadInputs[10] == 1)) and not jumping:
-                if jumpcount >= 1:
-                    Enemy.rect.center -= fall
-                    jumpcount -= 1
-                if jumpcount == 0:
-                    jumping = True          
-
-            elif Enemy.rect.center[1] <= 1800 - fall.y:
-                jumpcount = 0
-                if Enemy.rect.center[1] == 1800 - fall.y:
-                    jumping = False
-                    jumpcount = 1
-                fall.y = fallingspeed
-                Enemy.rect.center += fall
-
-            enemy.rect.center += direction
 
     # start battle
     def attackPlayer(self):
