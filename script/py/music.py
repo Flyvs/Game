@@ -4,7 +4,10 @@ import json
 
 class Music():
     # initializing
-    def __init__(self, musicPath, game):
+    def __init__(self, musicPath: str, game):
+        """
+        "game" needs to be class type
+        """
         super().__init__()
 
         Music.path = musicPath

@@ -7,6 +7,9 @@ from attack import Attack
 class Camera(pygame.sprite.Group):
     # initializing
     def __init__(self, game, player):
+        """
+        "game" and "player" needs to be class type
+        """
         super().__init__()
         Camera.displaySurface = pygame.display.get_surface()
     	

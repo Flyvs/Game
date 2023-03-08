@@ -2,10 +2,13 @@ import pygame
 
 class Enemy(pygame.sprite.Sprite):
     # initializing
-    def __init__(self, group, POS: tuple, LVL: int, HP: int, PHYATK: int, MAGATK: int, PHYDEF: int, MAGDEF: int, SPEED: int, SPAWNED: bool, SPRITE: str, game, player):
+    def __init__(self, group, pos: tuple, LVL: int, HP: int, PHYATK: int, MAGATK: int, PHYDEF: int, MAGDEF: int, SPEED: int, SPAWNED: bool, SPRITE: str, game, player):
+        """
+        "game" and "player" needs to be class type
+        """
         super().__init__(group)
 
-        self.POS = POS
+        self.pos = pos
         self.LVL = LVL
         self.HP = HP
         self.PHYATK = PHYATK
@@ -20,7 +23,7 @@ class Enemy(pygame.sprite.Sprite):
         Enemy.player = player
 
         self.image = pygame.image.load(Enemy.game.enemyPath + self.SPRITE).convert_alpha()
-        self.rect = self.image.get_rect(topleft=self.POS)
+        self.rect = self.image.get_rect(topleft=self.pos)
 
     # track position of player
     def findPlayer():

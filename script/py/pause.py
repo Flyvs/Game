@@ -8,6 +8,9 @@ from music import Music
 class Pause():
     # initializing
     def __init__(self, game, player):
+        """
+        "game" and "player" needs to be class type
+        """
         super().__init__()
         Pause.game = game
         Pause.player = player

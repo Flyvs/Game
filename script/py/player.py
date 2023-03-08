@@ -10,7 +10,10 @@ from attack import Attack
 
 class Player(pygame.sprite.Sprite):
     # initializing
-    def __init__(self, pos, game, jsonPath, playerPath, attackPath, group):
+    def __init__(self, pos: tuple, game, jsonPath: str, playerPath: str, attackPath: str, group):
+        """
+        "game" needs to be class type
+        """
         super().__init__(group)
 
         playerdatafile = open(jsonPath + "playerdata.json", "r")

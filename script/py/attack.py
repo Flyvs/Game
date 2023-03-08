@@ -3,6 +3,9 @@ import pygame
 class Attack(pygame.sprite.Sprite):
     # initializing
     def __init__(self, CLASS: str, DMG: int, path: str, player, game, group):
+        """
+        "game" and "player" needs to be class type
+        """
         super().__init__(group)
 
         Attack.CLASS = CLASS

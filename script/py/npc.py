@@ -3,7 +3,7 @@ import os
 
 class NPC(pygame.sprite.Sprite):
     # initializing
-    def __init__(self, pos, path, group):
+    def __init__(self, pos: tuple, path: str, group):
         super().__init__(group)
 
         NPC.hitted = False

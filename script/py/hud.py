@@ -2,7 +2,7 @@ import pygame
 
 class HUD(pygame.sprite.Sprite):
     # initializing
-    def __init__(self, group, pos, text: str, font: str, fontSize: int, rgb: tuple):
+    def __init__(self, group, pos: tuple, text: str, font: str, fontSize: int, rgb: tuple):
         super().__init__(group)
 
         font_ = pygame.font.SysFont(font, fontSize)

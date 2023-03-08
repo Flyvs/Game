@@ -7,6 +7,9 @@ from enemy import Enemy
 class Battle():
     # initializing
     def __init__(self, game, player):
+        """
+        "game" and "player" needs to be class type
+        """
         super().__init__()
         Battle.game = game
         Battle.player = player
