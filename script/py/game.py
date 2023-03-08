@@ -99,10 +99,10 @@ class Game():
         Game.playerLoaded = False
 
         Enemy.list = []
-        #enemy1 = Enemy(Game.camera, (100, 1800), 1, 32, 10, 9, 12, 7, 15, False, "testenemy.png", Game, Player)
+        enemy1 = Enemy(Game.camera, (100, 1768), 1, 32, 10, 9, 12, 7, 15, False, "testenemy.png", Game, Player)
         #enemy2 = Enemy(Game.camera, (700, 700), 1, 32, 10, 9, 12, 7, 15, False, "testenemy2.png")
         #enemy3 = Enemy(Game.camera, (1000, 500), 1, 32, 10, 9, 12, 7, 15, False, "testenemy3.png")
-        #ExpandList.expand(Enemy.list, enemy1)#, enemy2, enemy3)
+        ExpandList.expand(Enemy.list, enemy1)#, enemy2, enemy3)
 
         self.music = Music(Game.musicPath, Game)
         self.music.play(3, volume)
@@ -127,7 +127,7 @@ class Game():
                     Game.playerHitSeconds = 0
                     Player.hit = True
                 else:
-                    Enemy.findPlayer()  # ========================================================================
+                    Enemy.findPlayer(Player)  # ========================================================================
                 self.run_game()
 
             while Game.run == "pause":

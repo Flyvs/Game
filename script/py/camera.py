@@ -72,7 +72,7 @@ class Camera(pygame.sprite.Group):
             if str(type(Camera.spriteList[1])).partition(".")[2].split("'")[0] == "Attack":
                 del Camera.spriteList[1]
             if NPC.hit(Camera.player) == False and obj == "MsgBox":
-                del Camera.spriteList[4]
+                del Camera.spriteList[5]
             if str(type(Camera.spriteList[0])).partition(".")[2].split("'")[0] == "MsgBox":
                 del Camera.spriteList[0]
             i += 1
