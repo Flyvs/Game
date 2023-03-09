@@ -32,12 +32,24 @@ class Enemy(pygame.sprite.Sprite):
         """
         for enemy in Enemy.list:
             direction = pygame.math.Vector2()
-            speed = 0
+            recenter = pygame.math.Vector2()
+            recenter.y = enemy.rect.center[1]
+            speed = 5
 
             if Enemy.player.rect.center[0] > enemy.rect.center[0]:
                 direction.x = speed
             elif Enemy.player.rect.center[0] < enemy.rect.center[0]:
                 direction.x = -speed
+
+            enemy.rect.center += direction
+
+            # recentering the enemy
+            dif = enemy.rect.center[0] - Enemy.player.rect.center[0]
+            if dif <= speed - 1: 
+                if Enemy.player.rect.center[0] < enemy.rect.center[0] + speed:
+                    recenter.x = enemy.rect.center[0] - dif
+                    enemy.rect.center = recenter
+                        
 
     # start battle
     def attackPlayer(self):
