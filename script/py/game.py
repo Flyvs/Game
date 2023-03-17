@@ -41,8 +41,8 @@ class Game():
             Crypting.rename(Game.cryptingPath, "playerdata.rofl", "playerdata.json")
             Crypting.decrypt(Game.cryptingPath, "gamedata.json", "gamekey.key")
             Crypting.decrypt(Game.cryptingPath, "playerdata.json", "playerkey.key")
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
         # loading the jsons
         Game.gamedatafile = open(Game.jsonPath + "gamedata.json", "r")
@@ -96,16 +96,16 @@ class Game():
         Game.battle = Battle(Game, Player)
 
         Enemy.list = []
-        enemy1 = Enemy(Game.camera, (100, 1768), 1, 32, 10, 9, 12, 7, 15, False, "testenemy.png", Game, Player)
-        enemy2 = Enemy(Game.camera, (300, 1768), 1, 32, 10, 9, 12, 7, 15, False, "testenemy2.png", Game, Player)
-        #enemy3 = Enemy(Game.camera, (1000, 1768), 1, 32, 10, 9, 12, 7, 15, False, "testenemy3.png", Game, Player)
-        ExpandList.expand(Enemy.list, enemy1, enemy2)#, enemy3)
+        enemy1 = Enemy(Game.camera, (100, 1768), 1, 32, 10, 9, 12, 7, 15, 0, True, "testenemy.png", Game, Player)
+        enemy2 = Enemy(Game.camera, (300, 1768), 1, 32, 10, 9, 12, 7, 15, 0, True, "testenemy2.png", Game, Player)
+        enemy3 = Enemy(Game.camera, (1000, 1768), 1, 32, 10, 9, 12, 7, 15, 0, True, "testenemy3.png", Game, Player)
+        ExpandList.expand(Enemy.list, enemy1, enemy2, enemy3)
 
         NPC((500, 1768), Game.npcPath, Game.camera)
         Game.playerLoaded = False
 
         self.music = Music(Game.musicPath, Game)
-        self.music.play(3, volume)
+        self.music.play(1, volume)
 
         self.main()
 
@@ -127,7 +127,7 @@ class Game():
                     Game.playerHitSeconds = 0
                     Player.hit = True
                 else:
-                    Enemy.findPlayer(Player)  # ========================================================================
+                    Enemy.findPlayer()  # ========================================================================
                 self.run_game()
 
             while Game.run == "pause":

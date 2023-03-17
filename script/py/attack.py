@@ -64,3 +64,14 @@ class Attack(pygame.sprite.Sprite):
                 Attack.rect[0] += 11
                 if Attack.rect[0] >= Attack.player.rect[0] + (Attack.game.screen.get_size()[0] // 2) + 100:
                     Attack.exist = False
+
+    # collision with 2 objects
+    def aabb_collision(self, a_x, a_y, a_width, a_height, b_x, b_y, b_width, b_height):
+        self.collision_x = a_x + a_width >= b_x and b_x + b_width >= a_x
+        self.collision_y = a_y + a_height >= b_y and b_y + b_height >= a_y
+        return self.collision_y and self.collision_x
+    
+    # collision attack and enemy
+    def attack_enemy_collision(self, enemy):
+        if Attack.exist:
+            return self.aabb_collision(Attack.rect[0], Attack.rect[1], 16, 16, enemy.rect[0], enemy.rect[1], 64, 64)

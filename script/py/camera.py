@@ -61,12 +61,28 @@ class Camera(pygame.sprite.Group):
         ground_offset = Camera.ground_rect.topleft - self.offset + Camera.internal_offset
         Camera.internal_surf.blit(Camera.ground_surf, ground_offset)
 
-        i = 0
         # drawing objects
         Camera.spriteList = self.sprites()#sorted(self.sprites(), key=lambda sprite: sprite.rect.centery)
         spriteListLen = len(Camera.spriteList)
+
+        i = 0
+        numOfEnemiesToDelete = 0
+        for enemy in enemyList:
+            if not enemy.SPAWNED:
+                numOfEnemiesToDelete += 1
         while spriteListLen > i:
             spriteListLen = len(Camera.spriteList)
+            j = 0
+            k = 0
+            while not k == numOfEnemiesToDelete:
+                obj = str(type(Camera.spriteList[j])).partition(".")[2].split("'")[0]
+                if obj == "Enemy" and Camera.spriteList[j].SPAWNED == False:
+                    del Camera.spriteList[j]
+                    numOfEnemies -= 1
+                    k += 1
+                j += 1
+                if j > numOfEnemies - 1:
+                    break
             obj = str(type(Camera.spriteList[i - 1])).partition(".")[2].split("'")[0]
             if Attack.attacking == False and obj == "Attack":
                 del Camera.spriteList[i - 1]
