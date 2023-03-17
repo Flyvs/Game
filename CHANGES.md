@@ -43,6 +43,10 @@ The longer "jump" is hold the higher the player jumps
 
 Code is now cleaner than before
 
+## 17th Mar 2023
+
+Weird behaviour of enemies fixed and new track
+
 ## issues
 
 - the enemies can merge to the same coordinates when chasing the player
