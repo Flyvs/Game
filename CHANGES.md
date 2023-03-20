@@ -47,6 +47,10 @@ Code is now cleaner than before
 
 Weird behaviour of enemies fixed and new track
 
+## 20th Mar 2023
+
+Export wasn't working properly. Fixed
+
 ## issues
 
 - the enemies can merge to the same coordinates when chasing the player

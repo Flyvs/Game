@@ -74,4 +74,4 @@ class Attack(pygame.sprite.Sprite):
     # collision attack and enemy
     def attack_enemy_collision(self, enemy):
         if Attack.exist:
-            return self.aabb_collision(Attack.rect[0], Attack.rect[1], 16, 16, enemy.rect[0], enemy.rect[1], 64, 64)
+            return self.aabb_collision(Attack.rect[0], Attack.rect[1], 30, 24, enemy.rect[0], enemy.rect[1], 64, 64)

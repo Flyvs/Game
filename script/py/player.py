@@ -232,7 +232,7 @@ class Player(pygame.sprite.Sprite):
         Attack.input(self)
         HUD.updateHUD(f"Stamina: {Player.STAMINA - 1}", None, 60, (255, 0, 0), Player, Player.game)
         Enemy.attackPlayer(self)
-        #Enemy.hit(self)
+        Enemy.hit(self)
         Player.game.teleport(self, "ground:0", "ground:1", 1948, 900, 52, 200)
 
     # collision with 2 objects
@@ -259,13 +259,10 @@ class Player(pygame.sprite.Sprite):
 
     # player enemy collision
     def player_enemy_collision(self):
-        try:
-            enemyToCheck = Enemy.list.pop(0)
-            Enemy.list.append(enemyToCheck)
-            if enemyToCheck.SPAWNED:
-                return self.aabb_collision(Player.rect.center[0], Player.rect.center[1], 64, 64, enemyToCheck.rect.center[0], enemyToCheck.rect.center[1], 64, 64)
-        except Exception as e:
-            print(e)
+        enemyToCheck = Enemy.list.pop(0)
+        Enemy.list.append(enemyToCheck)
+        if enemyToCheck.SPAWNED:
+            return self.aabb_collision(Player.rect.center[0], Player.rect.center[1], 64, 64, enemyToCheck.rect.center[0], enemyToCheck.rect.center[1], 64, 64)
 
     # player teleport collision
     def player_teleport_collision(self, hitboxX: int, hitboxY: int, hitboxWidth: int, hitboxHeigth: int):
