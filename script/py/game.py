@@ -25,7 +25,7 @@ class Game():
         pygame.font.init()
 
         # set to true when converting the script to an exe and to false when running in editor
-        Game.export = True
+        Game.export = False
 
         # getting paths
         Game.jsonPath = Game.path("script")
