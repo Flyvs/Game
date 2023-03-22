@@ -51,6 +51,10 @@ Weird behaviour of enemies fixed and new track
 
 Export wasn't working properly. Fixed
 
+## 22th Mar 2023
+
+Gamepad functionality for battle screen added
+
 ## issues
 
 - the enemies can merge to the same coordinates when chasing the player
