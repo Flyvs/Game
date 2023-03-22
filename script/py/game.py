@@ -236,8 +236,8 @@ class Game():
         try:
             if Game.gamepadInputs[16] == 1:
                 Game.run = "pause"
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
         self.screen.fill('#71ddee')
         Game.camera.update()
