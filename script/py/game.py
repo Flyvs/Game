@@ -122,7 +122,7 @@ class Game():
                 timer = Game.tracktime(Game.playerHitTicks, Game.playerHitSeconds, Game.playerHitMinutes, Game.playerHitHours)
                 Game.playerHitTicks = timer["ticks"]
                 Game.playerHitSeconds = timer["seconds"]
-                if timer["seconds"] % 3 == 0 and Player.hit == False:
+                if timer["seconds"] % 3 == 0 and Player.hit is False:
                     Game.playerHitTicks = 0
                     Game.playerHitSeconds = 0
                     Player.hit = True

@@ -84,11 +84,11 @@ class Camera(pygame.sprite.Group):
                 if j > numOfEnemies - 1:
                     break
             obj = str(type(Camera.spriteList[i - 1])).partition(".")[2].split("'")[0]
-            if Attack.attacking == False and obj == "Attack":
+            if Attack.attacking is False and obj == "Attack":
                 del Camera.spriteList[i - 1]
             if str(type(Camera.spriteList[1])).partition(".")[2].split("'")[0] == "Attack":
                 del Camera.spriteList[1]
-            if NPC.hit(Camera.player) == False and obj == "MsgBox":
+            if NPC.hit(Camera.player) is False and obj == "MsgBox":
                 del Camera.spriteList[4 + numOfEnemies]
             if str(type(Camera.spriteList[0])).partition(".")[2].split("'")[0] == "MsgBox":
                 del Camera.spriteList[0]

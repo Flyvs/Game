@@ -92,7 +92,7 @@ class Player(pygame.sprite.Sprite):
     # jumping
     def jump(self):
         self.keys = pygame.key.get_pressed()
-        if (self.keys[pygame.K_SPACE] or (Player.game.gamepadInputs != None and Player.game.gamepadInputs[10] == 1)) and not self.jumping:
+        if (self.keys[pygame.K_SPACE] or (Player.game.gamepadInputs is not None and Player.game.gamepadInputs[10] == 1)) and not self.jumping:
             if self.jumpcount >= 1:
                 Player.rect.center -= self.fall
                 self.jumpcount -= 1
@@ -124,14 +124,14 @@ class Player(pygame.sprite.Sprite):
         """
         try:
             if Player.game.gamepadInputs[3] > 0:
-                if self.col_right == False:
+                if self.col_right is False:
                     Player.facingRight = True
                     Player.facingLeft = False
                     self.direction.x = Player.game.gamepadInputs[3]
                 else:
                     self.direction.x = 0
             elif Player.game.gamepadInputs[3] < 0:
-                if self.col_left == False:
+                if self.col_left is False:
                     Player.facingRight = False
                     Player.facingLeft = True
                     self.direction.x = Player.game.gamepadInputs[3]
@@ -162,14 +162,14 @@ class Player(pygame.sprite.Sprite):
         if self.keys[pygame.K_d]:
             Player.facingRight = True
             Player.facingLeft = False
-            if self.col_right == False:
+            if self.col_right is False:
                 self.direction.x = 1
             else:
                 self.direction.x = 0
         elif self.keys[pygame.K_a]:
             Player.facingRight = False
             Player.facingLeft = True
-            if self.col_left == False:
+            if self.col_left is False:
                 self.direction.x = -1
             else:
                 self.direction.x = 0
@@ -178,18 +178,18 @@ class Player(pygame.sprite.Sprite):
 
     
     def playerImage(self):
-        if Player.facingLeft == True:
+        if Player.facingLeft is True:
             if Player.color == "w":
                 Player.image = pygame.image.load(Player.path + Player.left).convert_alpha()
             elif Player.color == "b" and Player.STAMINA > 0:
                 Player.image = pygame.image.load(Player.path + Player.leftB).convert_alpha()
-        elif Player.facingRight == True:
+        elif Player.facingRight is True:
             if Player.color == "w":
                 Player.image = pygame.image.load(Player.path + Player.right).convert_alpha()
             elif Player.color == "b" and Player.STAMINA > 0:
                 Player.image = pygame.image.load(Player.path + Player.rightB).convert_alpha()
 
-        if (self.keys[pygame.K_TAB] and Player.game.ticksToIgnoreTAB == 0) or (Player.game.gamepadInputs != None and Player.game.gamepadInputs[13] == 1 and Player.game.ticksToIgnoreTAB == 0):
+        if (self.keys[pygame.K_TAB] and Player.game.ticksToIgnoreTAB == 0) or (Player.game.gamepadInputs is not None and Player.game.gamepadInputs[13] == 1 and Player.game.ticksToIgnoreTAB == 0):
             Player.game.ticksToIgnoreTAB = 30
             if Player.color == "w":
                 Player.color = "b"
@@ -218,7 +218,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.col_bottom = False
 
-        if NPC.hit(Player) and NPC.hitted == False:
+        if NPC.hit(Player) and NPC.hitted is False:
             NPC.hitted = True
             MsgBox((NPC.rect[0] - 224, NPC.rect[1] - 192), "This is a demo text", None, 60, (66, 135, 245), "test.png", Player.game.msgboxPath, Player.game.mergePath, self.camera)
 

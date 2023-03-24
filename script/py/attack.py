@@ -42,13 +42,13 @@ class Attack(pygame.sprite.Sprite):
         Attack.posLeft = (Attack.xLeft, Attack.yLeft)
 
         if Attack.exist == False:
-            if self.keys[pygame.K_e] or (Attack.game.gamepadInputs != None and Attack.game.gamepadInputs[11] == 1):
+            if self.keys[pygame.K_e] or (Attack.game.gamepadInputs is not None and Attack.game.gamepadInputs[11] == 1):
                 Attack.attacking = True
-                if Attack.player.facingLeft == True:
+                if Attack.player.facingLeft is True:
                     Attack.image = pygame.image.load(Attack.spritePath + Attack.left).convert_alpha()
                     Attack.rect = Attack.image.get_rect(center=Attack.posLeft)
                     self.left = True
-                elif Attack.player.facingRight == True:
+                elif Attack.player.facingRight is True:
                     Attack.image = pygame.image.load(Attack.spritePath + Attack.right).convert_alpha()
                     Attack.rect = Attack.image.get_rect(center=Attack.posRight)
                     self.left = False
@@ -56,11 +56,11 @@ class Attack(pygame.sprite.Sprite):
             else:
                 Attack.attacking = False
         else:
-            if self.left == True:
+            if self.left is True:
                 Attack.rect[0] -= 11
                 if Attack.rect[0] <= Attack.player.rect[0] - (Attack.game.screen.get_size()[0] // 2) - 100:
                     Attack.exist = False
-            if self.left == False:
+            if self.left is False:
                 Attack.rect[0] += 11
                 if Attack.rect[0] >= Attack.player.rect[0] + (Attack.game.screen.get_size()[0] // 2) + 100:
                     Attack.exist = False
