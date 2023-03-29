@@ -49,16 +49,20 @@ class Enemy(pygame.sprite.Sprite):
 
                 enemy.rect.center += direction
 
-                print(enemy.rect.center, "|", Enemy.player.rect.center)
-
-                """
                 # recentering the enemy
-                dif = enemy.rect.center[0] - Enemy.player.rect.center[0]
-                if dif <= enemy.MVMNTSPEED - 1: 
-                    if Enemy.player.rect.center[0] < enemy.rect.center[0] + enemy.MVMNTSPEED:
-                        recenter.x = enemy.rect.center[0] - dif
-                        enemy.rect.center = recenter
-                """
+                if (Enemy.player.rect.center[0] != enemy.rect.center[0]) or (Enemy.player.rect.center[1] != enemy.rect.center[1]):
+                    if Enemy.player.rect.center[0] < enemy.rect.center[0]:
+                        dif_x = enemy.rect.center[0] - enemy.MVMNTSPEED
+                    else:
+                        dif_x = enemy.rect.center[0] + enemy.MVMNTSPEED
+                    recenter.x = dif_x
+
+                    if Enemy.player.rect.center[1] < enemy.rect.center[1]:
+                        dif_y = enemy.rect.center[1] - enemy.MVMNTSPEED
+                    else:
+                        dif_y = enemy.rect.center[1] + enemy.MVMNTSPEED
+                    recenter.y = dif_y
+                    enemy.rect.center = recenter
 
     # start battle
     def attackPlayer(self):
