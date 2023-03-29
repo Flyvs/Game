@@ -89,6 +89,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.speed = self.standard
     
+    """
     # jumping
     def jump(self):
         self.keys = pygame.key.get_pressed()
@@ -106,23 +107,22 @@ class Player(pygame.sprite.Sprite):
                 self.jumpcount = 30
             self.fall.y = self.fallingspeed
             Player.rect.center += self.fall
-
+    """
+    
     # set controls for gamepad movement
     def gamepad(self):
-        """
         try:
-            if Game.gamepadInputs[4] > 0:
+            if Player.game.gamepadInputs[4] > 0:
                 if self.col_bottom == False:
-                    self.direction.y = Game.gamepadInputs[4]
+                    self.direction.y = Player.game.gamepadInputs[4]
                 else:
                     self.direction.y = 0
-            elif Game.gamepadInputs[4] < 0:
+            elif Player.game.gamepadInputs[4] < 0:
                 if self.col_top == False:
-                    self.direction.y = Game.gamepadInputs[4]
+                    self.direction.y = Player.game.gamepadInputs[4]
                 else:
                     self.direction.y = 0
-        """
-        try:
+
             if Player.game.gamepadInputs[3] > 0:
                 if self.col_right is False:
                     Player.facingRight = True
@@ -138,13 +138,13 @@ class Player(pygame.sprite.Sprite):
                 else:
                     self.direction.x = 0
         except:
+            # If no gamepad is connected an exception ("NoneType" object is not subscriptable) occurs
             pass
 
     # set the keys for movement
     def keyboard(self):
         self.keys = pygame.key.get_pressed()
 
-        """
         if self.keys[pygame.K_w]:
             if self.col_top == False:
                 self.direction.y = -1
@@ -157,7 +157,6 @@ class Player(pygame.sprite.Sprite):
                 self.direction.y = 0
         else:
             self.direction.y = 0
-        """
 
         if self.keys[pygame.K_d]:
             Player.facingRight = True
@@ -226,7 +225,7 @@ class Player(pygame.sprite.Sprite):
         self.gamepad()
         self.playerImage()
         self.drain()
-        self.jump()
+        # self.jump()
 
         Player.rect.center += self.direction * self.speed
         Attack.input(self)

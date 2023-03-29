@@ -97,8 +97,8 @@ class Game():
 
         Enemy.list = []
         enemy1 = Enemy(Game.camera, (100, 1768), 1, 32, 10, 9, 12, 7, 15, 1, True, "testenemy.png", Game, Player)
-        enemy2 = Enemy(Game.camera, (300, 1768), 1, 32, 10, 9, 12, 7, 15, 2, True, "testenemy2.png", Game, Player)
-        enemy3 = Enemy(Game.camera, (1000, 1768), 1, 32, 10, 9, 12, 7, 15, 3, True, "testenemy3.png", Game, Player)
+        enemy2 = Enemy(Game.camera, (300, 1768), 1, 32, 10, 9, 12, 7, 15, 2, False, "testenemy2.png", Game, Player)
+        enemy3 = Enemy(Game.camera, (1000, 1768), 1, 32, 10, 9, 12, 7, 15, 3, False, "testenemy3.png", Game, Player)
         ExpandList.expand(Enemy.list, enemy1, enemy2, enemy3)
 
         NPC((500, 1768), Game.npcPath, Game.camera)
@@ -236,8 +236,9 @@ class Game():
         try:
             if Game.gamepadInputs[16] == 1:
                 Game.run = "pause"
-        except Exception as e:
-            print(e)
+        except:
+            # If no gamepad is connected an exception ("NoneType" object is not subscriptable) occurs
+            pass
 
         self.screen.fill('#71ddee')
         Game.camera.update()

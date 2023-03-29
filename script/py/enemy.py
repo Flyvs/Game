@@ -4,7 +4,7 @@ from attack import Attack
 
 class Enemy(pygame.sprite.Sprite):
     # initializing
-    def __init__(self, group, POS: tuple, LVL: int, HP: int, PHYATK: int, MAGATK: int, PHYDEF: int, MAGDEF: int, SPEED: int, MVMTSPEED: int, SPAWNED: bool, SPRITE: str, game, player):
+    def __init__(self, group, POS: tuple, LVL: int, HP: int, PHYATK: int, MAGATK: int, PHYDEF: int, MAGDEF: int, SPEED: int, MVMNTSPEED: int, SPAWNED: bool, SPRITE: str, game, player):
         """
         "game" and "player" needs to be class type
         """
@@ -18,7 +18,7 @@ class Enemy(pygame.sprite.Sprite):
         self.PHYDEF = PHYDEF
         self.MAGDEF = MAGDEF
         self.SPEED = SPEED
-        self.MVMTSPEED = MVMTSPEED
+        self.MVMNTSPEED = MVMNTSPEED
         self.SPAWNED = SPAWNED
         self.SPRITE = SPRITE
 
@@ -38,18 +38,27 @@ class Enemy(pygame.sprite.Sprite):
                 recenter.y = enemy.rect.center[1]
                 
                 if Enemy.player.rect.center[0] > enemy.rect.center[0]:
-                    direction.x = enemy.MVMTSPEED
+                    direction.x = enemy.MVMNTSPEED
                 elif Enemy.player.rect.center[0] < enemy.rect.center[0]:
-                    direction.x = -enemy.MVMTSPEED
+                    direction.x = -enemy.MVMNTSPEED
+
+                if Enemy.player.rect.center[1] > enemy.rect.center[1]:
+                    direction.y = enemy.MVMNTSPEED
+                elif Enemy.player.rect.center[1] < enemy.rect.center[1]:
+                    direction.y = -enemy.MVMNTSPEED
 
                 enemy.rect.center += direction
 
+                print(enemy.rect.center, "|", Enemy.player.rect.center)
+
+                """
                 # recentering the enemy
                 dif = enemy.rect.center[0] - Enemy.player.rect.center[0]
-                if dif <= enemy.MVMTSPEED - 1: 
-                    if Enemy.player.rect.center[0] < enemy.rect.center[0] + enemy.MVMTSPEED:
+                if dif <= enemy.MVMNTSPEED - 1: 
+                    if Enemy.player.rect.center[0] < enemy.rect.center[0] + enemy.MVMNTSPEED:
                         recenter.x = enemy.rect.center[0] - dif
-                        enemy.rect.center = recenter                           
+                        enemy.rect.center = recenter
+                """
 
     # start battle
     def attackPlayer(self):
