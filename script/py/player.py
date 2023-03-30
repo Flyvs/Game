@@ -34,10 +34,16 @@ class Player(pygame.sprite.Sprite):
         Player.path = playerPath
         Player.right = "playerR.png"
         Player.left = "playerL.png"
+        Player.up = "playerUp.png"
+        Player.down = "playerDown.png"
         Player.rightB = "playerRblack.png"
         Player.leftB = "playerLblack.png"
+        Player.upB = "playerUpblack.png"
+        Player.downB = "playerDownblack.png"
         Player.facingLeft = False
         Player.facingRight = True
+        Player.facingUp = False
+        Player.facingDown = False
         Player.hit = True
 
         Player.color = "w" # w: white; b: black
@@ -108,17 +114,25 @@ class Player(pygame.sprite.Sprite):
             self.fall.y = self.fallingspeed
             Player.rect.center += self.fall
     """
-    
+
     # set controls for gamepad movement
     def gamepad(self):
         try:
             if Player.game.gamepadInputs[4] > 0:
                 if self.col_bottom == False:
+                    Player.facingRight = False
+                    Player.facingLeft = False
+                    Player.facingUp = False
+                    Player.facingDown = True
                     self.direction.y = Player.game.gamepadInputs[4]
                 else:
                     self.direction.y = 0
             elif Player.game.gamepadInputs[4] < 0:
                 if self.col_top == False:
+                    Player.facingRight = False
+                    Player.facingLeft = False
+                    Player.facingUp = True
+                    Player.facingDown = False
                     self.direction.y = Player.game.gamepadInputs[4]
                 else:
                     self.direction.y = 0
@@ -127,6 +141,8 @@ class Player(pygame.sprite.Sprite):
                 if self.col_right is False:
                     Player.facingRight = True
                     Player.facingLeft = False
+                    Player.facingUp = False
+                    Player.facingDown = False
                     self.direction.x = Player.game.gamepadInputs[3]
                 else:
                     self.direction.x = 0
@@ -134,6 +150,8 @@ class Player(pygame.sprite.Sprite):
                 if self.col_left is False:
                     Player.facingRight = False
                     Player.facingLeft = True
+                    Player.facingUp = False
+                    Player.facingDown = False
                     self.direction.x = Player.game.gamepadInputs[3]
                 else:
                     self.direction.x = 0
@@ -146,11 +164,19 @@ class Player(pygame.sprite.Sprite):
         self.keys = pygame.key.get_pressed()
 
         if self.keys[pygame.K_w]:
+            Player.facingRight = False
+            Player.facingLeft = False
+            Player.facingUp = True
+            Player.facingDown = False
             if self.col_top == False:
                 self.direction.y = -1
             else:
                 self.direction.y = 0
         elif self.keys[pygame.K_s]:
+            Player.facingRight = False
+            Player.facingLeft = False
+            Player.facingUp = False
+            Player.facingDown = True
             if self.col_bottom == False:
                 self.direction.y = 1
             else:
@@ -161,6 +187,8 @@ class Player(pygame.sprite.Sprite):
         if self.keys[pygame.K_d]:
             Player.facingRight = True
             Player.facingLeft = False
+            Player.facingUp = False
+            Player.facingDown = False
             if self.col_right is False:
                 self.direction.x = 1
             else:
@@ -168,6 +196,8 @@ class Player(pygame.sprite.Sprite):
         elif self.keys[pygame.K_a]:
             Player.facingRight = False
             Player.facingLeft = True
+            Player.facingUp = False
+            Player.facingDown = False
             if self.col_left is False:
                 self.direction.x = -1
             else:
@@ -187,6 +217,16 @@ class Player(pygame.sprite.Sprite):
                 Player.image = pygame.image.load(Player.path + Player.right).convert_alpha()
             elif Player.color == "b" and Player.STAMINA > 0:
                 Player.image = pygame.image.load(Player.path + Player.rightB).convert_alpha()
+        elif Player.facingUp is True:
+            if Player.color == "w":
+                Player.image = pygame.image.load(Player.path + Player.up).convert_alpha()
+            elif Player.color == "b" and Player.STAMINA > 0:
+                Player.image = pygame.image.load(Player.path + Player.upB).convert_alpha()
+        elif Player.facingDown is True:
+            if Player.color == "w":
+                Player.image = pygame.image.load(Player.path + Player.down).convert_alpha()
+            elif Player.color == "b" and Player.STAMINA > 0:
+                Player.image = pygame.image.load(Player.path + Player.downB).convert_alpha()
 
         if (self.keys[pygame.K_TAB] and Player.game.ticksToIgnoreTAB == 0) or (Player.game.gamepadInputs is not None and Player.game.gamepadInputs[13] == 1 and Player.game.ticksToIgnoreTAB == 0):
             Player.game.ticksToIgnoreTAB = 30
