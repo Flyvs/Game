@@ -6,7 +6,7 @@ class Enemy(pygame.sprite.Sprite):
     # initializing
     def __init__(self, group, POS: tuple, LVL: int, HP: int, PHYATK: int, MAGATK: int, PHYDEF: int, MAGDEF: int, SPEED: int, MVMNTSPEED: int, SPAWNED: bool, SPRITE: str, game, player):
         """
-        "game" and "player" needs to be class type
+        "game" and "player" must be class type
         """
         super().__init__(group)
 

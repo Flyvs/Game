@@ -18,7 +18,7 @@ class Attack(pygame.sprite.Sprite):
         Attack.firingRight = False
         Attack.attacking = False
         Attack.exist = False
-        self.left = False
+        Attack.direction = "right"
         Attack.game = game
         Attack.player = player
         Attack.xRight = Attack.player.rect.center[0] + 48
@@ -34,12 +34,12 @@ class Attack(pygame.sprite.Sprite):
     # positioning the attack and set the attack key
     def input(self):
         self.keys = pygame.key.get_pressed()
-        Attack.xRight = Attack.player.rect.center[0] + 48
-        Attack.yRight = Attack.player.rect.center[1] + 14
-        Attack.xLeft = Attack.player.rect.center[0] - 48
-        Attack.yLeft = Attack.player.rect.center[1] + 14
-        Attack.posRight = (Attack.xRight, Attack.yRight)
-        Attack.posLeft = (Attack.xLeft, Attack.yLeft)
+        xRight = Attack.player.rect.center[0] + 48
+        yRight = Attack.player.rect.center[1] + 14
+        xLeft = Attack.player.rect.center[0] - 48
+        yLeft = Attack.player.rect.center[1] + 14
+        Attack.posRight = (xRight, yRight)
+        Attack.posLeft = (xLeft, yLeft)
 
         if Attack.exist == False:
             if self.keys[pygame.K_e] or (Attack.game.gamepadInputs is not None and Attack.game.gamepadInputs[11] == 1):
@@ -47,20 +47,20 @@ class Attack(pygame.sprite.Sprite):
                 if Attack.player.facingLeft is True:
                     Attack.image = pygame.image.load(Attack.spritePath + Attack.left).convert_alpha()
                     Attack.rect = Attack.image.get_rect(center=Attack.posLeft)
-                    self.left = True
+                    Attack.direction = "left"
                 elif Attack.player.facingRight is True:
                     Attack.image = pygame.image.load(Attack.spritePath + Attack.right).convert_alpha()
                     Attack.rect = Attack.image.get_rect(center=Attack.posRight)
-                    self.left = False
+                    Attack.direction = "right"
                 Attack.exist = True
             else:
                 Attack.attacking = False
         else:
-            if self.left is True:
+            if Attack.direction == "left":
                 Attack.rect[0] -= 11
                 if Attack.rect[0] <= Attack.player.rect[0] - (Attack.game.screen.get_size()[0] // 2) - 100:
                     Attack.exist = False
-            if self.left is False:
+            elif Attack.direction == "right":
                 Attack.rect[0] += 11
                 if Attack.rect[0] >= Attack.player.rect[0] + (Attack.game.screen.get_size()[0] // 2) + 100:
                     Attack.exist = False

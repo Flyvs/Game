@@ -32,14 +32,12 @@ class Player(pygame.sprite.Sprite):
         Player.game = game
 
         Player.path = playerPath
+
         Player.right = "playerR.png"
         Player.left = "playerL.png"
-        Player.up = "playerUp.png"
-        Player.down = "playerDown.png"
         Player.rightB = "playerRblack.png"
         Player.leftB = "playerLblack.png"
-        Player.upB = "playerUpblack.png"
-        Player.downB = "playerDownblack.png"
+
         Player.facingLeft = False
         Player.facingRight = True
         Player.facingUp = False
@@ -217,16 +215,6 @@ class Player(pygame.sprite.Sprite):
                 Player.image = pygame.image.load(Player.path + Player.right).convert_alpha()
             elif Player.color == "b" and Player.STAMINA > 0:
                 Player.image = pygame.image.load(Player.path + Player.rightB).convert_alpha()
-        elif Player.facingUp is True:
-            if Player.color == "w":
-                Player.image = pygame.image.load(Player.path + Player.up).convert_alpha()
-            elif Player.color == "b" and Player.STAMINA > 0:
-                Player.image = pygame.image.load(Player.path + Player.upB).convert_alpha()
-        elif Player.facingDown is True:
-            if Player.color == "w":
-                Player.image = pygame.image.load(Player.path + Player.down).convert_alpha()
-            elif Player.color == "b" and Player.STAMINA > 0:
-                Player.image = pygame.image.load(Player.path + Player.downB).convert_alpha()
 
         if (self.keys[pygame.K_TAB] and Player.game.ticksToIgnoreTAB == 0) or (Player.game.gamepadInputs is not None and Player.game.gamepadInputs[13] == 1 and Player.game.ticksToIgnoreTAB == 0):
             Player.game.ticksToIgnoreTAB = 30
