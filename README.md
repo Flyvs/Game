@@ -45,7 +45,7 @@ decrypts the given file and uses the given key(file)
 Crypting.decrypt(path: str, fileToDecrypt: str, filekeyName: str)
 ```
 
-renames a file
+renames a file (idk why I created this)
 ```
 Crypting.rename(path: str, oldName: str, newName: str)
 ```
