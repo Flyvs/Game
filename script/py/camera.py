@@ -7,6 +7,9 @@ from attack import Attack
 class Camera(pygame.sprite.Group):
     # initializing
     def __init__(self, game, player):
+        """
+        "game" and "player" needs to be class type
+        """
         super().__init__()
         Camera.displaySurface = pygame.display.get_surface()
     	
@@ -49,27 +52,44 @@ class Camera(pygame.sprite.Group):
         self.offset.y = target.rect.centery - Camera.half_h
 
     # drawing
-    def custom_draw(self, player):
+    def custom_draw(self, player, enemyList: list):
         self.center_target_camera(player)
         Camera.internal_surf.fill('#71ddee')
+        numOfEnemies = len(enemyList)
 
         # ground
         ground_offset = Camera.ground_rect.topleft - self.offset + Camera.internal_offset
         Camera.internal_surf.blit(Camera.ground_surf, ground_offset)
 
-        i = 0
         # drawing objects
         Camera.spriteList = self.sprites()#sorted(self.sprites(), key=lambda sprite: sprite.rect.centery)
         spriteListLen = len(Camera.spriteList)
+
+        i = 0
+        numOfEnemiesToDelete = 0
+        for enemy in enemyList:
+            if not enemy.SPAWNED:
+                numOfEnemiesToDelete += 1
         while spriteListLen > i:
             spriteListLen = len(Camera.spriteList)
+            j = 0
+            k = 0
+            while not k == numOfEnemiesToDelete:
+                obj = str(type(Camera.spriteList[j])).partition(".")[2].split("'")[0]
+                if obj == "Enemy" and Camera.spriteList[j].SPAWNED == False:
+                    del Camera.spriteList[j]
+                    numOfEnemies -= 1
+                    k += 1
+                j += 1
+                if j > numOfEnemies - 1:
+                    break
             obj = str(type(Camera.spriteList[i - 1])).partition(".")[2].split("'")[0]
-            if Attack.attacking == False and obj == "Attack":
+            if Attack.attacking is False and obj == "Attack":
                 del Camera.spriteList[i - 1]
             if str(type(Camera.spriteList[1])).partition(".")[2].split("'")[0] == "Attack":
                 del Camera.spriteList[1]
-            if NPC.hit(Camera.player) == False and obj == "MsgBox":
-                del Camera.spriteList[4]
+            if NPC.hit(Camera.player) is False and obj == "MsgBox":
+                del Camera.spriteList[4 + numOfEnemies]
             if str(type(Camera.spriteList[0])).partition(".")[2].split("'")[0] == "MsgBox":
                 del Camera.spriteList[0]
             i += 1

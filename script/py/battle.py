@@ -7,6 +7,9 @@ from enemy import Enemy
 class Battle():
     # initializing
     def __init__(self, game, player):
+        """
+        "game" and "player" needs to be class type
+        """
         super().__init__()
         Battle.game = game
         Battle.player = player
@@ -40,13 +43,13 @@ class Battle():
     def battleScreen():
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_w]:
+        if keys[pygame.K_w] or (Battle.game.gamepadInputs is not None and Battle.game.gamepadInputs[21] == 1):
             if Battle.options != 1:
                 Battle.options -= 1
-        elif keys[pygame.K_s]:
+        elif keys[pygame.K_s] or (Battle.game.gamepadInputs is not None and Battle.game.gamepadInputs[22] == 1):
             if Battle.options != 4:
                 Battle.options += 1
-        elif keys[pygame.K_SPACE] and Battle.game.ticksToIgnoreSPACE == 0:
+        elif (keys[pygame.K_SPACE] and Battle.game.ticksToIgnoreSPACE == 0) or (Battle.game.gamepadInputs is not None and Battle.game.gamepadInputs[10] == 1 and Battle.game.ticksToIgnoreSPACE == 0):
             Battle.game.ticksToIgnoreSPACE = 5
             if Battle.options == 1:
                 Battle.physical()

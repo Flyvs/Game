@@ -24,6 +24,9 @@ class Game():
         pygame.init()
         pygame.font.init()
 
+        # set to true when converting the script to an exe and to false when running in editor
+        Game.export = False
+
         # getting paths
         Game.jsonPath = Game.path("script")
         Game.msgboxPath = Game.path("sprites", "msgboxes")
@@ -35,8 +38,8 @@ class Game():
         Game.musicPath = Game.path("music")
 
         # encrypting the json
-        Game.cryptingPath = Game.path("script")
         try:
+            Game.cryptingPath = Game.path("script")
             Crypting.rename(Game.cryptingPath, "gamedata.rofl", "gamedata.json")
             Crypting.rename(Game.cryptingPath, "playerdata.rofl", "playerdata.json")
             Crypting.decrypt(Game.cryptingPath, "gamedata.json", "gamekey.key")
@@ -95,17 +98,17 @@ class Game():
         Game.pause = Pause(Game, Player)
         Game.battle = Battle(Game, Player)
 
+        Enemy.list = []
+        enemy1 = Enemy(Game.camera, (100, 1768), 1, 32, 10, 9, 12, 7, 15, 1, True, "testenemy.png", Game, Player)
+        enemy2 = Enemy(Game.camera, (300, 1768), 1, 32, 10, 9, 12, 7, 15, 2, True, "testenemy2.png", Game, Player)
+        enemy3 = Enemy(Game.camera, (1000, 1768), 1, 32, 10, 9, 12, 7, 15, 3, True, "testenemy3.png", Game, Player)
+        ExpandList.expand(Enemy.list, enemy1, enemy2, enemy3)
+
         NPC((500, 1768), Game.npcPath, Game.camera)
         Game.playerLoaded = False
 
-        Enemy.list = []
-        #enemy1 = Enemy(Game.camera, (100, 1800), 1, 32, 10, 9, 12, 7, 15, False, "testenemy.png", Game, Player)
-        #enemy2 = Enemy(Game.camera, (700, 700), 1, 32, 10, 9, 12, 7, 15, False, "testenemy2.png")
-        #enemy3 = Enemy(Game.camera, (1000, 500), 1, 32, 10, 9, 12, 7, 15, False, "testenemy3.png")
-        #ExpandList.expand(Enemy.list, enemy1)#, enemy2, enemy3)
-
         self.music = Music(Game.musicPath, Game)
-        self.music.play(3, volume)
+        self.music.play(1, volume)
 
         self.main()
 
@@ -122,7 +125,7 @@ class Game():
                 timer = Game.tracktime(Game.playerHitTicks, Game.playerHitSeconds, Game.playerHitMinutes, Game.playerHitHours)
                 Game.playerHitTicks = timer["ticks"]
                 Game.playerHitSeconds = timer["seconds"]
-                if timer["seconds"] % 3 == 0 and Player.hit == False:
+                if timer["seconds"] % 3 == 0 and Player.hit is False:
                     Game.playerHitTicks = 0
                     Game.playerHitSeconds = 0
                     Player.hit = True
@@ -164,8 +167,8 @@ class Game():
         sys.exit()
 
 
-    def getFileName():
-        file = __file__[:-3]
+    def getName(input: str):
+        file = input
         chars = []
 
         for char in file:
@@ -188,7 +191,11 @@ class Game():
         absolutePath = os.path.abspath(os.path.join(os.path.abspath(__file__), os.pardir))
         fileDirectory = os.path.dirname(absolutePath)
         parentDirectory = os.path.dirname(fileDirectory)
-        # parentDirectory = os.path.join(parentDirectory, Game.getFileName()) # remove comment when converted to an exe and comment when run in editor------------------------------------------------------------------
+        if Game.export:
+            dirName = os.path.abspath(__file__)
+            dirName = os.path.dirname(os.path.dirname(dirName))
+            parentDirectory = os.path.join(parentDirectory, Game.getName(dirName))
+            parentDirectory = os.path.join(parentDirectory, Game.getName(__file__[:-3]))
         if newPath != None:
             parentDirectory = os.path.join(parentDirectory, newPath)
         if newPath2 != None:
@@ -233,11 +240,12 @@ class Game():
             if Game.gamepadInputs[16] == 1:
                 Game.run = "pause"
         except:
+            # If no gamepad is connected an exception ("NoneType" object is not subscriptable) occurs
             pass
 
         self.screen.fill('#71ddee')
         Game.camera.update()
-        Game.camera.custom_draw(Game.player)
+        Game.camera.custom_draw(Game.player, Enemy.list)
         pygame.display.update()
         self.clock.tick(60)
 

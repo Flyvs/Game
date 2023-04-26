@@ -14,9 +14,9 @@
 
 - remember to install a package to convert the script into an exe (for example [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/))
 
-There is a line in class "Game" --> function "path" you need to comment out/in (remove comment when converted to an exe and comment when run in editor)
+Set this to true if you want to export the script as an exe.
 ```
-parentDirectory = os.path.join(parentDirectory, "game")
+Game.export = False
 ```
 
 ### FUNCTIONS
@@ -45,7 +45,7 @@ decrypts the given file and uses the given key(file)
 Crypting.decrypt(path: str, fileToDecrypt: str, filekeyName: str)
 ```
 
-renames a file
+renames a file (idk why I created this (There is [os.rename](https://www.tutorialspoint.com/python/os_rename.htm)), maybe there's a reason why but I can't remember)
 ```
 Crypting.rename(path: str, oldName: str, newName: str)
 ```

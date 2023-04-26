@@ -43,6 +43,22 @@ The longer "jump" is hold the higher the player jumps
 
 Code is now cleaner than before
 
+## 17th Mar 2023
+
+Weird behaviour of enemies fixed and new track
+
+## 20th Mar 2023
+
+Export wasn't working properly. Fixed
+
+## 22th Mar 2023
+
+Gamepad functionality for battle screen added
+
+## 26th Apr 2023
+
+Fixed some things from last time. Idk what, has been too long since I've taken a look and edited the README a bit
+
 ## issues
 
 - the enemies can merge to the same coordinates when chasing the player

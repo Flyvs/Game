@@ -10,7 +10,10 @@ from attack import Attack
 
 class Player(pygame.sprite.Sprite):
     # initializing
-    def __init__(self, pos, game, jsonPath, playerPath, attackPath, group):
+    def __init__(self, pos: tuple, game, jsonPath: str, playerPath: str, attackPath: str, group):
+        """
+        "game" needs to be class type
+        """
         super().__init__(group)
 
         playerdatafile = open(jsonPath + "playerdata.json", "r")
@@ -29,12 +32,16 @@ class Player(pygame.sprite.Sprite):
         Player.game = game
 
         Player.path = playerPath
+
         Player.right = "playerR.png"
         Player.left = "playerL.png"
         Player.rightB = "playerRblack.png"
         Player.leftB = "playerLblack.png"
+
         Player.facingLeft = False
         Player.facingRight = True
+        Player.facingUp = False
+        Player.facingDown = False
         Player.hit = True
 
         Player.color = "w" # w: white; b: black
@@ -86,10 +93,11 @@ class Player(pygame.sprite.Sprite):
         else:
             self.speed = self.standard
     
+    """
     # jumping
     def jump(self):
         self.keys = pygame.key.get_pressed()
-        if (self.keys[pygame.K_SPACE] or (Player.game.gamepadInputs != None and Player.game.gamepadInputs[10] == 1)) and not self.jumping:
+        if (self.keys[pygame.K_SPACE] or (Player.game.gamepadInputs is not None and Player.game.gamepadInputs[10] == 1)) and not self.jumping:
             if self.jumpcount >= 1:
                 Player.rect.center -= self.fall
                 self.jumpcount -= 1
@@ -103,70 +111,92 @@ class Player(pygame.sprite.Sprite):
                 self.jumpcount = 30
             self.fall.y = self.fallingspeed
             Player.rect.center += self.fall
+    """
 
     # set controls for gamepad movement
     def gamepad(self):
-        """
         try:
-            if Game.gamepadInputs[4] > 0:
+            if Player.game.gamepadInputs[4] > 0:
                 if self.col_bottom == False:
-                    self.direction.y = Game.gamepadInputs[4]
+                    Player.facingRight = False
+                    Player.facingLeft = False
+                    Player.facingUp = False
+                    Player.facingDown = True
+                    self.direction.y = Player.game.gamepadInputs[4]
                 else:
                     self.direction.y = 0
-            elif Game.gamepadInputs[4] < 0:
+            elif Player.game.gamepadInputs[4] < 0:
                 if self.col_top == False:
-                    self.direction.y = Game.gamepadInputs[4]
+                    Player.facingRight = False
+                    Player.facingLeft = False
+                    Player.facingUp = True
+                    Player.facingDown = False
+                    self.direction.y = Player.game.gamepadInputs[4]
                 else:
                     self.direction.y = 0
-        """
-        try:
+
             if Player.game.gamepadInputs[3] > 0:
-                if self.col_right == False:
+                if self.col_right is False:
                     Player.facingRight = True
                     Player.facingLeft = False
+                    Player.facingUp = False
+                    Player.facingDown = False
                     self.direction.x = Player.game.gamepadInputs[3]
                 else:
                     self.direction.x = 0
             elif Player.game.gamepadInputs[3] < 0:
-                if self.col_left == False:
+                if self.col_left is False:
                     Player.facingRight = False
                     Player.facingLeft = True
+                    Player.facingUp = False
+                    Player.facingDown = False
                     self.direction.x = Player.game.gamepadInputs[3]
                 else:
                     self.direction.x = 0
         except:
+            # If no gamepad is connected an exception ("NoneType" object is not subscriptable) occurs
             pass
 
     # set the keys for movement
     def keyboard(self):
         self.keys = pygame.key.get_pressed()
 
-        """
         if self.keys[pygame.K_w]:
+            Player.facingRight = False
+            Player.facingLeft = False
+            Player.facingUp = True
+            Player.facingDown = False
             if self.col_top == False:
                 self.direction.y = -1
             else:
                 self.direction.y = 0
         elif self.keys[pygame.K_s]:
+            Player.facingRight = False
+            Player.facingLeft = False
+            Player.facingUp = False
+            Player.facingDown = True
             if self.col_bottom == False:
                 self.direction.y = 1
             else:
                 self.direction.y = 0
         else:
             self.direction.y = 0
-        """
 
         if self.keys[pygame.K_d]:
             Player.facingRight = True
             Player.facingLeft = False
-            if self.col_right == False:
+            Player.facingUp = False
+            Player.facingDown = False
+            if self.col_right is False:
                 self.direction.x = 1
             else:
                 self.direction.x = 0
         elif self.keys[pygame.K_a]:
             Player.facingRight = False
             Player.facingLeft = True
-            if self.col_left == False:
+            Player.facingUp = False
+            Player.facingDown = False
+            if self.col_left is False:
                 self.direction.x = -1
             else:
                 self.direction.x = 0
@@ -175,18 +205,18 @@ class Player(pygame.sprite.Sprite):
 
     
     def playerImage(self):
-        if Player.facingLeft == True:
+        if Player.facingLeft is True:
             if Player.color == "w":
                 Player.image = pygame.image.load(Player.path + Player.left).convert_alpha()
             elif Player.color == "b" and Player.STAMINA > 0:
                 Player.image = pygame.image.load(Player.path + Player.leftB).convert_alpha()
-        elif Player.facingRight == True:
+        elif Player.facingRight is True:
             if Player.color == "w":
                 Player.image = pygame.image.load(Player.path + Player.right).convert_alpha()
             elif Player.color == "b" and Player.STAMINA > 0:
                 Player.image = pygame.image.load(Player.path + Player.rightB).convert_alpha()
 
-        if (self.keys[pygame.K_TAB] and Player.game.ticksToIgnoreTAB == 0) or (Player.game.gamepadInputs != None and Player.game.gamepadInputs[13] == 1 and Player.game.ticksToIgnoreTAB == 0):
+        if (self.keys[pygame.K_TAB] and Player.game.ticksToIgnoreTAB == 0) or (Player.game.gamepadInputs is not None and Player.game.gamepadInputs[13] == 1 and Player.game.ticksToIgnoreTAB == 0):
             Player.game.ticksToIgnoreTAB = 30
             if Player.color == "w":
                 Player.color = "b"
@@ -215,7 +245,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.col_bottom = False
 
-        if NPC.hit(Player) and NPC.hitted == False:
+        if NPC.hit(Player) and NPC.hitted is False:
             NPC.hitted = True
             MsgBox((NPC.rect[0] - 224, NPC.rect[1] - 192), "This is a demo text", None, 60, (66, 135, 245), "test.png", Player.game.msgboxPath, Player.game.mergePath, self.camera)
 
@@ -223,12 +253,13 @@ class Player(pygame.sprite.Sprite):
         self.gamepad()
         self.playerImage()
         self.drain()
-        self.jump()
+        # self.jump()
 
         Player.rect.center += self.direction * self.speed
         Attack.input(self)
         HUD.updateHUD(f"Stamina: {Player.STAMINA - 1}", None, 60, (255, 0, 0), Player, Player.game)
         Enemy.attackPlayer(self)
+        Enemy.hit(self)
         Player.game.teleport(self, "ground:0", "ground:1", 1948, 900, 52, 200)
 
     # collision with 2 objects
@@ -255,12 +286,10 @@ class Player(pygame.sprite.Sprite):
 
     # player enemy collision
     def player_enemy_collision(self):
-        try:
-            enemyToCheck = Enemy.list.pop(0)
-            Enemy.list.append(enemyToCheck)
+        enemyToCheck = Enemy.list.pop(0)
+        Enemy.list.append(enemyToCheck)
+        if enemyToCheck.SPAWNED:
             return self.aabb_collision(Player.rect.center[0], Player.rect.center[1], 64, 64, enemyToCheck.rect.center[0], enemyToCheck.rect.center[1], 64, 64)
-        except:
-            pass
 
     # player teleport collision
     def player_teleport_collision(self, hitboxX: int, hitboxY: int, hitboxWidth: int, hitboxHeigth: int):

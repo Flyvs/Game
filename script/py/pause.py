@@ -8,6 +8,9 @@ from music import Music
 class Pause():
     # initializing
     def __init__(self, game, player):
+        """
+        "game" and "player" needs to be class type
+        """
         super().__init__()
         Pause.game = game
         Pause.player = player
@@ -163,13 +166,13 @@ class Pause():
         keys = pygame.key.get_pressed()
         self.options_accessed = "mainmenu"
 
-        if keys[pygame.K_w] or (Pause.game.gamepadInputs != None and Pause.game.gamepadInputs[21] == 1):
+        if keys[pygame.K_w] or (Pause.game.gamepadInputs is not None and Pause.game.gamepadInputs[21] == 1):
             if self.options_mainmenu != 1:
                 self.options_mainmenu -= 1
-        elif keys[pygame.K_s] or (Pause.game.gamepadInputs != None and Pause.game.gamepadInputs[22] == 1):
+        elif keys[pygame.K_s] or (Pause.game.gamepadInputs is not None and Pause.game.gamepadInputs[22] == 1):
             if self.options_mainmenu != 4:
                 self.options_mainmenu += 1
-        elif (keys[pygame.K_SPACE] and Pause.game.ticksToIgnoreSPACE == 0) or (Pause.game.gamepadInputs != None and Pause.game.gamepadInputs[10] == 1 and Pause.game.ticksToIgnoreSPACE == 0):
+        elif (keys[pygame.K_SPACE] and Pause.game.ticksToIgnoreSPACE == 0) or (Pause.game.gamepadInputs is not None and Pause.game.gamepadInputs[10] == 1 and Pause.game.ticksToIgnoreSPACE == 0):
             Pause.game.ticksToIgnoreSPACE = 5
             if self.options_mainmenu == 1:
                 if Pause.game.playerLoaded == False:
@@ -206,13 +209,13 @@ class Pause():
         keys = pygame.key.get_pressed()
         self.options_accessed = "pause"
 
-        if keys[pygame.K_w] or (Pause.game.gamepadInputs != None and Pause.game.gamepadInputs[21] == 1):
+        if keys[pygame.K_w] or (Pause.game.gamepadInputs is not None and Pause.game.gamepadInputs[21] == 1):
             if self.options_pause_menu != 1:
                 self.options_pause_menu -= 1
-        elif keys[pygame.K_s] or (Pause.game.gamepadInputs != None and Pause.game.gamepadInputs[22] == 1):
+        elif keys[pygame.K_s] or (Pause.game.gamepadInputs is not None and Pause.game.gamepadInputs[22] == 1):
             if self.options_pause_menu != 5:
                 self.options_pause_menu += 1
-        elif (keys[pygame.K_SPACE] and Pause.game.ticksToIgnoreSPACE == 0) or (Pause.game.gamepadInputs != None and Pause.game.gamepadInputs[10] == 1 and Pause.game.ticksToIgnoreSPACE == 0):
+        elif (keys[pygame.K_SPACE] and Pause.game.ticksToIgnoreSPACE == 0) or (Pause.game.gamepadInputs is not None and Pause.game.gamepadInputs[10] == 1 and Pause.game.ticksToIgnoreSPACE == 0):
             Pause.game.ticksToIgnoreSPACE = 5
             if self.options_pause_menu == 1:
                 Pause.game.run = "options"
@@ -248,13 +251,13 @@ class Pause():
     def option_screen(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_w] or (Pause.game.gamepadInputs != None and Pause.game.gamepadInputs[21] == 1):
+        if keys[pygame.K_w] or (Pause.game.gamepadInputs is not None and Pause.game.gamepadInputs[21] == 1):
             if self.options_option_menu != 1:
                 self.options_option_menu -= 1
-        elif keys[pygame.K_s] or (Pause.game.gamepadInputs != None and Pause.game.gamepadInputs[22] == 1):
+        elif keys[pygame.K_s] or (Pause.game.gamepadInputs is not None and Pause.game.gamepadInputs[22] == 1):
             if self.options_option_menu != 3:
                 self.options_option_menu += 1
-        elif (keys[pygame.K_SPACE] and Pause.game.ticksToIgnoreSPACE == 0) or (Pause.game.gamepadInputs != None and Pause.game.gamepadInputs[10] == 1 and Pause.game.ticksToIgnoreSPACE == 0):
+        elif (keys[pygame.K_SPACE] and Pause.game.ticksToIgnoreSPACE == 0) or (Pause.game.gamepadInputs is not None and Pause.game.gamepadInputs[10] == 1 and Pause.game.ticksToIgnoreSPACE == 0):
             Pause.game.ticksToIgnoreSPACE = 5
             if self.options_option_menu == 1:
                 Pause.game.run = "resolution"
@@ -284,13 +287,13 @@ class Pause():
     def resolution_screen(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_w] or (Pause.game.gamepadInputs != None and Pause.game.gamepadInputs[21] == 1):
+        if keys[pygame.K_w] or (Pause.game.gamepadInputs is not None and Pause.game.gamepadInputs[21] == 1):
             if self.options_resolution != 1:
                 self.options_resolution -= 1
-        elif keys[pygame.K_s] or (Pause.game.gamepadInputs != None and Pause.game.gamepadInputs[22] == 1):
+        elif keys[pygame.K_s] or (Pause.game.gamepadInputs is not None and Pause.game.gamepadInputs[22] == 1):
             if self.options_resolution != 6:
                 self.options_resolution += 1
-        elif (keys[pygame.K_SPACE] and Pause.game.ticksToIgnoreSPACE == 0) or (Pause.game.gamepadInputs != None and Pause.game.gamepadInputs[10] == 1 and Pause.game.ticksToIgnoreSPACE == 0):
+        elif (keys[pygame.K_SPACE] and Pause.game.ticksToIgnoreSPACE == 0) or (Pause.game.gamepadInputs is not None and Pause.game.gamepadInputs[10] == 1 and Pause.game.ticksToIgnoreSPACE == 0):
             Pause.game.ticksToIgnoreSPACE = 5
             if self.options_resolution == 1:
                 self.resx = 1280
