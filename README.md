@@ -4,7 +4,9 @@
 
 - 100% Python code
 
-- The music is made with [beathoven](https://www.beatoven.ai)
+- The music is mostly made with [beathoven](https://www.beatoven.ai)
+
+- Also a retro track is taken from [this](https://youtu.be/tgIddOrtMFQ)
 
 ## PLAYING
 
