@@ -81,10 +81,6 @@ class Game():
         Game.ticksToIgnoreTAB = 0
         Game.ticksToIgnoreSPACE = 0
 
-        Game.ticks = 0
-        Game.seconds = 0
-        Game.minutes = 0
-        Game.hours = 0
         Game.playerHitTicks = 0
         Game.playerHitSeconds = 0
         Game.playerHitMinutes = 0
