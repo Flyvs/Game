@@ -2,6 +2,7 @@ import pygame
 import os
 import json
 
+
 class Music():
     # initializing
     def __init__(self, musicPath: str, game):
@@ -36,7 +37,8 @@ class Music():
             volume = Music.game.gamedata["volume"]
 
         # read json data
-        Music.game.gamedatafile = open(Music.game.jsonPath + "gamedata.json", "w")
+        Music.game.gamedatafile = open(
+            Music.game.jsonPath + "gamedata.json", "w")
         json.dump(Music.game.gamedata, Music.game.gamedatafile)
         Music.game.gamedatafile.close()
 

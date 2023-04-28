@@ -8,6 +8,7 @@ from hud import HUD
 from msgbox import MsgBox
 from attack import Attack
 
+
 class Player(pygame.sprite.Sprite):
     # initializing
     def __init__(self, pos: tuple, game, jsonPath: str, playerPath: str, attackPath: str, group):
@@ -44,9 +45,10 @@ class Player(pygame.sprite.Sprite):
         Player.facingDown = False
         Player.hit = True
 
-        Player.color = "w" # w: white; b: black
+        Player.color = "w"  # w: white; b: black
 
-        Player.image = pygame.image.load(Player.path + Player.right).convert_alpha()
+        Player.image = pygame.image.load(
+            Player.path + Player.right).convert_alpha()
         Player.rect = Player.image.get_rect(center=pos)
         self.direction = pygame.math.Vector2()
         self.fall = pygame.math.Vector2()
@@ -62,16 +64,19 @@ class Player(pygame.sprite.Sprite):
         self.jumping = False
 
         self.camera = group
-        
-        Player.attack = Attack("PHY", 7, attackPath, Player, Player.game, self.camera)
+
+        Player.attack = Attack("PHY", 7, attackPath,
+                               Player, Player.game, self.camera)
 
         Player.HUD_w = 0
         Player.HUD_h = 0
-        Player.HUD = HUD(self.camera, (Player.HUD_w, Player.HUD_h), f"Stamina: {Player.STAMINA}", None, 60, (255, 0, 0))
-        
+        Player.HUD = HUD(self.camera, (Player.HUD_w, Player.HUD_h),
+                         f"Stamina: {Player.STAMINA}", None, 60, (255, 0, 0))
+
    # drains the players stamina
     def drain(self):
-        timer = Player.game.tracktime(Player.game.playerHitTicks, Player.game.playerHitSeconds, Player.game.playerHitMinutes, Player.game.playerHitHours)
+        timer = Player.game.tracktime(Player.game.playerHitTicks, Player.game.playerHitSeconds,
+                                      Player.game.playerHitMinutes, Player.game.playerHitHours)
         if Player.color == "b" and Player.STAMINA > 0:
             Player.game.playerHitTicks = timer["ticks"]
             Player.game.playerHitSeconds = timer["seconds"]
@@ -92,7 +97,7 @@ class Player(pygame.sprite.Sprite):
             self.speed = self.standard * 1.5
         else:
             self.speed = self.standard
-    
+
     """
     # jumping
     def jump(self):
@@ -203,18 +208,21 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
-    
     def playerImage(self):
         if Player.facingLeft is True:
             if Player.color == "w":
-                Player.image = pygame.image.load(Player.path + Player.left).convert_alpha()
+                Player.image = pygame.image.load(
+                    Player.path + Player.left).convert_alpha()
             elif Player.color == "b" and Player.STAMINA > 0:
-                Player.image = pygame.image.load(Player.path + Player.leftB).convert_alpha()
+                Player.image = pygame.image.load(
+                    Player.path + Player.leftB).convert_alpha()
         elif Player.facingRight is True:
             if Player.color == "w":
-                Player.image = pygame.image.load(Player.path + Player.right).convert_alpha()
+                Player.image = pygame.image.load(
+                    Player.path + Player.right).convert_alpha()
             elif Player.color == "b" and Player.STAMINA > 0:
-                Player.image = pygame.image.load(Player.path + Player.rightB).convert_alpha()
+                Player.image = pygame.image.load(
+                    Player.path + Player.rightB).convert_alpha()
 
         if (self.keys[pygame.K_TAB] and Player.game.ticksToIgnoreTAB == 0) or (Player.game.gamepadInputs is not None and Player.game.gamepadInputs[13] == 1 and Player.game.ticksToIgnoreTAB == 0):
             Player.game.ticksToIgnoreTAB = 30
@@ -247,7 +255,8 @@ class Player(pygame.sprite.Sprite):
 
         if NPC.hit(Player) and NPC.hitted is False:
             NPC.hitted = True
-            MsgBox((NPC.rect[0] - 224, NPC.rect[1] - 192), "This is a demo text", None, 60, (66, 135, 245), "test.png", Player.game.msgboxPath, Player.game.mergePath, self.camera)
+            MsgBox((NPC.rect[0] - 224, NPC.rect[1] - 192), "This is a demo text", None, 60, (66,
+                   135, 245), "test.png", Player.game.msgboxPath, Player.game.mergePath, self.camera)
 
         self.keyboard()
         self.gamepad()
@@ -257,7 +266,8 @@ class Player(pygame.sprite.Sprite):
 
         Player.rect.center += self.direction * self.speed
         Attack.input(self)
-        HUD.updateHUD(f"Stamina: {Player.STAMINA - 1}", None, 60, (255, 0, 0), Player, Player.game)
+        HUD.updateHUD(f"Stamina: {Player.STAMINA - 1}",
+                      None, 60, (255, 0, 0), Player, Player.game)
         Enemy.attackPlayer(self)
         Enemy.hit(self)
         Player.game.teleport(self, "ground:0", "ground:1", 1948, 900, 52, 200)

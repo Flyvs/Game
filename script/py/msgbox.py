@@ -1,6 +1,7 @@
 import pygame
 from pygame_merge import Merge
 
+
 class MsgBox(pygame.sprite.Sprite):
     # initializing
     def __init__(self, pos: tuple, text: str, font: str, fontSize: int, rgb: tuple, msgbox: str, msgboxPath: str, mergePath: str, group):

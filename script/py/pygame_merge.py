@@ -23,7 +23,8 @@ class Merge():
             if index > 0:
                 background = foreground
                 foreground = Image.open(path + file).convert("RGBA")
-                background.paste(foreground, ((background.width - foreground.width) // 2, (background.height - foreground.height) // 2), foreground)
+                background.paste(foreground, ((background.width - foreground.width) //
+                                 2, (background.height - foreground.height) // 2), foreground)
             else:
                 foreground = Image.open(path + file).convert("RGBA")
             index += 1

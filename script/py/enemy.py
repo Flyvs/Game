@@ -2,6 +2,7 @@ import pygame
 
 from attack import Attack
 
+
 class Enemy(pygame.sprite.Sprite):
     # initializing
     def __init__(self, group, POS: tuple, LVL: int, HP: int, PHYATK: int, MAGATK: int, PHYDEF: int, MAGDEF: int, SPEED: int, MVMNTSPEED: int, SPAWNED: bool, SPRITE: str, game, player):
@@ -25,7 +26,8 @@ class Enemy(pygame.sprite.Sprite):
         Enemy.game = game
         Enemy.player = player
 
-        self.image = pygame.image.load(Enemy.game.enemyPath + self.SPRITE).convert_alpha()
+        self.image = pygame.image.load(
+            Enemy.game.enemyPath + self.SPRITE).convert_alpha()
         self.rect = self.image.get_rect(topleft=self.POS)
 
     # track position of player
@@ -36,7 +38,7 @@ class Enemy(pygame.sprite.Sprite):
         for enemy in Enemy.list:
             if enemy.SPAWNED:
                 recenter.y = enemy.rect.center[1]
-                
+
                 if Enemy.player.rect.center[0] > enemy.rect.center[0]:
                     direction.x = enemy.MVMNTSPEED
                 elif Enemy.player.rect.center[0] < enemy.rect.center[0]:

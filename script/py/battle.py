@@ -4,6 +4,7 @@ import pygame
 from camera import Camera
 from enemy import Enemy
 
+
 class Battle():
     # initializing
     def __init__(self, game, player):
@@ -62,10 +63,10 @@ class Battle():
                 Battle.game.playerHitTicks = 0
                 Battle.game.playerHitSeconds = 0
                 Battle.game.run = "game"
-        
+
         if Battle.game.ticksToIgnoreSPACE > 0:
             Battle.game.ticksToIgnoreSPACE -= 1
-        
+
         if Battle.game.ticksToIgnoreSPACE > 0:
             Battle.game.ticksToIgnoreSPACE -= 1
 
@@ -81,8 +82,11 @@ class Battle():
         height = 300
         screenSize = Battle.game.screen.get_size()
         if Battle.player.color == "w":
-            Camera.displaySurface.blit(pygame.image.load(Battle.player.path + Battle.player.right).convert_alpha(), (300, screenSize[1] - height))
+            Camera.displaySurface.blit(pygame.image.load(
+                Battle.player.path + Battle.player.right).convert_alpha(), (300, screenSize[1] - height))
         elif Battle.player.color == "b":
-            Camera.displaySurface.blit(pygame.image.load(Battle.player.path + Battle.player.rightB).convert_alpha(), (300, screenSize[1] - height))
+            Camera.displaySurface.blit(pygame.image.load(
+                Battle.player.path + Battle.player.rightB).convert_alpha(), (300, screenSize[1] - height))
         for enemy in Enemy.list:
-            Camera.displaySurface.blit(enemy.image, (900, screenSize[1] - height))
+            Camera.displaySurface.blit(
+                enemy.image, (900, screenSize[1] - height))

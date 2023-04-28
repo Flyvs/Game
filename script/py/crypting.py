@@ -1,6 +1,7 @@
 from cryptography.fernet import Fernet
 import os
 
+
 class Crypting():
     def encrypt(path: str, fileToEncrypt: str, filekeyName: str):
         """
@@ -15,7 +16,7 @@ class Crypting():
             filekey.write(key)
         filekey.close()
 
-        with open (path + filekeyName, "rb") as filekey:
+        with open(path + filekeyName, "rb") as filekey:
             key = filekey.read()
         filekey.close()
 
@@ -30,7 +31,7 @@ class Crypting():
         with open(path + fileToEncrypt, "wb") as encrypted_file:
             encrypted_file.write(encrypted)
         encrypted_file.close()
-    
+
     # decrypting file
     def decrypt(path: str, fileToDecrypt: str, filekeyName: str):
         """

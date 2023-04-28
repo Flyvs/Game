@@ -17,6 +17,7 @@
 - remember to install a package to convert the script into an exe (for example [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/))
 
 Set this to true if you want to export the script as an exe.
+
 ```
 Game.export = False
 ```
@@ -26,11 +27,13 @@ Game.export = False
 #### gamepad.py
 
 returns a list with the buttons a controller has:
+
 ```
 Inputs.scan()[0]
 ```
 
 returns a list with controller details
+
 ```
 Inputs.scan()[1]
 ```
@@ -38,16 +41,19 @@ Inputs.scan()[1]
 #### crypting.py
 
 encrypts the given file and creates a key with the given name
+
 ```
 Crypting.encrypt(path: str, fileToEncrypt: str, filekeyName: str)
 ```
 
 decrypts the given file and uses the given key(file)
+
 ```
 Crypting.decrypt(path: str, fileToDecrypt: str, filekeyName: str)
 ```
 
 renames a file (idk why I created this (There is [os.rename](https://www.tutorialspoint.com/python/os_rename.htm)), maybe there's a reason why but I can't remember)
+
 ```
 Crypting.rename(path: str, oldName: str, newName: str)
 ```
@@ -55,6 +61,7 @@ Crypting.rename(path: str, oldName: str, newName: str)
 #### pygame_merge.py
 
 merges multiple surfaces & the last surface given will be on top
+
 ```
 Merge.surfaces(path: str, *surfaces: pygame.Surface)
 ```
@@ -62,6 +69,7 @@ Merge.surfaces(path: str, *surfaces: pygame.Surface)
 #### expandlist.py
 
 expands a list with multiple values and returns it
+
 ```
 Expandlist.expand(list: list, *values)
 ```

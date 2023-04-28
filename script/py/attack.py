@@ -1,5 +1,6 @@
 import pygame
 
+
 class Attack(pygame.sprite.Sprite):
     # initializing
     def __init__(self, CLASS: str, DMG: int, path: str, player, game, group):
@@ -28,7 +29,8 @@ class Attack(pygame.sprite.Sprite):
         Attack.posRight = (Attack.xRight, Attack.yRight)
         Attack.posLeft = (Attack.xLeft, Attack.yLeft)
 
-        Attack.image = pygame.image.load(Attack.spritePath + Attack.right).convert_alpha()
+        Attack.image = pygame.image.load(
+            Attack.spritePath + Attack.right).convert_alpha()
         Attack.rect = Attack.image.get_rect(center=Attack.posRight)
 
     # positioning the attack and set the attack key
@@ -45,11 +47,13 @@ class Attack(pygame.sprite.Sprite):
             if self.keys[pygame.K_e] or (Attack.game.gamepadInputs is not None and Attack.game.gamepadInputs[11] == 1):
                 Attack.attacking = True
                 if Attack.player.facingLeft is True:
-                    Attack.image = pygame.image.load(Attack.spritePath + Attack.left).convert_alpha()
+                    Attack.image = pygame.image.load(
+                        Attack.spritePath + Attack.left).convert_alpha()
                     Attack.rect = Attack.image.get_rect(center=Attack.posLeft)
                     Attack.direction = "left"
                 elif Attack.player.facingRight is True:
-                    Attack.image = pygame.image.load(Attack.spritePath + Attack.right).convert_alpha()
+                    Attack.image = pygame.image.load(
+                        Attack.spritePath + Attack.right).convert_alpha()
                     Attack.rect = Attack.image.get_rect(center=Attack.posRight)
                     Attack.direction = "right"
                 Attack.exist = True
@@ -70,7 +74,7 @@ class Attack(pygame.sprite.Sprite):
         self.collision_x = a_x + a_width >= b_x and b_x + b_width >= a_x
         self.collision_y = a_y + a_height >= b_y and b_y + b_height >= a_y
         return self.collision_y and self.collision_x
-    
+
     # collision attack and enemy
     def attack_enemy_collision(self, enemy):
         if Attack.exist:

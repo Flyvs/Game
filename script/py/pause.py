@@ -5,6 +5,7 @@ import os
 from camera import Camera
 from music import Music
 
+
 class Pause():
     # initializing
     def __init__(self, game, player):
@@ -36,7 +37,8 @@ class Pause():
             self.option_options.append(options)
 
         for file in os.listdir(Pause.sprites + "resolution"):
-            resolution = pygame.image.load(Pause.sprites + "resolution\\" + file)
+            resolution = pygame.image.load(
+                Pause.sprites + "resolution\\" + file)
             self.resolution_options.append(resolution)
 
         for file in os.listdir(Pause.sprites + "volumeslider"):
@@ -59,7 +61,8 @@ class Pause():
         Pause.game.gamedata["resolutiony"] = newResY
         Pause.game.gamedata["fullscreen"] = fullscreen
 
-        Pause.game.gamedatafile = open(Pause.game.jsonPath + "gamedata.json", "w")
+        Pause.game.gamedatafile = open(
+            Pause.game.jsonPath + "gamedata.json", "w")
         json.dump(Pause.game.gamedata, Pause.game.gamedatafile)
         Pause.game.gamedatafile.close()
 
@@ -69,7 +72,8 @@ class Pause():
             Pause.game.playerdata["playerx"] = Pause.player.rect.center[0]
             Pause.game.playerdata["playery"] = Pause.player.rect.center[1]
 
-            Pause.game.playerdatafile = open(Pause.game.jsonPath + "playerdata.json", "w")
+            Pause.game.playerdatafile = open(
+                Pause.game.jsonPath + "playerdata.json", "w")
             json.dump(Pause.game.playerdata, Pause.game.playerdatafile)
             Pause.game.playerdatafile.close()
         except:
@@ -78,10 +82,12 @@ class Pause():
     # load position
     def load_pos(self):
         if Pause.game.playerLoaded == False:
-            Pause.game.player = Pause.player((Pause.game.playerdata["playerx"], Pause.game.playerdata["playery"]), Pause.game, Pause.game.jsonPath, Pause.game.playerPath, Pause.game.attackSpritePath, Pause.game.camera)
+            Pause.game.player = Pause.player((Pause.game.playerdata["playerx"], Pause.game.playerdata["playery"]),
+                                             Pause.game, Pause.game.jsonPath, Pause.game.playerPath, Pause.game.attackSpritePath, Pause.game.camera)
             Pause.game.playerLoaded = True
 
-        Pause.game.playerdatafile = open(Pause.game.jsonPath + "playerdata.json", "w")
+        Pause.game.playerdatafile = open(
+            Pause.game.jsonPath + "playerdata.json", "w")
         json.dump(Pause.game.playerdata, Pause.game.playerdatafile)
         Pause.game.playerdatafile.close()
 
@@ -91,7 +97,8 @@ class Pause():
         volume = Pause.game.gamedata["volume"]
         Music.volume(self, volume)
 
-        Pause.game.gamedatafile = open(Pause.game.jsonPath + "gamedata.json", "w")
+        Pause.game.gamedatafile = open(
+            Pause.game.jsonPath + "gamedata.json", "w")
         json.dump(Pause.game.gamedata, Pause.game.gamedatafile)
         Pause.game.gamedatafile.close()
 
@@ -99,7 +106,8 @@ class Pause():
     def volume_screen(self):
         keys = pygame.key.get_pressed()
         display_volume = pygame.font.SysFont("Aerial", 100)
-        volume_surface = display_volume.render(str(self.options_slider), False, (0, 0, 0))
+        volume_surface = display_volume.render(
+            str(self.options_slider), False, (0, 0, 0))
 
         if keys[pygame.K_a] or (Pause.game.gamepadInputs != None and Pause.game.gamepadInputs[23] == 1):
             if self.options_slider != 0:
@@ -110,7 +118,7 @@ class Pause():
         elif (keys[pygame.K_SPACE] and Pause.game.ticksToIgnoreSPACE == 0) or (Pause.game.gamepadInputs != None and Pause.game.gamepadInputs[10] == 1 and Pause.game.ticksToIgnoreSPACE == 0):
             Pause.game.ticksToIgnoreSPACE = 5
             Pause.game.run = "options"
-        
+
         if Pause.game.ticksToIgnoreSPACE > 0:
             Pause.game.ticksToIgnoreSPACE -= 1
 
@@ -157,7 +165,8 @@ class Pause():
         elif self.options_slider == 20:
             Camera.displaySurface.blit(self.volume_options[13], (0, 0))
 
-        Camera.displaySurface.blit(pygame.image.load(Pause.sprites + "sliderBackYES.png"), (0, 0))
+        Camera.displaySurface.blit(pygame.image.load(
+            Pause.sprites + "sliderBackYES.png"), (0, 0))
         Camera.displaySurface.blit(volume_surface, (600, 265))
         self.save_volume()
 
@@ -176,7 +185,8 @@ class Pause():
             Pause.game.ticksToIgnoreSPACE = 5
             if self.options_mainmenu == 1:
                 if Pause.game.playerLoaded == False:
-                    Pause.game.player = Pause.player((640, 1780), Pause.game, Pause.game.jsonPath, Pause.game.playerPath, Pause.game.attackSpritePath, Pause.game.camera)
+                    Pause.game.player = Pause.player(
+                        (640, 1780), Pause.game, Pause.game.jsonPath, Pause.game.playerPath, Pause.game.attackSpritePath, Pause.game.camera)
                     Pause.game.playerLoaded = True
                 Pause.player.rect.center = (640, 1780)
                 Pause.game.run = "game"
@@ -191,7 +201,7 @@ class Pause():
                 self.save_options(self.resx, self.resy, Pause.game.fullscreen)
                 self.save_pos()
                 Pause.game.exit()
-        
+
         if Pause.game.ticksToIgnoreSPACE > 0:
             Pause.game.ticksToIgnoreSPACE -= 1
 
@@ -232,7 +242,7 @@ class Pause():
                 self.save_options(self.resx, self.resy, Pause.game.fullscreen)
                 self.save_pos()
                 Pause.game.exit()
-        
+
         if Pause.game.ticksToIgnoreSPACE > 0:
             Pause.game.ticksToIgnoreSPACE -= 1
 
@@ -272,7 +282,7 @@ class Pause():
                 elif self.options_accessed == "pause":
                     Pause.game.run = "pause"
                 pygame.time.wait(100)
-        
+
         if Pause.game.ticksToIgnoreSPACE > 0:
             Pause.game.ticksToIgnoreSPACE -= 1
 
@@ -320,7 +330,8 @@ class Pause():
                 self.resx = 3440
                 self.resy = 1440
                 Pause.game.fullscreen = True
-                self.screen = pygame.display.set_mode((self.resx, self.resy), pygame.FULLSCREEN)
+                self.screen = pygame.display.set_mode(
+                    (self.resx, self.resy), pygame.FULLSCREEN)
             elif self.options_resolution == 6:
                 Pause.game.run = "options"
                 self.save_options(self.resx, self.resy, Pause.game.fullscreen)

@@ -40,10 +40,13 @@ class Game():
         # encrypting the json
         try:
             Game.cryptingPath = Game.path("script")
-            Crypting.rename(Game.cryptingPath, "gamedata.rofl", "gamedata.json")
-            Crypting.rename(Game.cryptingPath, "playerdata.rofl", "playerdata.json")
+            Crypting.rename(Game.cryptingPath,
+                            "gamedata.rofl", "gamedata.json")
+            Crypting.rename(Game.cryptingPath,
+                            "playerdata.rofl", "playerdata.json")
             Crypting.decrypt(Game.cryptingPath, "gamedata.json", "gamekey.key")
-            Crypting.decrypt(Game.cryptingPath, "playerdata.json", "playerkey.key")
+            Crypting.decrypt(Game.cryptingPath,
+                             "playerdata.json", "playerkey.key")
         except:
             pass
 
@@ -66,11 +69,13 @@ class Game():
         if Game.fullscreen == False:
             Game.screen = pygame.display.set_mode((self.screenx, self.screeny))
         elif Game.fullscreen == True:
-            Game.screen = pygame.display.set_mode((self.screenx, self.screeny), pygame.FULLSCREEN)
+            Game.screen = pygame.display.set_mode(
+                (self.screenx, self.screeny), pygame.FULLSCREEN)
 
         # setting the game caption and icon
         pygame.display.set_caption("Game")
-        icon = pygame.image.load(Game.path("sprites", "player") + "playerR.png")
+        icon = pygame.image.load(
+            Game.path("sprites", "player") + "playerR.png")
         pygame.display.set_icon(icon)
 
         # initializing variables
@@ -91,9 +96,12 @@ class Game():
         Game.battle = Battle(Game, Player)
 
         Enemy.list = []
-        enemy1 = Enemy(Game.camera, (100, 1768), 1, 32, 10, 9, 12, 7, 15, 1, True, "testenemy.png", Game, Player)
-        enemy2 = Enemy(Game.camera, (300, 1768), 1, 32, 10, 9, 12, 7, 15, 2, True, "testenemy2.png", Game, Player)
-        enemy3 = Enemy(Game.camera, (1000, 1768), 1, 32, 10, 9, 12, 7, 15, 3, True, "testenemy3.png", Game, Player)
+        enemy1 = Enemy(Game.camera, (100, 1768), 1, 32, 10, 9,
+                       12, 7, 15, 1, True, "testenemy.png", Game, Player)
+        enemy2 = Enemy(Game.camera, (300, 1768), 1, 32, 10, 9,
+                       12, 7, 15, 2, True, "testenemy2.png", Game, Player)
+        enemy3 = Enemy(Game.camera, (1000, 1768), 1, 32, 10, 9,
+                       12, 7, 15, 3, True, "testenemy3.png", Game, Player)
         ExpandList.expand(Enemy.list, enemy1, enemy2, enemy3)
 
         NPC((500, 1768), Game.npcPath, Game.camera)
@@ -114,7 +122,8 @@ class Game():
             while Game.run == "game":
                 Game.gamepadInputs = Inputs.scan()[0]
                 # always gives the player 3 seconds invincibility after running away from an enemy
-                timer = Game.tracktime(Game.playerHitTicks, Game.playerHitSeconds, Game.playerHitMinutes, Game.playerHitHours)
+                timer = Game.tracktime(
+                    Game.playerHitTicks, Game.playerHitSeconds, Game.playerHitMinutes, Game.playerHitHours)
                 Game.playerHitTicks = timer["ticks"]
                 Game.playerHitSeconds = timer["seconds"]
                 if timer["seconds"] % 3 == 0 and Player.hit is False:
@@ -122,7 +131,8 @@ class Game():
                     Game.playerHitSeconds = 0
                     Player.hit = True
                 else:
-                    Enemy.findPlayer()  # ========================================================================
+                    # ========================================================================
+                    Enemy.findPlayer()
                 self.run_game()
 
             while Game.run == "pause":
@@ -154,10 +164,10 @@ class Game():
         Crypting.encrypt(Game.cryptingPath, "gamedata.json", "gamekey.key")
         Crypting.encrypt(Game.cryptingPath, "playerdata.json", "playerkey.key")
         Crypting.rename(Game.cryptingPath, "gamedata.json", "gamedata.rofl")
-        Crypting.rename(Game.cryptingPath, "playerdata.json", "playerdata.rofl")
+        Crypting.rename(Game.cryptingPath,
+                        "playerdata.json", "playerdata.rofl")
         pygame.quit()
         sys.exit()
-
 
     def getName(input: str):
         file = input
@@ -180,14 +190,17 @@ class Game():
 
     # creates a path to files
     def path(newPath: str = None, newPath2: str = None):
-        absolutePath = os.path.abspath(os.path.join(os.path.abspath(__file__), os.pardir))
+        absolutePath = os.path.abspath(os.path.join(
+            os.path.abspath(__file__), os.pardir))
         fileDirectory = os.path.dirname(absolutePath)
         parentDirectory = os.path.dirname(fileDirectory)
         if Game.export:
             dirName = os.path.abspath(__file__)
             dirName = os.path.dirname(os.path.dirname(dirName))
-            parentDirectory = os.path.join(parentDirectory, Game.getName(dirName))
-            parentDirectory = os.path.join(parentDirectory, Game.getName(__file__[:-3]))
+            parentDirectory = os.path.join(
+                parentDirectory, Game.getName(dirName))
+            parentDirectory = os.path.join(
+                parentDirectory, Game.getName(__file__[:-3]))
         if newPath != None:
             parentDirectory = os.path.join(parentDirectory, newPath)
         if newPath2 != None:
@@ -321,6 +334,7 @@ class Game():
 
         pygame.display.update()
         self.clock.tick(20)
+
 
 # starting the game
 if __name__ == "__main__":

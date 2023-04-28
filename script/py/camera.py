@@ -4,6 +4,7 @@ import os
 from npc import NPC
 from attack import Attack
 
+
 class Camera(pygame.sprite.Group):
     # initializing
     def __init__(self, game, player):
@@ -12,7 +13,7 @@ class Camera(pygame.sprite.Group):
         """
         super().__init__()
         Camera.displaySurface = pygame.display.get_surface()
-    	
+
         Camera.game = game
         Camera.player = player
 
@@ -32,9 +33,12 @@ class Camera(pygame.sprite.Group):
 
         # zoom
         Camera.internal_surf_size = (2500, 2500)
-        Camera.internal_surf = pygame.Surface(Camera.internal_surf_size, pygame.SRCALPHA)
-        Camera.internal_rect = Camera.internal_surf.get_rect(center=(Camera.half_w, Camera.half_h))
-        Camera.internal_surface_size_vector = pygame.math.Vector2(Camera.internal_surf_size)
+        Camera.internal_surf = pygame.Surface(
+            Camera.internal_surf_size, pygame.SRCALPHA)
+        Camera.internal_rect = Camera.internal_surf.get_rect(
+            center=(Camera.half_w, Camera.half_h))
+        Camera.internal_surface_size_vector = pygame.math.Vector2(
+            Camera.internal_surf_size)
         Camera.internal_offset = pygame.math.Vector2()
         Camera.internal_offset.x = Camera.internal_surf_size[0] // 2 - Camera.half_w
         Camera.internal_offset.y = Camera.internal_surf_size[1] // 2 - Camera.half_h
@@ -58,11 +62,13 @@ class Camera(pygame.sprite.Group):
         numOfEnemies = len(enemyList)
 
         # ground
-        ground_offset = Camera.ground_rect.topleft - self.offset + Camera.internal_offset
+        ground_offset = Camera.ground_rect.topleft - \
+            self.offset + Camera.internal_offset
         Camera.internal_surf.blit(Camera.ground_surf, ground_offset)
 
         # drawing objects
-        Camera.spriteList = self.sprites()#sorted(self.sprites(), key=lambda sprite: sprite.rect.centery)
+        # sorted(self.sprites(), key=lambda sprite: sprite.rect.centery)
+        Camera.spriteList = self.sprites()
         spriteListLen = len(Camera.spriteList)
 
         i = 0
@@ -75,7 +81,8 @@ class Camera(pygame.sprite.Group):
             j = 0
             k = 0
             while not k == numOfEnemiesToDelete:
-                obj = str(type(Camera.spriteList[j])).partition(".")[2].split("'")[0]
+                obj = str(type(Camera.spriteList[j])).partition(
+                    ".")[2].split("'")[0]
                 if obj == "Enemy" and Camera.spriteList[j].SPAWNED == False:
                     del Camera.spriteList[j]
                     numOfEnemies -= 1
@@ -83,7 +90,8 @@ class Camera(pygame.sprite.Group):
                 j += 1
                 if j > numOfEnemies - 1:
                     break
-            obj = str(type(Camera.spriteList[i - 1])).partition(".")[2].split("'")[0]
+            obj = str(type(Camera.spriteList[i - 1])
+                      ).partition(".")[2].split("'")[0]
             if Attack.attacking is False and obj == "Attack":
                 del Camera.spriteList[i - 1]
             if str(type(Camera.spriteList[1])).partition(".")[2].split("'")[0] == "Attack":
@@ -99,6 +107,8 @@ class Camera(pygame.sprite.Group):
             offset_pos = sprite.rect.topleft - self.offset + Camera.internal_offset
             Camera.internal_surf.blit(sprite.image, offset_pos)
 
-        scaled_surf = pygame.transform.scale(Camera.internal_surf, Camera.internal_surface_size_vector)
-        scaled_rect = scaled_surf.get_rect(center=(Camera.half_w, Camera.half_h))
+        scaled_surf = pygame.transform.scale(
+            Camera.internal_surf, Camera.internal_surface_size_vector)
+        scaled_rect = scaled_surf.get_rect(
+            center=(Camera.half_w, Camera.half_h))
         Camera.displaySurface.blit(scaled_surf, scaled_rect)
