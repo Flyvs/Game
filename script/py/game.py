@@ -77,10 +77,6 @@ class Game():
         self.clock = pygame.time.Clock()
         Game.run = "mainmenu"
         Game.ground = "ground:0"
-        Game.itemSpawned = False
-        Game.itemRespawn = 5  # -------------------------------------------------------------------------------------------------------------------------
-        Game.whichItem = 0
-        Game.i = 0
 
         Game.ticksToIgnoreTAB = 0
         Game.ticksToIgnoreSPACE = 0
