@@ -8,6 +8,8 @@ class Merge():
         """
         merges multiple surfaces
         the last surface given will be on top
+        :param path: the temporary path where the surfaces will be cached
+        :param *surfaces: all the surfaces to merge
         """
         if not os.path.exists(path):
             os.makedirs(path)
