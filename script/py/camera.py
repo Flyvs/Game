@@ -33,8 +33,7 @@ class Camera(pygame.sprite.Group):
 
         # zoom
         Camera.internal_surf_size = (2500, 2500)
-        Camera.internal_surf = pygame.Surface(
-            Camera.internal_surf_size, pygame.SRCALPHA)
+        Camera.internal_surf = pygame.Surface(Camera.internal_surf_size, pygame.SRCALPHA)
         Camera.internal_rect = Camera.internal_surf.get_rect(
             center=(Camera.half_w, Camera.half_h))
         Camera.internal_surface_size_vector = pygame.math.Vector2(
@@ -62,8 +61,7 @@ class Camera(pygame.sprite.Group):
         numOfEnemies = len(enemyList)
 
         # ground
-        ground_offset = Camera.ground_rect.topleft - \
-            self.offset + Camera.internal_offset
+        ground_offset = Camera.ground_rect.topleft - self.offset + Camera.internal_offset
         Camera.internal_surf.blit(Camera.ground_surf, ground_offset)
 
         # drawing objects
@@ -81,8 +79,7 @@ class Camera(pygame.sprite.Group):
             j = 0
             k = 0
             while not k == numOfEnemiesToDelete:
-                obj = str(type(Camera.spriteList[j])).partition(
-                    ".")[2].split("'")[0]
+                obj = str(type(Camera.spriteList[j])).partition(".")[2].split("'")[0]
                 if obj == "Enemy" and Camera.spriteList[j].SPAWNED == False:
                     del Camera.spriteList[j]
                     numOfEnemies -= 1
@@ -90,8 +87,7 @@ class Camera(pygame.sprite.Group):
                 j += 1
                 if j > numOfEnemies - 1:
                     break
-            obj = str(type(Camera.spriteList[i - 1])
-                      ).partition(".")[2].split("'")[0]
+            obj = str(type(Camera.spriteList[i - 1])).partition(".")[2].split("'")[0]
             if Attack.attacking is False and obj == "Attack":
                 del Camera.spriteList[i - 1]
             if str(type(Camera.spriteList[1])).partition(".")[2].split("'")[0] == "Attack":
