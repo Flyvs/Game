@@ -1,114 +1,91 @@
 import pygame
 import os
-
 from npc import NPC
 from attack import Attack
 
-
-class Camera(pygame.sprite.Group):
-    # initializing
-    def __init__(self, game, player):
-        """
-        "game" and "player" needs to be class type
-        """
+class Camera():
+    def __init__(self, ground_path: str):
         super().__init__()
-        Camera.displaySurface = pygame.display.get_surface()
 
-        Camera.game = game
-        Camera.player = player
-
-        # camera offset
+        self.display_surface = pygame.display.get_surface()
         self.offset = pygame.math.Vector2()
-        Camera.half_w = Camera.displaySurface.get_size()[0] // 2
-        Camera.half_h = Camera.displaySurface.get_size()[1] // 2
+        
+        self.half_w = self.display_surface.get_size()[0] // 2
+        self.half_h = self.display_surface.get_size()[1] // 2
 
-        # ground
-        Camera.grounds = []
-        groundsPath = Camera.game.path("sprites", "grounds")
-        for file in os.listdir(groundsPath):
-            ground = groundsPath + file
-            Camera.grounds.append(ground)
+        self.grounds = []
+        ground_path = ground_path
+        for file in os.listdir(ground_path):
+            ground = ground_path + file
+            self.grounds.append(ground)
 
-        Camera.ground(Camera.grounds[0])
+        self.ground(self.grounds[0])
 
-        # zoom
-        Camera.internal_surf_size = (2500, 2500)
-        Camera.internal_surf = pygame.Surface(
-            Camera.internal_surf_size, pygame.SRCALPHA)
-        Camera.internal_rect = Camera.internal_surf.get_rect(
-            center=(Camera.half_w, Camera.half_h))
-        Camera.internal_surface_size_vector = pygame.math.Vector2(
-            Camera.internal_surf_size)
-        Camera.internal_offset = pygame.math.Vector2()
-        Camera.internal_offset.x = Camera.internal_surf_size[0] // 2 - Camera.half_w
-        Camera.internal_offset.y = Camera.internal_surf_size[1] // 2 - Camera.half_h
+        self.internal_surf_size = (2500, 2500)
+        self.internal_surf = pygame.surface(self.internal_surf_size, pygame.SRCALPHA)
+        self.internale_rect = self.internal_surf.get_rect(center=(self.half_w, self.half_h))
+        self.internal_surface_size_vector = pygame.math.Vector2(self.internal_surf_size)
+        self.internal_offset = pygame.math.Vector2()
+        self.internal_offset.x = self.internal_surf_size[0] // 2 - self.half_w
+        self.internal_offset.y = self.internal_surf_size[1] // 2 - self.half_h
+        
+    def ground(self, which_ground: str):
+        self.ground_surf = pygame.image.load(which_ground).convert_alpha()
+        self.ground_rect = self.ground_surf.get_rect(topleft=(0, 0))
+        self.basic_height = self.ground_surf.get_height()
+        self.basic_width = self.ground_surf.get_width()
 
-    # set ground
-    def ground(whichGround: str):
-        Camera.ground_surf = pygame.image.load(whichGround).convert_alpha()
-        Camera.ground_rect = Camera.ground_surf.get_rect(topleft=(0, 0))
-        Camera.basic_height = Camera.ground_surf.get_height()
-        Camera.basic_width = Camera.ground_surf.get_width()
+    def center_target_camera(self, target: any):
+        self.offset.x = target.rect.centerx - self.half_w
+        self.offset.y = target.rect.centery - self.half_h
 
-    # set camera
-    def center_target_camera(self, target):
-        self.offset.x = target.rect.centerx - Camera.half_w
-        self.offset.y = target.rect.centery - Camera.half_h
-
-    # drawing
-    def custom_draw(self, player, enemyList: list):
+    def custom_draw(self, player, enemy_list: list):
         self.center_target_camera(player)
-        Camera.internal_surf.fill('#71ddee')
-        numOfEnemies = len(enemyList)
+        self.internal_surf.fill("#71ddee")
+        num_of_enemies = len(enemy_list)
 
-        # ground
-        ground_offset = Camera.ground_rect.topleft - \
-            self.offset + Camera.internal_offset
-        Camera.internal_surf.blit(Camera.ground_surf, ground_offset)
+        ground_offset = self.ground_rect.topleft - self.offset + self.internal_offset
+        self.internal_surf.blit(self.ground_surf, ground_offset)
 
-        # drawing objects
-        # sorted(self.sprites(), key=lambda sprite: sprite.rect.centery)
-        Camera.spriteList = self.sprites()
-        spriteListLen = len(Camera.spriteList)
+        self.sprite_list = self.sprites()
+        sprite_list_len = len(self.sprite_list)
 
-        i = 0
-        numOfEnemiesToDelete = 0
-        for enemy in enemyList:
+        num_of_enemies_to_delete = 0
+        for enemy in enemy_list:
             if not enemy.SPAWNED:
-                numOfEnemiesToDelete += 1
-        while spriteListLen > i:
-            spriteListLen = len(Camera.spriteList)
+                num_of_enemies_to_delete += 1
+        
+        i = 0
+        while sprite_list_len > i:
+            sprite_list_len = len(self.sprite_list)
             j = 0
             k = 0
-            while not k == numOfEnemiesToDelete:
-                obj = str(type(Camera.spriteList[j])).partition(
-                    ".")[2].split("'")[0]
-                if obj == "Enemy" and Camera.spriteList[j].SPAWNED == False:
-                    del Camera.spriteList[j]
-                    numOfEnemies -= 1
+
+            while not k == num_of_enemies_to_delete:
+                obj = str(type(self.sprite_list[j])).partition(".")[2].split["'"][0]
+                if obj == "Enemy" and self.sprite_list[j].SPAWNED is False:
+                    del self.sprite_list[j]
+                    num_of_enemies -= 1
                     k += 1
                 j += 1
-                if j > numOfEnemies - 1:
+                if j > num_of_enemies - 1:
                     break
-            obj = str(type(Camera.spriteList[i - 1])
-                      ).partition(".")[2].split("'")[0]
+            
+            obj = str(type(self.sprite_list[i - 1])).partition(".")[2].split("'")[0]
             if Attack.attacking is False and obj == "Attack":
-                del Camera.spriteList[i - 1]
-            if str(type(Camera.spriteList[1])).partition(".")[2].split("'")[0] == "Attack":
-                del Camera.spriteList[1]
-            if NPC.hit(Camera.player) is False and obj == "MsgBox":
-                del Camera.spriteList[4 + numOfEnemies]
-            if str(type(Camera.spriteList[0])).partition(".")[2].split("'")[0] == "MsgBox":
-                del Camera.spriteList[0]
+                del self.sprite_list[i - 1]
+            if str(type(self.sprite_list[1])).partition(".")[2].split("'")[0] == "Attack":
+                del self.sprite_list[1]
+            if NPC.hit(player) is False and obj == "MsgBox":
+                del self.sprite_list[4 + num_of_enemies]
+            if str(type(self.sprite_list[0])).partition(".")[2].split("'")[0] == "MsgBox":
+                del self.sprite_list[0]
             i += 1
-        # print(Camera.spriteList)
 
-        for sprite in Camera.spriteList:
-            offset_pos = sprite.rect.topleft - self.offset + Camera.internal_offset
-            Camera.internal_surf.blit(sprite.image, offset_pos)
+        for sprite in self.sprite_list:
+            offset_pos = sprite.rect.topleft - self.offset + self.internal_offset
+            self.internal_surf.blit(sprite.image, offset_pos)
 
-        scaled_surf = pygame.transform.scale(
-            Camera.internal_surf, Camera.internal_surface_size_vector)
-        scaled_rect = scaled_surf.get_rect(
-            center=(Camera.half_w, Camera.half_h))
-        Camera.displaySurface.blit(scaled_surf, scaled_rect)
+        scaled_surf = pygame.transform.scale(self.internal_surf, self.internal_surface_size_vector)
+        scaled_rect = scaled_surf.get_rect(center=[self.half_w, self.half_h])
+        self.display_surface.blit(scaled_surf, scaled_rect)

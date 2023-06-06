@@ -1,6 +1,4 @@
 from cryptography.fernet import Fernet
-import os
-
 
 class Crypting():
     def encrypt(path: str, fileToEncrypt: str, filekeyName: str):
@@ -52,15 +50,3 @@ class Crypting():
 
         with open(path + fileToDecrypt, "wb") as dec_file:
             dec_file.write(decrypted)
-
-    # renames a file
-    def rename(path: str, oldName: str, newName: str):
-        """
-        renames a file
-        """
-        if not path.endswith("\\"):
-            path = path + "\\"
-
-        oldName = path + oldName
-        newName = path + newName
-        os.rename(oldName, newName)

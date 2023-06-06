@@ -1,6 +1,5 @@
 import pygame
 
-
 class Inputs():
 
     def scan():

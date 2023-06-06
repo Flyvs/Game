@@ -2,49 +2,40 @@ import pygame
 import os
 import json
 
-
 class Music():
-    # initializing
-    def __init__(self, musicPath: str, game):
-        """
-        "game" needs to be class type
-        """
+    def __init__(self, music_path: str, game_data):
         super().__init__()
 
-        Music.path = musicPath
-        Music.game = game
+        self.music_path = music_path
+        self.game_data = game_data
 
-    # play
-    def play(self, song: int, volume: float):
-        song = song - 1
-        pygame.mixer.init()
         self.songs = []
+        pygame.mixer.init()
 
-        for file in os.listdir(Music.path):
+        for file in os.listdir(self.music_path):
             self.songs.append(file)
 
+    def play(self, song: int, volume: float):
+        song = song - 1
+
         try:
-            pygame.mixer.music.load(Music.path + self.songs[song])
+            pygame.mixer.music.load(self.music_path + self.songs[song])
             pygame.mixer.music.play(-1, 0, 0)
-        except:
-            pass
+        except: pass
 
-        if Music.game.gamedata["volume"] > 20:
-            Music.game.gamedata["volume"] = 20
-            volume = Music.game.gamedata["volume"]
-        elif Music.game.gamedata["volume"] < 0:
-            Music.game.gamedata["volume"] = 0
-            volume = Music.game.gamedata["volume"]
+        if self.game_data["volume"] > 20:
+            self.game_data["volume"] = 20
+            volume = self.game_data["volume"]
+        elif self.game_data["volume"] < 0:
+            self.game_data["volume"] = 0
+            volume = self.game_data["volume"]
 
-        # read json data
-        Music.game.gamedatafile = open(
-            Music.game.jsonPath + "gamedata.json", "w")
-        json.dump(Music.game.gamedata, Music.game.gamedatafile)
-        Music.game.gamedatafile.close()
+        game_data_file = open(self.music_path + "gamedata.json", "w")
+        json.dump(self.game_data, game_data_file)
+        game_data_file.close()
 
         self.volume(volume)
 
-    # set volume
     def volume(self, volume: float):
         volume *= 1.5
         volume /= 50
