@@ -7,6 +7,9 @@ class MsgBox(pygame.sprite.Sprite):
     # initializing
     def __init__(self, pos: tuple, text: str, font: str, fontSize: int, rgbText: tuple, rgbaBox: tuple, width: int, height: int, mergePath: str, group):
         super().__init__(group)
+        
+        if not os.path.exists(mergePath):
+            os.makedirs(mergePath)
 
         self.draw(mergePath, width, height, rgbaBox)
 
