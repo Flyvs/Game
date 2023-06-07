@@ -10,9 +10,9 @@ class HUD(pygame.sprite.Sprite):
         HUD.image = font_.render(text, True, rgb)
         HUD.rect = HUD.image.get_rect(center=pos)
 
-    def updateHUD(text: str, font: str, fontSize: int, rgb: tuple, player, game):
-        HUD_w = player.rect.center[0] + (game.screen.get_size()[0] // 2) - 125
-        HUD_h = player.rect.center[1] - (game.screen.get_size()[1] // 2) + 25
+    def updateHUD(self, text: str, font: str, fontSize: int, rgb: tuple, posx: int, posy: int, player, game):
+        HUD_w = player.rect.center[0] + (game.screen.get_size()[0] // 2) - posx
+        HUD_h = player.rect.center[1] - (game.screen.get_size()[1] // 2) + posy
         pos = (HUD_w, HUD_h)
 
         font_ = pygame.font.SysFont(font, fontSize)

@@ -68,10 +68,14 @@ class Player(pygame.sprite.Sprite):
         Player.attack = Attack("PHY", 7, attackPath,
                                Player, Player.game, self.camera)
 
-        Player.HUD_w = 0
-        Player.HUD_h = 0
-        Player.HUD = HUD(self.camera, (Player.HUD_w, Player.HUD_h),
-                         f"Stamina: {Player.STAMINA}", None, 60, (255, 0, 0))
+        Player.staminaHUD_w = 0
+        Player.staminaHUD_h = 0
+        Player.hpHUD_w = 0
+        Player.hpHUD_h = 0
+        Player.staminaHUD = HUD(self.camera, (Player.staminaHUD_w, Player.staminaHUD_h),
+                         f"Stamina: {Player.STAMINA}", None, 60, (255, 0, 0), 125, 25)
+        Player.hpHUD = HUD(self.camera, (Player.hpHUD_w, Player.hpHUD_h),
+                        f"Health: {Player.HP}", None, 60, (255, 0, 0), 200, 25)
 
    # drains the players stamina
     def drain(self):
@@ -270,7 +274,7 @@ class Player(pygame.sprite.Sprite):
 
         Player.rect.center += self.direction * self.speed
         Attack.input(self)
-        HUD.updateHUD(f"Stamina: {Player.STAMINA - 1}", None, 60, (255, 0, 0), Player, Player.game)
+        Player.staminaHUD.updateHUD(f"Stamina: {Player.STAMINA - 1}", None, 60, (255, 0, 0), Player, Player.game)
         Enemy.attackPlayer(self)
         Enemy.hit(self)
         Player.game.teleport(self, "ground:0", "ground:1", 1948, 900, 52, 200)

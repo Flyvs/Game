@@ -24,7 +24,7 @@ class Game():
         pygame.init()
         pygame.font.init()
 
-        # set to true when converting the script to an exe and to false when running in editor
+        # set to true wwwen converting the script to an exe and to false when running in editor
         Game.export = False
 
         # getting paths
