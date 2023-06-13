@@ -2,15 +2,15 @@
 
 ## GENERAL INFORMATION
 
-- 100% Python code
+- 100% Python code (it's not good)
 
 - The music is mostly made with [beathoven](https://www.beatoven.ai)
 
-- Also a retro track is taken from [this](https://youtu.be/tgIddOrtMFQ)
+- Also a track is taken from [here](https://youtu.be/tgIddOrtMFQ)
 
 ## PLAYING
 
-- supports keyboard and most controllers but the PS5 Controller and the Nintendo Switch Pro Controller works best
+- supports keyboard and most controllers but the PS5 Controller and the Nintendo Switch Pro Controller work best
 
 ## EDITING CODE
 

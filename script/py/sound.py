@@ -3,7 +3,10 @@ import os
 import json
 
 class Music():
-    def __init__(self, music_path: str, game_data):
+    def __init__(self,
+                 music_path: str,
+                 game_data):
+        
         super().__init__()
 
         self.music_path = music_path
@@ -30,9 +33,8 @@ class Music():
             self.game_data["volume"] = 0
             volume = self.game_data["volume"]
 
-        game_data_file = open(self.music_path + "gamedata.json", "w")
-        json.dump(self.game_data, game_data_file)
-        game_data_file.close()
+        with open(self.music_path + "gamedata.json", "w") as game_data_file:
+            json.dump(self.game_data, game_data_file)
 
         self.volume(volume)
 

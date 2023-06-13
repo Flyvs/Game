@@ -1,11 +1,19 @@
 import pygame
 import os
+from typing import List
+
 from npc import NPC
 from attack import Attack
 
-class Camera():
-    def __init__(self, ground_path: str):
+class Camera(pygame.sprite.Group):
+    def __init__(self,
+                 ground_path: str):
+        
         super().__init__()
+
+        self.npc_list: List[NPC] = []
+        self.attack_list: List[Attack] = []
+        self.current_attack: Attack
 
         self.display_surface = pygame.display.get_surface()
         self.offset = pygame.math.Vector2()
@@ -22,7 +30,7 @@ class Camera():
         self.ground(self.grounds[0])
 
         self.internal_surf_size = (2500, 2500)
-        self.internal_surf = pygame.surface(self.internal_surf_size, pygame.SRCALPHA)
+        self.internal_surf = pygame.Surface(self.internal_surf_size, pygame.SRCALPHA)
         self.internale_rect = self.internal_surf.get_rect(center=(self.half_w, self.half_h))
         self.internal_surface_size_vector = pygame.math.Vector2(self.internal_surf_size)
         self.internal_offset = pygame.math.Vector2()
@@ -72,12 +80,13 @@ class Camera():
                     break
             
             obj = str(type(self.sprite_list[i - 1])).partition(".")[2].split("'")[0]
-            if Attack.attacking is False and obj == "Attack":
+            if self.attack_list[self.attack_list.index(self.current_attack)].attacking is False and obj == "Attack:":
                 del self.sprite_list[i - 1]
             if str(type(self.sprite_list[1])).partition(".")[2].split("'")[0] == "Attack":
                 del self.sprite_list[1]
-            if NPC.hit(player) is False and obj == "MsgBox":
-                del self.sprite_list[4 + num_of_enemies]
+            for npc in self.npc_list:
+                if npc.hit(player) is False and obj == "MsgBox":
+                    del self.sprite_list[5 + num_of_enemies] # for every added sprite its [current_val+1 + numOfEnemies] | Is there a way to get current_val automatically?
             if str(type(self.sprite_list[0])).partition(".")[2].split("'")[0] == "MsgBox":
                 del self.sprite_list[0]
             i += 1
