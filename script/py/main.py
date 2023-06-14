@@ -38,9 +38,8 @@ class Game():
         try:
             os.rename(self.crypting_path + "gamedata.rofl", self.crypting_path + "gamedata.json")
             os.rename(self.crypting_path + "playerdata.rofl", self.crypting_path + "playerdata.json")
-
-            Crypting.decrypt(self.crypting_path, "gamedata.json", "gamekey.key")
-            Crypting.decrypt(self.crypting_path, "playerdata.json", "playerkey.key")
+            Crypting.decrypt("gamedata.json", "gamekey.key", self.crypting_path)
+            Crypting.decrypt("playerdata.json", "playerkey.key", self.crypting_path)
         except: pass
 
         with open(self.json_path + "gamedata.json", "r") as self.game_data_file:
@@ -201,8 +200,8 @@ class Game():
                 self.run_volume()
 
     def exit(self):
-        Crypting.encrypt(self.crypting_path, "gamedata.json", "gamekey.key")
-        Crypting.encrypt(self.crypting_path, "playerdata.json", "playerkey.key")
+        Crypting.encrypt("gamedata.json", "gamekey.key", self.crypting_path)
+        Crypting.encrypt("playerdata.json", "playerkey.key", self.crypting_path)
         os.rename(self.crypting_path + "gamedata.json", self.crypting_path + "gamedata.rofl")
         os.rename(self.crypting_path + "playerdata.json", self.crypting_path + "playerdata.rofl")
 

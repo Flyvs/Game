@@ -1,13 +1,13 @@
 from cryptography.fernet import Fernet
 
 class Crypting():
-    def encrypt(path: str,
-                fileToEncrypt: str,
-                filekeyName: str):
+    def encrypt(fileToEncrypt: str,
+                filekeyName: str,
+                path: str = ""):
         """
         encrypts the given file and creates a key with the given name
         """
-        if not path.endswith("\\"):
+        if not path.endswith("\\") and not path == "":
             path = path + "\\"
 
         key = Fernet.generate_key()
@@ -29,11 +29,13 @@ class Crypting():
             encrypted_file.write(encrypted)
 
     # decrypting file
-    def decrypt(path: str, fileToDecrypt: str, filekeyName: str):
+    def decrypt(fileToDecrypt: str,
+                filekeyName: str,
+                path: str = ""):
         """
         decrypts the given file and uses the given key(file)
         """
-        if not path.endswith("\\"):
+        if not path.endswith("\\") and not path == "":
             path = path + "\\"
 
         with open(path + filekeyName) as keyfile:
