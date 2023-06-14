@@ -2,6 +2,8 @@ import pygame
 import os
 import json
 import sys
+from typing import List
+
 from crypting import Crypting
 from gamepad import Inputs
 from sound import Music
@@ -82,7 +84,7 @@ class Game():
                          self)
         self.player = self.menu.player
 
-        self.attack_list = []
+        self.attack_list: List[Attack] = []
         attack_A = Attack(group = self.camera,
                           TYPE = "classic",
                           DMG = 5,
@@ -95,13 +97,14 @@ class Game():
                           game = self)
         ExpandList.expand(self.attack_list, attack_A)
 
-        self.enemy_list = []
+        self.enemy_types: List[Enemy] = []
+        self.enemy_list: List[Enemy] = []
         enemy_A = Enemy(group = self.camera,
                         POS = (100, 1768),
                         HP = 30, 
                         ATK = 2,
                         DEF = 20,
-                        SPEED = 1,
+                        SPEED = 0,
                         SPAWNED = True,
                         SPRITE = "testenemy.png",
                         LIST = self.enemy_list,
@@ -112,7 +115,7 @@ class Game():
                     HP = 15, 
                     ATK = 5,
                     DEF = 15,
-                    SPEED = 2,
+                    SPEED = 0,
                     SPAWNED = True,
                     SPRITE = "testenemy2.png",
                     LIST = self.enemy_list,
@@ -123,15 +126,16 @@ class Game():
                     HP = 5, 
                     ATK = 12,
                     DEF = 5,
-                    SPEED = 3,
+                    SPEED = 0,
                     SPAWNED = True,
                     SPRITE = "testenemy3.png",
                     LIST = self.enemy_list,
                     game = self,
                     player = self.player)
-        ExpandList.expand(self.enemy_list, enemy_A, enemy_B, enemy_C)
+        ExpandList.expand(self.enemy_types, enemy_A, enemy_B, enemy_C)
+        self.spawn_test_enemies()
 
-        self.npc_list = []
+        self.npc_list: List[NPC] = []
         npc_A = NPC(group = self.camera,
                     pos = (500, 1768),
                     npc_path = self.npc_path, npc_spawn = "testNPC")
@@ -145,9 +149,18 @@ class Game():
         self.camera.npc_list = self.npc_list
         self.camera.attack_list = self.attack_list
         self.camera.current_attack = self.player.current_attack
+        
+        for enemy in self.enemy_list:
+            self.player.enemy_list.append(enemy)
+            enemy.attack_list = self.attack_list
+            enemy.current_attack = self.player.current_attack
 
         self.music = Music(self.music_path, self.game_data)
         self.music.play(1, self.game_data["volume"])
+        
+    def spawn_test_enemies(self): # spawn condition will be changed
+        for enemy in self.enemy_types:
+            self.enemy_list.append(enemy)
 
     def start(self):
         while True:

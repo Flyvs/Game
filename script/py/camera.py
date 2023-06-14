@@ -55,43 +55,40 @@ class Camera(pygame.sprite.Group):
         ground_offset = self.ground_rect.topleft - self.offset + self.internal_offset
         self.internal_surf.blit(self.ground_surf, ground_offset)
 
-        self.sprite_list = self.sprites()
-        sprite_list_len = len(self.sprite_list)
+        sprite_list = self.sprites()
+        sprite_list_len = len(sprite_list)
 
         num_of_enemies_to_delete = 0
         for enemy in enemy_list:
             if not enemy.SPAWNED:
                 num_of_enemies_to_delete += 1
-        
+               
         i = 0
         while sprite_list_len > i:
-            sprite_list_len = len(self.sprite_list)
-            j = 0
-            k = 0
-
-            while not k == num_of_enemies_to_delete:
-                obj = str(type(self.sprite_list[j])).partition(".")[2].split["'"][0]
-                if obj == "Enemy" and self.sprite_list[j].SPAWNED is False:
-                    del self.sprite_list[j]
-                    num_of_enemies -= 1
-                    k += 1
-                j += 1
-                if j > num_of_enemies - 1:
-                    break
+            sprite_list_len = len(sprite_list)
+            j = num_of_enemies_to_delete + 1
             
-            obj = str(type(self.sprite_list[i - 1])).partition(".")[2].split("'")[0]
-            if self.attack_list[self.attack_list.index(self.current_attack)].attacking is False and obj == "Attack:":
-                del self.sprite_list[i - 1]
-            if str(type(self.sprite_list[1])).partition(".")[2].split("'")[0] == "Attack":
-                del self.sprite_list[1]
+            # enemy_list should be enemy_types so multiple enemies of one type can be generated
+            
+            for enemy in enemy_list:
+                obj = str(type(sprite_list[j])).partition(".")[2].split("'")[0]
+                if obj == "Enemy" and enemy.SPAWNED is False:
+                    del sprite_list[j]
+                    j += 1
+            
+            obj = str(type(sprite_list[i - 1])).partition(".")[2].split("'")[0]
+            attack = self.attack_list[self.attack_list.index(self.current_attack)]
+            if attack.attacking is False and attack.exist is False and obj == "Attack":
+                del sprite_list[i - 1]
             for npc in self.npc_list:
                 if npc.hit(player) is False and obj == "MsgBox":
-                    del self.sprite_list[5 + num_of_enemies] # for every added sprite its [current_val+1 + numOfEnemies] | Is there a way to get current_val automatically?
-            if str(type(self.sprite_list[0])).partition(".")[2].split("'")[0] == "MsgBox":
-                del self.sprite_list[0]
+                    del sprite_list[3 + num_of_enemies] # for every added sprite its [current_val+1 + numOfEnemies] | Is there a way to get current_val automatically? current_val is player/npc/etc(?)
+            if str(type(sprite_list[0])).partition(".")[2].split("'")[0] == "MsgBox":
+                del sprite_list[0]
             i += 1
+        print(sprite_list)
 
-        for sprite in self.sprite_list:
+        for sprite in sprite_list:
             offset_pos = sprite.rect.topleft - self.offset + self.internal_offset
             self.internal_surf.blit(sprite.image, offset_pos)
 

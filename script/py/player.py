@@ -30,7 +30,7 @@ class Player(pygame.sprite.Sprite):
         self.player_path = player_path
         self.npc_list: List[NPC] = []
         self.attack_list: List[Attack] = []
-        self.enemy_list: List[Enemy] = None
+        self.enemy_list: List[Enemy] = []
         self.current_attack: Attack
 
         self.right = "playerR.png"
@@ -162,7 +162,7 @@ class Player(pygame.sprite.Sprite):
                 self.image = pygame.image.load(self.player_path + self.left_b).convert_alpha()
         elif self.facing_right is True:
             if self.color == "w":
-                self.image = pygame.image.load(self.player_path + self.right).convert()
+                self.image = pygame.image.load(self.player_path + self.right).convert_alpha()
             elif self.color == "b" and self.STAMINA > 0:
                 self.image = pygame.image.load(self.player_path + self.right_b).convert_alpha()
         
@@ -239,10 +239,9 @@ class Player(pygame.sprite.Sprite):
                                player = self,
                                game = self.game)
         
-        if self.enemy_list is not None:
-            for enemy in self.enemy_list:
-                enemy.attack_player()
-                enemy.hit()
+        for enemy in self.enemy_list:
+            enemy.attack_player()
+            enemy.hit()
         
         self.game.tp("ground:0", "ground:1", 1946, 900, 52, 200, (640, 1780))
 

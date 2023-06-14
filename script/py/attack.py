@@ -26,8 +26,6 @@ class Attack(pygame.sprite.Sprite):
         self.player = player
         self.game = game
 
-        self.firingLeft = False
-        self.firingRight = False
         self.attacking = False
         self.exist = False
         self.direction = "right"
@@ -57,13 +55,13 @@ class Attack(pygame.sprite.Sprite):
         y_left = self.player.rect.center[1] + 14
         self.pos_right = (x_right, y_right)
         self.pos_left = (x_left, y_left)
-
+        
         if self.exist is False:
             if keys[pygame.K_e] or (inputs is not None and inputs[11] == 1):
-                Attack.attacking = True
+                self.attacking = True
                 if self.player.facing_left is True:
                     self.image = pygame.image.load(self.sprite_path + self.left).convert_alpha()
-                    self.rect = self.image.get_rect(center=Attack.pos_left)
+                    self.rect = self.image.get_rect(center=self.pos_left)
                     self.direction = "left"
                 elif self.player.facing_right is True:
                     self.image = pygame.image.load(self.sprite_path + self.right).convert_alpha()
