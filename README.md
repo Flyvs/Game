@@ -4,6 +4,8 @@
 
 - 100% Python code (it's not good)
 
+- **DO _NOT_ DELETE THE .key FILES** (or any other files lol but those are essential)
+
 - The music is mostly made with [beathoven](https://www.beatoven.ai)
 
 - Also a track is taken from [here](https://youtu.be/tgIddOrtMFQ)
