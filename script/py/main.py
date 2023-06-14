@@ -3,7 +3,9 @@ import os
 import json
 import sys
 from typing import List
+import cryptography.fernet
 
+from popup import Error
 from crypting import Crypting
 from gamepad import Inputs
 from sound import Music
@@ -331,5 +333,13 @@ class Game():
         self.clock.tick(20)
 
 if __name__ == "__main__":
-    game = Game()
-    game.start()
+    fix = "\nTry downloading:\n-gamedata.rofl\n-gamekey.key\n-playerdata.rofl\n-playerkey.key\nfrom https://github.com/Flyvs/Game/tree/master/script \npaste the files to \DragonRogue\main\script"
+    try:
+        game = Game()
+        game.start()
+    except FileNotFoundError as e:
+        Error(f"{e}{fix}")
+    except cryptography.fernet.InvalidToken:
+        Error(f"The en-/decryption failed! InvalidToken{fix}")
+    except json.decoder.JSONDecodeError as e:
+        Error(f"A JSON error occured.\n{e}{fix}")
