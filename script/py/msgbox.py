@@ -18,6 +18,8 @@ class MsgBox(pygame.sprite.Sprite):
         
         super().__init__(group)
 
+        self.active = False
+
         if not os.path.exists(mergePath):
             os.makedirs(mergePath)
 
@@ -26,8 +28,13 @@ class MsgBox(pygame.sprite.Sprite):
         font_ = pygame.font.SysFont(font, fontSize)
         image = pygame.image.load(mergePath + "tempRectangle.png")
         os.remove(mergePath + "tempRectangle.png")
-        text_ = font_.render(text, True, rgbText)
-        self.image = Merge.surfaces(mergePath, image, text_)
+
+        lines = text.split("\n")
+        text_surfaces = []
+        for line in lines:
+            text_surfaces.append(font_.render(line, True, rgbText))
+
+        self.image = Merge.surfaces(mergePath, image, *text_surfaces)
         self.rect = self.image.get_rect(topleft=pos)
 
     def draw(self, path: str, width: int, height: int, color: tuple):

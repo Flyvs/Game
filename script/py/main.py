@@ -15,6 +15,7 @@ from menu import Menu
 from enemy import Enemy
 from attack import Attack
 from npc import NPC
+from msgbox import MsgBox
 
 class Game():
     def __init__(self):
@@ -136,11 +137,39 @@ class Game():
         ExpandList.expand(self.enemy_types, enemy_A, enemy_B, enemy_C)
         self.spawn_test_enemies()
 
+        msgbox_A = MsgBox(group=self.camera,
+                          pos = (500 - 224, 1768 - 192),
+                          text = "This is a demo text",
+                          font = None,
+                          fontSize = 60,
+                          rgbText = (66, 135, 245),
+                          rgbaBox = (255, 200, 0, 255),
+                          width = 512,
+                          height = 128,
+                          mergePath = self.path("temp"))
+        msgbox_B = MsgBox(group=self.camera,
+                          pos = (1200 - 224, 1768 - 192),
+                          text = "This is another demo text\nwith a linebreak",
+                          font = None,
+                          fontSize = 60,
+                          rgbText = (255, 255, 255),
+                          rgbaBox = (0, 0, 0, 255),
+                          width = 560,
+                          height = 128,
+                          mergePath = self.path("temp"))
+
         self.npc_list: List[NPC] = []
         npc_A = NPC(group = self.camera,
                     pos = (500, 1768),
-                    npc_path = self.npc_path, npc_spawn = "testNPC")
-        ExpandList.expand(self.npc_list, npc_A)
+                    npc_path = self.npc_path,
+                    npc_spawn = "testNPC",
+                    msgbox = msgbox_A)
+        npc_B = NPC(group = self.camera,
+                    pos = (1200, 1768),
+                    npc_path = self.npc_path,
+                    npc_spawn = "testNPC",
+                    msgbox = msgbox_B)
+        ExpandList.expand(self.npc_list, npc_A, npc_B)
 
         self.player.current_attack = self.attack_list[0]
         self.player.npc_list = self.npc_list
@@ -333,7 +362,7 @@ class Game():
         self.clock.tick(20)
 
 if __name__ == "__main__":
-    fix = "\nTry downloading:\n-gamedata.rofl\n-gamekey.key\n-playerdata.rofl\n-playerkey.key\nfrom https://github.com/Flyvs/Game/tree/master/script \npaste the files to \DragonRogue\main\script"
+    fix = "\nTry downloading:\n-gamedata.rofl\n-gamekey.key\n-playerdata.rofl\n-playerkey.key\nfrom https://github.com/Flyvs/Game/tree/master/script \npaste the files to \DragonRogue\main\script\nThese 4 files are interdependent, so download and copy them together."
     try:
         game = Game()
         game.start()

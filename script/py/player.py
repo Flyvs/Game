@@ -198,16 +198,6 @@ class Player(pygame.sprite.Sprite):
             for npc in self.npc_list:
                 if npc.hit(self) and npc.hitted is False:
                     npc.hitted = True
-                    MsgBox(group=self.camera,
-                        pos = (npc.rect[0] - 224, npc.rect[1] - 192),
-                        text = "This is a demo text",
-                        font = None,
-                        fontSize = 60,
-                        rgbText = (66, 135, 245),
-                        rgbaBox = (255, 200, 0, 255),
-                        width = 512,
-                        height = 128,
-                        mergePath = self.game.path("temp"))
         
         self.keyboard()
         self.gamepad()

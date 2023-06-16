@@ -2,7 +2,6 @@ import pygame
 from PIL import Image
 import os
 
-
 class Merge():
     def surfaces(path: str, *surfaces: pygame.Surface):
         """
@@ -13,23 +12,22 @@ class Merge():
         """
         if not os.path.exists(path):
             os.makedirs(path)
-        index = 0
-        for surface in surfaces:
+
+        for index, surface in enumerate(surfaces):
             surface.convert_alpha()
-            pygame.image.save(surface, path + f"temp{index}.png")
-            index += 1
-        index = 0
-        for file in os.listdir(path):
-            if index > 0:
-                background = foreground
-                foreground = Image.open(path + file).convert("RGBA")
-                background.paste(foreground, ((background.width - foreground.width) //
-                                 2, (background.height - foreground.height) // 2), foreground)
+            pygame.image.save(surface, f"{path}temp{index}.png")
+
+        background = None
+        for index, file in enumerate(os.listdir(path)):
+            foreground = Image.open(f"{path}{file}").convert("RGBA")
+            if index == 0:
+                background = foreground               
             else:
-                foreground = Image.open(path + file).convert("RGBA")
-            index += 1
-        background.save(path + "tempfinal.png")
-        surface = pygame.image.load(path + "tempfinal.png")
-        for file in os.listdir(path):
-            os.remove(path + file)
+                background.paste(foreground, ((background.width - foreground.width) // 2, (background.height - foreground.height) // 2), foreground)
+            os.remove(f"{path}{file}")
+
+        background.save(f"{path}tempfinal.png")
+        surface = pygame.image.load(f"{path}tempfinal.png")
+        os.remove(f"{path}tempfinal.png")
+
         return surface
