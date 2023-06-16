@@ -16,10 +16,9 @@
 
 ## EDITING CODE
 
-- remember to install a package to convert the script into an exe (for example [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/))
+- remember to install a package to convert the script into an exe (for example [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/)). Detailed explanation on how to do so exactly coming soon
 
 Set this to true if you want to export the script as an exe.
-Detailed explanation coming soon
 
 ```
 Game.export = False
