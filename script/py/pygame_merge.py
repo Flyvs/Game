@@ -15,9 +15,8 @@ class Merge():
         if not os.path.exists(path):
             os.makedirs(path)
 
-        for index, surface in enumerate(surfaces):
+        for surface in enumerate(surfaces):
             surface.convert_alpha()
-            pygame.image.save(surface, f"{path}temp{index}.png")
 
         background = None
         line_spacing = 0
