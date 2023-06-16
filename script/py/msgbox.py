@@ -11,7 +11,7 @@ class MsgBox(pygame.sprite.Sprite):
                  pos: tuple,
                  text: str,
                  font: str,
-                 fontSize: int,
+                 font_size: int,
                  rgbText: tuple,
                  rgbaBox: tuple,
                  width: int,
@@ -27,38 +27,40 @@ class MsgBox(pygame.sprite.Sprite):
         if not os.path.exists(mergePath):
             os.makedirs(mergePath)
 
-        self.draw(mergePath, width, height, rgbaBox, RECTANGLE)
+        name_rect = self.draw(mergePath, width, height, rgbaBox, RECTANGLE)
 
-        image = pygame.image.load(mergePath + "tempRectangle.png")
-        os.remove(mergePath + "tempRectangle.png")
+        image = pygame.image.load(name_rect)
 
         lines = text.split("\n")
         text_surfaces: list[pygame.Surface] = []
         
         if font is None:
-            font = "Arial.ttf"
+            font = "arial.ttf"
         
         for index, line in enumerate(lines):
-            surface_font = ImageFont.truetype(font, fontSize)
-            surface_width, surface_height = surface_font.getsize(line)
-            name = self.draw(mergePath, surface_width, surface_height, rgbText, TEXT, text, surface_font, index)
-            image = pygame.image.load(f"{mergePath}{name}")
-            text_surfaces.append(image)
+            surface_font = ImageFont.truetype(font, font_size)
+            mask = surface_font.getmask(line)
+            surface_width, surface_height = mask.size
+            name = self.draw(mergePath, surface_width, surface_height, rgbText, TEXT, line, surface_font, index)
 
-        self.image = Merge.surfaces(mergePath, fontSize, (10, 10), image, *text_surfaces)
+            surface_image = pygame.image.load(name)
+            text_surfaces.append(surface_image)
+
+        self.image = Merge.surfaces(mergePath, font_size, (10, 10), 10, image, *text_surfaces)
         self.rect = self.image.get_rect(topleft=pos)
 
     def draw(self, path: str, width: int, height: int, color: tuple, type: str, text: str = None, font: ImageFont.FreeTypeFont = None, index: int = None):
-        image = Image.new("RGBA", (width, height), color)
-        draw = ImageDraw.Draw(image)
-
         if type == "rectangle":
+            image = Image.new("RGBA", (width, height), color)
+            draw = ImageDraw.Draw(image)
             name = f"{path}tempRectangle.png"
             draw.rectangle((0, 0, 0, 0), fill = color)
-            image.save(name, format = "PNG")
+            image.save(name, "PNG")
             return name
         elif type == "text":
+            image = Image.new("RGBA", (width, height + 10), (0, 0, 0, 0))
+            draw = ImageDraw.Draw(image)
             name = f"{path}temp{index}.png"
             draw.text((0, 0), text, font = font, fill = color)
-            image.save(name, format = "PNG")
+            image.save(name, "PNG")
             return name

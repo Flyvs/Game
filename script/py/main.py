@@ -38,7 +38,7 @@ class Game():
         self.ground_path = self.path("sprites", "grounds")
         self.menu_sprites = self.path("sprites")
         
-        FONTSIZE: Final = 36
+        FONTSIZE: Final = 20
 
         try:
             os.rename(self.crypting_path + "gamedata.rofl", self.crypting_path + "gamedata.json")
@@ -143,7 +143,7 @@ class Game():
                           pos = (500 - 224, 1768 - 192),
                           text = "Idk what I could write here to fill the space so I type some random bullshit",
                           font = None,
-                          fontSize = FONTSIZE,
+                          font_size = FONTSIZE,
                           rgbText = (66, 135, 245),
                           rgbaBox = (255, 200, 0, 255),
                           width = 512,
@@ -151,9 +151,9 @@ class Game():
                           mergePath = self.path("temp"))
         msgbox_B = MsgBox(group=self.camera,
                           pos = (1200 - 224, 1768 - 192),
-                          text = "This is another demo text\nwith a linebreak\nanother linebreak",
+                          text = "This is another demo text\nwith a linebreak\nand another linebreak and this is not a linebreak",
                           font = None,
-                          fontSize = FONTSIZE,
+                          font_size = FONTSIZE,
                           rgbText = (255, 255, 255),
                           rgbaBox = (0, 0, 0, 255),
                           width = 560,
@@ -364,7 +364,7 @@ class Game():
         self.clock.tick(20)
 
 if __name__ == "__main__":
-    fix = "\nTry downloading:\n-gamedata.rofl\n-gamekey.key\n-playerdata.rofl\n-playerkey.key\nfrom https://github.com/Flyvs/Game/tree/master/script \npaste the files to \DragonRogue\main\script\nThese 4 files are interdependent, so download and copy them together."
+    fix = "\nIf one of those are missing, try downloading:\n-gamedata.rofl\n-gamekey.key\n-playerdata.rofl\n-playerkey.key\nfrom https://github.com/Flyvs/Game/tree/master/script \npaste the files to \DragonRogue\main\script\nThese 4 files are interdependent, so download and copy them together."
     try:
         game = Game()
         game.start()
