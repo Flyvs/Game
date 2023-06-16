@@ -19,6 +19,7 @@
 - remember to install a package to convert the script into an exe (for example [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/))
 
 Set this to true if you want to export the script as an exe.
+Detailed explanation coming soon
 
 ```
 Game.export = False
@@ -54,18 +55,12 @@ decrypts the given file and uses the given key(file)
 Crypting.decrypt(path: str, fileToDecrypt: str, filekeyName: str)
 ```
 
-renames a file (idk why I created this (There is [os.rename](https://www.tutorialspoint.com/python/os_rename.htm)), maybe there's a reason why but I can't remember)
-
-```
-Crypting.rename(path: str, oldName: str, newName: str)
-```
-
 #### pygame_merge.py
 
 merges multiple surfaces & the last surface given will be on top
 
 ```
-Merge.surfaces(path: str, *surfaces: pygame.Surface)
+Merge.surfaces(path: str, font_size: int, pos: tuple[int, int], extra_space: int = 0, *surfaces: pygame.Surface)
 ```
 
 #### expandlist.py
