@@ -34,7 +34,7 @@ class MsgBox(pygame.sprite.Sprite):
         for line in lines:
             text_surfaces.append(font_.render(line, True, rgbText))
 
-        self.image = Merge.surfaces(mergePath, image, *text_surfaces)
+        self.image = Merge.surfaces(mergePath, fontSize, (10, 10), image, *text_surfaces)
         self.rect = self.image.get_rect(topleft=pos)
 
     def draw(self, path: str, width: int, height: int, color: tuple):

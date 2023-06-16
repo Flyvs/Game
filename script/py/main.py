@@ -2,7 +2,7 @@ import pygame
 import os
 import json
 import sys
-from typing import List
+from typing import List, Final
 import cryptography.fernet
 
 from popup import Error
@@ -37,6 +37,8 @@ class Game():
         self.crypting_path = self.json_path
         self.ground_path = self.path("sprites", "grounds")
         self.menu_sprites = self.path("sprites")
+        
+        FONTSIZE: Final = 36
 
         try:
             os.rename(self.crypting_path + "gamedata.rofl", self.crypting_path + "gamedata.json")
@@ -139,9 +141,9 @@ class Game():
 
         msgbox_A = MsgBox(group=self.camera,
                           pos = (500 - 224, 1768 - 192),
-                          text = "This is a demo text",
+                          text = "Idk what I could write here to fill the space so I type some random bullshit",
                           font = None,
-                          fontSize = 60,
+                          fontSize = FONTSIZE,
                           rgbText = (66, 135, 245),
                           rgbaBox = (255, 200, 0, 255),
                           width = 512,
@@ -149,9 +151,9 @@ class Game():
                           mergePath = self.path("temp"))
         msgbox_B = MsgBox(group=self.camera,
                           pos = (1200 - 224, 1768 - 192),
-                          text = "This is another demo text\nwith a linebreak",
+                          text = "This is another demo text\nwith a linebreak\nanother linebreak",
                           font = None,
-                          fontSize = 60,
+                          fontSize = FONTSIZE,
                           rgbText = (255, 255, 255),
                           rgbaBox = (0, 0, 0, 255),
                           width = 560,
