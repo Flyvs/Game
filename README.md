@@ -18,10 +18,10 @@
 
 - remember to install a package to convert the script into an exe (for example [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/)). Detailed explanation on how to do so exactly coming soon
 
-Set this to true if you want to export the script as an exe.
+In main.py set this to true if you want to export the script as an exe.
 
 ```
-Game.export = False
+self.export = False
 ```
 
 ### FUNCTIONS
