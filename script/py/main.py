@@ -359,7 +359,7 @@ class Game():
                 self.exit()
 
         self.screen.fill('#71ddee')
-        Game.menu.volume_screen()
+        self.menu.volume_screen()
         pygame.display.update()
         self.clock.tick(20)
 

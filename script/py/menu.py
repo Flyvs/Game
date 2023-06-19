@@ -82,7 +82,7 @@ class Menu():
     def save_volume(self):
         self.game_data["volume"] = self.options_slider
         volume = self.game_data["volume"]
-        Music.volume(volume)
+        self.game.music.volume(volume)
 
         self.dump_data(self.game_data, "gamedata.json")
 
@@ -92,7 +92,7 @@ class Menu():
         display_volume = pygame.font.SysFont("Aerial", 100)
         volume_surface = display_volume.render(str(self.options_slider), False, (0, 0, 0))
 
-        if self.ticks_to_ignore_space > 5:
+        if self.ticks_to_ignore_space > 0:
             self.ticks_to_ignore_space -= 1
 
         if keys[pygame.K_a] or (inputs is not None and inputs[23] == 1):
@@ -162,7 +162,7 @@ class Menu():
 
         if keys[pygame.K_w] or (inputs is not None and inputs[21] == 1):
             if self.options_mainmenu != 1:
-                self.options_mainmenu = 1
+                self.options_mainmenu -= 1
         elif keys[pygame.K_s] or (inputs is not None and inputs[22] == 1):
             if self.options_mainmenu != 4:
                 self.options_mainmenu += 1
@@ -201,37 +201,37 @@ class Menu():
 
         if keys[pygame.K_w] or (inputs is not None and inputs[21] == 1):
             if self.options_pause_menu != 1:
-                    self.options_pause_menu -= 1
-            elif keys[pygame.K_s] or (inputs is not None and inputs[22] == 1):
-                if self.options_pause_menu != 5:
-                    self.options_pause_menu += 1
-            elif (keys[pygame.K_SPACE] and self.ticks_to_ignore_space == 0) or (inputs is not None and inputs[10] == 1 and self.ticks_to_ignore_space == 0):
-                self.ticks_to_ignore_space = 5
-                if self.options_pause_menu == 1:
-                    self.game.run = "options"
-                elif self.options_pause_menu == 2:
-                    self.save_options(self.resx, self.resy, self.game.fullscreen)
-                elif self.options_pause_menu == 3:
-                    self.game.run = "game"
-                elif self.options_pause_menu == 4:
-                    self.save_options(self.resx, self.resy, self.game.fullscreen)
-                    self.game.run = "mainmenu"
-                elif self.options_pause_menu == 5:
-                    self.save_options(self.resx, self.resy, self.game.fullscreen)
-                    self.game.exit()
-
+                self.options_pause_menu -= 1
+        elif keys[pygame.K_s] or (inputs is not None and inputs[22] == 1):
+            if self.options_pause_menu != 5:
+                self.options_pause_menu += 1
+        elif (keys[pygame.K_SPACE] and self.ticks_to_ignore_space == 0) or (inputs is not None and inputs[10] == 1 and self.ticks_to_ignore_space == 0):
+            self.ticks_to_ignore_space = 5
             if self.options_pause_menu == 1:
-                Camera.display_surface.blit(self.pause_options[2], (0, 0))
+                self.game.run = "options"
             elif self.options_pause_menu == 2:
-                Camera.display_surface.blit(self.pause_options[4], (0, 0))
+                self.save_options(self.resx, self.resy, self.game.fullscreen)
             elif self.options_pause_menu == 3:
-                Camera.display_surface.blit(self.pause_options[3], (0, 0))
+                self.game.run = "game"
             elif self.options_pause_menu == 4:
-                Camera.display_surface.blit(self.pause_options[1], (0, 0))
+                self.save_options(self.resx, self.resy, self.game.fullscreen)
+                self.game.run = "mainmenu"
             elif self.options_pause_menu == 5:
-                Camera.display_surface.blit(self.pause_options[0], (0, 0))
+                self.save_options(self.resx, self.resy, self.game.fullscreen)
+                self.game.exit()
 
-    def option_screen(self):
+        if self.options_pause_menu == 1:
+            self.camera.display_surface.blit(self.pause_options[2], (0, 0))
+        elif self.options_pause_menu == 2:
+            self.camera.display_surface.blit(self.pause_options[4], (0, 0))
+        elif self.options_pause_menu == 3:
+            self.camera.display_surface.blit(self.pause_options[3], (0, 0))
+        elif self.options_pause_menu == 4:
+            self.camera.display_surface.blit(self.pause_options[1], (0, 0))
+        elif self.options_pause_menu == 5:
+            self.camera.display_surface.blit(self.pause_options[0], (0, 0))
+
+    def options_screen(self):
         update_result = self.update()
         inputs, keys = update_result[0], update_result[1]
 
@@ -261,11 +261,11 @@ class Menu():
                 pygame.time.wait(100)
 
         if self.options_option_menu == 1:
-            Camera.display_surface.blit(self.option_options[1], (0, 0))
+            self.camera.display_surface.blit(self.option_options[1], (0, 0))
         elif self.options_option_menu == 2:
-            Camera.display_surface.blit(self.option_options[2], (0, 0))
+            self.camera.display_surface.blit(self.option_options[2], (0, 0))
         elif self.options_option_menu == 3:
-            Camera.display_surface.blit(self.option_options[0], (0, 0))
+            self.camera.display_surface.blit(self.option_options[0], (0, 0))
 
     def resolution_screen(self):
         update_result = self.update()
@@ -313,19 +313,19 @@ class Menu():
                 pygame.time.wait(100)
 
         if self.options_resolution == 1:
-            Camera.display_surface.blit(self.resolution_options[0], (0, 0))
+            self.camera.display_surface.blit(self.resolution_options[0], (0, 0))
         elif self.options_resolution == 2:
-            Camera.display_surface.blit(self.resolution_options[1], (0, 0))
+            self.camera.display_surface.blit(self.resolution_options[1], (0, 0))
         elif self.options_resolution == 3:
-            Camera.display_surface.blit(self.resolution_options[2], (0, 0))
+            self.camera.display_surface.blit(self.resolution_options[2], (0, 0))
         elif self.options_resolution == 4:
-            Camera.display_surface.blit(self.resolution_options[3], (0, 0))
+            self.camera.display_surface.blit(self.resolution_options[3], (0, 0))
         elif self.options_resolution == 5:
-            Camera.display_surface.blit(self.resolution_options[4], (0, 0))
+            self.camera.display_surface.blit(self.resolution_options[4], (0, 0))
         elif self.options_resolution == 6:
-            Camera.display_surface.blit(self.resolution_options[5], (0, 0))
+            self.camera.display_surface.blit(self.resolution_options[5], (0, 0))
 
-        Camera.half_w = Camera.display_surface.get_size()[0] // 2
-        Camera.half_h = Camera.display_surface.get_size()[1] // 2
-        Camera.internal_offset.x = Camera.internal_surf_size[0] // 2 - Camera.half_w
-        Camera.internal_offset.y = Camera.internal_surf_size[1] // 2 - Camera.half_h
+        self.camera.half_w = self.camera.display_surface.get_size()[0] // 2
+        self.camera.half_h = self.camera.display_surface.get_size()[1] // 2
+        self.camera.internal_offset.x = self.camera.internal_surf_size[0] // 2 - self.camera.half_w
+        self.camera.internal_offset.y = self.camera.internal_surf_size[1] // 2 - self.camera.half_h
