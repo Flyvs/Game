@@ -56,39 +56,26 @@ class Player(pygame.sprite.Sprite):
         self.game = game
         self.camera = group
 
-        self.stamina_HUD_w = 0
-        self.stamina_HUD_h = 0
-        self.hp_HUD_w = 0
-        self.hp_HUD_h = 0
-        self.stamina_HUD = HUD(self.camera, (self.stamina_HUD_w, self.stamina_HUD_h), f"Stamina: {self.STAMINA}", None, 60, (255, 0, 0))
-        self.hp_HUD = HUD(self.camera, (self.hp_HUD_w, self.hp_HUD_h), f"Health: {self.HP}", None, 60, (255, 0, 0))
+        self.stamina_HUD = HUD(self.camera, (0, 0), f"Stamina: {self.STAMINA}", None, 60, (255, 0, 0))
+        self.hp_HUD = HUD(self.camera, (0, 0), f"Health: {self.HP}", None, 60, (255, 0, 0))
+
+        self.ticks = 0
+        self.seconds = 0
+        self.minutes = 0
+        self.hours = 0
+        self.timer = None
 
     def drain_stamina(self):
-        timer = self.game.timer(self.game.player_hit_ticks, self.game.player_hit_seconds,
-                                    self.game.player_hit_minutes, self.game.player_hit_hours)
-        if self.color == "b" and self.STAMINA > 0:
-            self.game.player_hit_ticks = timer["ticks"]
-            self.game.player_hit_seconds = timer["seconds"]
-
-            if timer["seconds"] % 2 == 0:
-                self.STAMINA -= 1
-                self.game.player_hit_ticks = 0
-                self.game.player_hit_seconds = 0
-
+        print(self.timer)
+        if self.timer["ticks"] % 10 == 0 and self.color == "b" and self.STAMINA > 0:
+            self.STAMINA -= 1
+        
         if self.STAMINA == 0:
             self.color = "w"
             self.player_image()
-        
-        if self.color == "w" and self.STAMINA < self.player_data["STAMINA"]:
-            if timer["seconds"] % 2 == 0:
-                self.STAMINA += 1
-                self.game.player_hit_ticks = 0
-                self.game.player_hit_seconds = 0
-        
-        if self.color == "b":
-            self.speed = self.standard * 1.5
-        else:
-            self.speed = self.standard
+
+        if self.timer["seconds"] % 5 == 0 and self.timer["seconds"] != 0 and self.color == "w" and self.STAMINA < self.player_data["STAMINA"]:
+            self.STAMINA += 1
 
     def gamepad(self):
         if self.game.gamepad_inputs is not None:
@@ -170,8 +157,10 @@ class Player(pygame.sprite.Sprite):
             self.ticks_to_ignore_tab = 30
             if self.color == "w":
                 self.color = "b"
+                if self.STAMINA == self.player_data["STAMINA"]:
+                    self.timer = self.game.timer(self.ticks, self.seconds, self.minutes, self.hours)
             elif self.color == "b":
-                self.color = "b"
+                self.color = "w"  
 
     def update(self):
         if self.screen_collision_left():
@@ -198,21 +187,26 @@ class Player(pygame.sprite.Sprite):
             for npc in self.npc_list:
                 if npc.hit(self) and npc.hitted is False:
                     npc.hitted = True
-        
+
         self.keyboard()
         self.gamepad()
         self.player_image()
-        self.drain_stamina()
+        if self.timer is not None:
+            self.drain_stamina()
+            self.timer = self.game.timer(self.timer["ticks"], self.timer["seconds"], self.timer["minutes"], self.timer["hours"])
 
+        if self.color == "b":
+            self.speed = self.standard * 1.5
+        else:
+            self.speed = self.standard
         self.rect.center += self.direction * self.speed
         
-        if self.attack_list is not None:
-            for attack in self.attack_list:
-                if attack.TYPE == "classic":
-                    use_attack = attack
+        for attack in self.attack_list:
+            if attack.TYPE == "classic":
+                use_attack = attack
 
         use_attack.input()
-        self.stamina_HUD.update_hud(text = f"Stamina: {self.STAMINA - 1}",
+        self.stamina_HUD.update_hud(text = f"Stamina: {self.STAMINA}",
                                     font = None,
                                     fontSize = 60,
                                     rgb = (255, 0, 0),

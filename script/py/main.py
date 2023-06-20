@@ -284,16 +284,20 @@ class Game():
             self.ground = new_ground
 
     def timer(self, ticks: int, seconds: int, minutes: int, hours: int):
-        if ticks % 60 == 0:
+        ticks += 1
+
+        if ticks >= 60:
             seconds += 1
             ticks = 0
-            if seconds & 60 == 0:
-                minutes += 1
-                seconds = 0
-                if minutes % 60 == 0:
-                    hours += 1
-                    minutes = 0
-        ticks += 1
+
+        if seconds >= 60:
+            minutes += 1
+            seconds = 0
+
+        if minutes >= 60:
+            hours += 1
+            minutes = 0
+
         return {"ticks": ticks, "seconds": seconds, "minutes": minutes, "hours": hours}
 
     def run_game(self):

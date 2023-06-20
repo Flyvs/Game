@@ -74,6 +74,8 @@ class Enemy(pygame.sprite.Sprite):
             if self.player.HP > 0:
                 if self.SPAWNED:
                     self.player.HP -= self.ATK
+            elif self.player.HP < 0:
+                self.player.HP = 0
 
     def hit(self):
         attack = self.attack_list[self.attack_list.index(self.current_attack)]

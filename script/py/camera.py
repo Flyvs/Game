@@ -65,6 +65,8 @@ class Camera(pygame.sprite.Group):
             obj = str(type(sprite)).partition(".")[2].split("'")[0]
             if obj == "NPC":
                 npc_sprites.append(sprite)
+            elif obj == "HUD":
+                new_sprite_list.append(sprite)
             elif obj == "Player":
                 player_sprite = sprite
             elif obj == "Enemy":
