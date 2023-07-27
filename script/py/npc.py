@@ -1,28 +1,38 @@
 import pygame
 import os
+from msgbox import MsgBox
 
 class NPC(pygame.sprite.Sprite):
-    # initializing
-    def __init__(self, pos: tuple, path: str, group):
+    def __init__(self,
+                 group,
+                 pos: tuple,
+                 npc_path: str,
+                 npc_spawn: str,
+                 msgbox: MsgBox):
+        
         super().__init__(group)
 
-        NPC.hitted = False
-        self.path = path
+        self.hitted = False
+        self.npc_path = npc_path
+        self.msgbox = msgbox
 
-        self.allItems = []
-        self.image = pygame.image.load(self.path + self.spawn("testNPC")).convert_alpha()
-        NPC.rect = self.image.get_rect(topleft=pos)
+        self.image = pygame.image.load(self.npc_path + self.spawn(npc_spawn)).convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
 
-    # spawn the npc
-    def spawn(self, item: str):
-        for file in os.listdir(self.path):
+    def spawn(self, npc: str):
+        for file in os.listdir(self.npc_path):
             casefoldFile = file[:-4].casefold()
-            item = item.casefold()
-            if casefoldFile == item:
+            npc = npc.casefold()
+            if casefoldFile == npc:
                 return file
+            
+    def hit(self, rect):
+        collision_x = rect.rect[0] + 64 >= self.rect[0] and self.rect[0] + 64 >= rect.rect[0]
+        collision_y = rect.rect[1] + 64 >= self.rect[1] and self.rect[1] + 64 >= rect.rect[1]
 
-    # check if npc is hit
-    def hit(rect: pygame.Rect):
-        collision_x = rect.rect[0] + 64 >= NPC.rect[0] and NPC.rect[0] + 64 >= rect.rect[0]
-        collision_y = rect.rect[1] + 64 >= NPC.rect[1] and NPC.rect[1] + 64 >= rect.rect[1]
-        return collision_y and collision_x
+        if collision_x and collision_y:
+            self.msgbox.active = True
+        else:
+            self.msgbox.active = False
+            
+        return collision_x and collision_y

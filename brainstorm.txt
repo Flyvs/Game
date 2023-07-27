@@ -1,0 +1,3 @@
+- Menu msgbox not as png but with msgbox in game mechanic
+- msgbox colored text (mark a specified text and set color for specified text)
+- Detailed instructions on how to use auto-py-to-exe in this context

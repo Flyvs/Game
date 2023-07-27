@@ -1,77 +1,90 @@
 import pygame
+from gamepad import Inputs
 
 class Attack(pygame.sprite.Sprite):
-    # initializing
-    def __init__(self, CLASS: str, DMG: int, path: str, player, game, group):
-        """
-        "game" and "player" needs to be class type
-        """
+    def __init__(self,
+                 group,
+                 TYPE: str,
+                 DMG: int,
+                 sprite_path: str,
+                 sprite_left: str,
+                 sprite_right: str,
+                 width: int,
+                 height: int,
+                 player,
+                 game):
+        
         super().__init__(group)
 
-        Attack.CLASS = CLASS
-        Attack.DMG = DMG
+        self.TYPE = TYPE
+        self.DMG = DMG
+        self.sprite_path = sprite_path
+        self.right = sprite_right
+        self.left = sprite_left
+        self.width = width
+        self.height = height
+        self.player = player
+        self.game = game
 
-        Attack.spritePath = path
-        Attack.right = "attackRight.png"
-        Attack.left = "attackLeft.png"
-        Attack.firingLeft = False
-        Attack.firingRight = False
-        Attack.attacking = False
-        Attack.exist = False
-        Attack.direction = "right"
-        Attack.game = game
-        Attack.player = player
-        Attack.xRight = Attack.player.rect.center[0] + 48
-        Attack.yRight = Attack.player.rect.center[1] + 14
-        Attack.xLeft = Attack.player.rect.center[0] - 48
-        Attack.yLeft = Attack.player.rect.center[1] + 14
-        Attack.posRight = (Attack.xRight, Attack.yRight)
-        Attack.posLeft = (Attack.xLeft, Attack.yLeft)
+        self.attacking = False
+        self.exist = False
+        self.direction = "right"
 
-        Attack.image = pygame.image.load(Attack.spritePath + Attack.right).convert_alpha()
-        Attack.rect = Attack.image.get_rect(center=Attack.posRight)
+        x_right = self.player.rect.center[0] + 48
+        y_right = self.player.rect.center[1] + 14
+        x_left = self.player.rect.center[0] - 48
+        y_left = self.player.rect.center[1] + 14
+        self.pos_right = (x_right, y_right)
+        self.pos_left = (x_left, y_left)
 
-    # positioning the attack and set the attack key
+        self.image = pygame.image.load(self.sprite_path + self.right).convert_alpha()
+        self.rect = self.image.get_rect(center=self.pos_right)
+
+    def update(self):
+        inputs = Inputs.scan()[0]
+        keys = pygame.key.get_pressed()
+        return inputs, keys
+
     def input(self):
-        self.keys = pygame.key.get_pressed()
-        xRight = Attack.player.rect.center[0] + 48
-        yRight = Attack.player.rect.center[1] + 14
-        xLeft = Attack.player.rect.center[0] - 48
-        yLeft = Attack.player.rect.center[1] + 14
-        Attack.posRight = (xRight, yRight)
-        Attack.posLeft = (xLeft, yLeft)
+        update_result = self.update()
+        inputs, keys = update_result[0], update_result[1]
 
-        if Attack.exist == False:
-            if self.keys[pygame.K_e] or (Attack.game.gamepadInputs is not None and Attack.game.gamepadInputs[11] == 1):
-                Attack.attacking = True
-                if Attack.player.facingLeft is True:
-                    Attack.image = pygame.image.load(Attack.spritePath + Attack.left).convert_alpha()
-                    Attack.rect = Attack.image.get_rect(center=Attack.posLeft)
-                    Attack.direction = "left"
-                elif Attack.player.facingRight is True:
-                    Attack.image = pygame.image.load(Attack.spritePath + Attack.right).convert_alpha()
-                    Attack.rect = Attack.image.get_rect(center=Attack.posRight)
-                    Attack.direction = "right"
-                Attack.exist = True
+        x_right = self.player.rect.center[0] + 48
+        y_right = self.player.rect.center[1] + 14
+        x_left = self.player.rect.center[0] - 48
+        y_left = self.player.rect.center[1] + 14
+        self.pos_right = (x_right, y_right)
+        self.pos_left = (x_left, y_left)
+        
+        if self.exist is False:
+            if keys[pygame.K_e] or (inputs is not None and inputs[11] == 1):
+                self.attacking = True
+                if self.player.facing_left is True:
+                    self.image = pygame.image.load(self.sprite_path + self.left).convert_alpha()
+                    self.rect = self.image.get_rect(center=self.pos_left)
+                    self.direction = "left"
+                elif self.player.facing_right is True:
+                    self.image = pygame.image.load(self.sprite_path + self.right).convert_alpha()
+                    self.rect = self.image.get_rect(center=self.pos_right)
+                    self.direction = "right"
+                self.exist = True
             else:
-                Attack.attacking = False
+                self.attacking = False
         else:
-            if Attack.direction == "left":
-                Attack.rect[0] -= 11
-                if Attack.rect[0] <= Attack.player.rect[0] - (Attack.game.screen.get_size()[0] // 2) - 100:
-                    Attack.exist = False
-            elif Attack.direction == "right":
-                Attack.rect[0] += 11
-                if Attack.rect[0] >= Attack.player.rect[0] + (Attack.game.screen.get_size()[0] // 2) + 100:
-                    Attack.exist = False
+            if self.direction == "left":
+                self.rect[0] -= 11
+                if self.rect[0] <= self.player.rect[0] - (self.game.screen.get_size()[0] // 2) - 100:
+                    self.exist = False
+            elif self.direction == "right":
+                self.rect[0] += 11
+                if self.rect[0] >= self.player.rect[0] + (self.game.screen.get_size()[0] // 2) + 100:
+                    self.exist = False
 
-    # collision with 2 objects
-    def aabb_collision(self, a_x, a_y, a_width, a_height, b_x, b_y, b_width, b_height):
-        self.collision_x = a_x + a_width >= b_x and b_x + b_width >= a_x
-        self.collision_y = a_y + a_height >= b_y and b_y + b_height >= a_y
-        return self.collision_y and self.collision_x
+    def aabb_collision(self, a_x, a_y, a_width, a_height, b_x, b_y, b_widht, b_height):
+        collision_x = a_x + a_width >= b_x and b_x + b_widht >= a_x
+        collision_y = a_y + a_height >= b_y and b_y + b_height >= a_y
+        return collision_x and collision_y
     
-    # collision attack and enemy
     def attack_enemy_collision(self, enemy):
-        if Attack.exist:
-            return self.aabb_collision(Attack.rect[0], Attack.rect[1], 30, 24, enemy.rect[0], enemy.rect[1], 64, 64)
+        if self.exist:
+            return self.aabb_collision(self.rect[0], self.rect[1], self.width, self.height, enemy.rect[0], enemy.rect[1], 64, 64)

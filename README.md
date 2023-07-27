@@ -2,21 +2,26 @@
 
 ## GENERAL INFORMATION
 
-- 100% Python code
+- 100% Python code (it's not good)
 
-- The music is made with [beathoven](https://www.beatoven.ai)
+- **DO _NOT_ DELETE THE .key FILES** (or any other files lol but those are essential)
+
+- The music is mostly made with [beathoven](https://www.beatoven.ai)
+
+- Also a track is taken from [here](https://youtu.be/tgIddOrtMFQ)
 
 ## PLAYING
 
-- supports keyboard and most controllers but the PS5 Controller and the Nintendo Switch Pro Controller works best
+- supports keyboard and most controllers but the PS5 Controller and the Nintendo Switch Pro Controller work best
 
 ## EDITING CODE
 
-- remember to install a package to convert the script into an exe (for example [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/))
+- remember to install a package to convert the script into an exe (for example [auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/)). Detailed explanation on how to do so exactly coming soon
 
-Set this to true if you want to export the script as an exe.
+In main.py set this to true if you want to export the script as an exe.
+
 ```
-Game.export = False
+self.export = False
 ```
 
 ### FUNCTIONS
@@ -24,11 +29,13 @@ Game.export = False
 #### gamepad.py
 
 returns a list with the buttons a controller has:
+
 ```
 Inputs.scan()[0]
 ```
 
 returns a list with controller details
+
 ```
 Inputs.scan()[1]
 ```
@@ -36,30 +43,29 @@ Inputs.scan()[1]
 #### crypting.py
 
 encrypts the given file and creates a key with the given name
+
 ```
 Crypting.encrypt(path: str, fileToEncrypt: str, filekeyName: str)
 ```
 
 decrypts the given file and uses the given key(file)
+
 ```
 Crypting.decrypt(path: str, fileToDecrypt: str, filekeyName: str)
-```
-
-renames a file (idk why I created this (There is [os.rename](https://www.tutorialspoint.com/python/os_rename.htm)), maybe there's a reason why but I can't remember)
-```
-Crypting.rename(path: str, oldName: str, newName: str)
 ```
 
 #### pygame_merge.py
 
 merges multiple surfaces & the last surface given will be on top
+
 ```
-Merge.surfaces(path: str, *surfaces: pygame.Surface)
+Merge.surfaces(path: str, font_size: int, pos: tuple[int, int], extra_space: int = 0, *surfaces: pygame.Surface)
 ```
 
 #### expandlist.py
 
 expands a list with multiple values and returns it
+
 ```
 Expandlist.expand(list: list, *values)
 ```
