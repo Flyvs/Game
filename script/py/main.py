@@ -113,7 +113,8 @@ class Game():
                         SPRITE = "testenemy.png",
                         LIST = self.enemy_list,
                         game = self,
-                        player = self.player)
+                        player = self.player,
+                        type = "A")
         enemy_B = Enemy(group = self.camera,
                     POS = (300, 1768),
                     HP = 15, 
@@ -124,7 +125,8 @@ class Game():
                     SPRITE = "testenemy2.png",
                     LIST = self.enemy_list,
                     game = self,
-                    player = self.player)
+                    player = self.player,
+                    type = "B")
         enemy_C = Enemy(group = self.camera,
                     POS = (1000, 1768),
                     HP = 5, 
@@ -135,7 +137,8 @@ class Game():
                     SPRITE = "testenemy3.png",
                     LIST = self.enemy_list,
                     game = self,
-                    player = self.player)
+                    player = self.player,
+                    type = "C")
         ExpandList.expand(self.enemy_types, enemy_A, enemy_B, enemy_C)
         self.spawn_test_enemies()
 
@@ -202,18 +205,8 @@ class Game():
 
             while self.run == "game":
                 self.gamepad_inputs = Inputs.scan()[0]
-
-                timer = self.timer(self.player_hit_ticks, self.player_hit_seconds, self.player_hit_minutes, self.player_hit_hours)
-                self.player_hit_ticks = timer["ticks"]
-                self.player_hit_seconds = timer["seconds"]
-                
-                if timer["seconds"] % 3 == 0 and self.player.hit is False:
-                    self.player_hit_ticks = 0
-                    self.player_hit_seconds = 0
-                    self.player.hit = True
-                else:
-                    for enemy in self.enemy_list:
-                        enemy.find_player()
+                for enemy in self.enemy_list:
+                    enemy.find_player()
                 self.run_game()
             
             while self.run == "pause":
@@ -300,6 +293,11 @@ class Game():
 
         return {"ticks": ticks, "seconds": seconds, "minutes": minutes, "hours": hours}
 
+    def run_default(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.exit()
+
     def run_game(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -318,9 +316,7 @@ class Game():
         self.clock.tick(60)
 
     def run_pause(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.exit()
+        self.run_default()
         
         self.screen.fill("#71ddee")
         self.menu.pause_screen()
@@ -328,9 +324,7 @@ class Game():
         self.clock.tick(20)
 
     def run_options(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.exit()
+        self.run_default()
 
         self.screen.fill("#71ddee")
         self.menu.options_screen()
@@ -338,9 +332,7 @@ class Game():
         self.clock.tick(20)
 
     def run_resolution(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.exit()
+        self.run_default()
         
         self.screen.fill("#71ddee")
         self.menu.resolution_screen()
@@ -348,9 +340,7 @@ class Game():
         self.clock.tick(20)
 
     def run_mainmenu(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.exit()
+        self.run_default()
 
         self.screen.fill("#71ddee")
         self.menu.mainmenu_screen()
@@ -358,9 +348,7 @@ class Game():
         self.clock.tick(20)
 
     def run_volume(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.exit()
+        self.run_default()
 
         self.screen.fill('#71ddee')
         self.menu.volume_screen()

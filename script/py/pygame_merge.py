@@ -9,7 +9,8 @@ class Merge():
         the last surface given will be on top
         :param path: the temporary path where the surfaces will be cached
         :param font_size: the font_size of the text. Used to determine the line spacing
-        :pos: position of the text
+        :param pos: position of the text
+        :param extra_space: extra space between text and textbox border
         :param *surfaces: all the surfaces to merge. Last one given will be on top
         """        
         if not os.path.exists(path):

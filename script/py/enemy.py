@@ -15,7 +15,8 @@ class Enemy(pygame.sprite.Sprite):
                  SPRITE: str,
                  LIST: list,
                  game, 
-                 player):
+                 player,
+                 type):
         
         super().__init__(group)
 
@@ -27,6 +28,7 @@ class Enemy(pygame.sprite.Sprite):
         self.SPAWNED = SPAWNED
         self.SPRITE = SPRITE
         self.LIST: List[Enemy] = LIST
+        self.type = type
 
         self.game = game
         self.player = player
@@ -35,6 +37,13 @@ class Enemy(pygame.sprite.Sprite):
 
         self.image = pygame.image.load(self.game.enemy_path + self.SPRITE).convert_alpha()
         self.rect = self.image.get_rect(topleft=self.POS)
+
+        self.ticks = 0
+        self.seconds = 0
+        self.minutes = 0
+        self.hours = 0
+        Enemy.timer = None
+        Enemy.timer_created = False
 
     def find_player(self):
         direction = pygame.math.Vector2()
@@ -68,14 +77,26 @@ class Enemy(pygame.sprite.Sprite):
             self.rect.center = recenter
     
     def attack_player(self):
-        if self.player.player_enemy_collision() and self.player.hit:
-            self.player.hit = False
+        if not self.player.hittable and not Enemy.timer_created:
+            Enemy.timer = self.game.timer(self.ticks, self.seconds, self.minutes, self.hours)
+            Enemy.timer_created = True
 
-            if self.player.HP > 0:
-                if self.SPAWNED:
-                    self.player.HP -= self.ATK
-            elif self.player.HP < 0:
+        if self.player.player_enemy_collision() and self.player.hittable:
+            self.player.hittable = False
+
+            if self.player.HP < self.ATK:
                 self.player.HP = 0
+            elif self.player.HP > 0 and self.SPAWNED:
+                self.player.HP -= self.ATK
+
+        elif not self.player.hittable:
+            if Enemy.timer["seconds"] % 3 == 0 and Enemy.timer["seconds"] != 0:
+                self.player.hittable = True
+                Enemy.timer = None
+                Enemy.timer_created = False
+        
+        if Enemy.timer is not None:
+            Enemy.timer = self.game.timer(Enemy.timer["ticks"], Enemy.timer["seconds"], Enemy.timer["minutes"], Enemy.timer["hours"])
 
     def hit(self):
         attack = self.attack_list[self.attack_list.index(self.current_attack)]

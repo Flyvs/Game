@@ -3,7 +3,6 @@ import json
 from typing import List
 
 from hud import HUD
-from msgbox import MsgBox
 from npc import NPC
 from attack import Attack
 from enemy import Enemy
@@ -42,7 +41,7 @@ class Player(pygame.sprite.Sprite):
         self.facing_right = True
         self.facing_up = False
         self.facing_down = False
-        self.hit = True
+        self.hittable = True
 
         self.color = "w"
 
@@ -66,7 +65,6 @@ class Player(pygame.sprite.Sprite):
         self.timer = None
 
     def drain_stamina(self):
-        print(self.timer)
         if self.timer["ticks"] % 10 == 0 and self.color == "b" and self.STAMINA > 0:
             self.STAMINA -= 1
         
